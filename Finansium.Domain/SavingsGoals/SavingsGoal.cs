@@ -1,4 +1,6 @@
-﻿namespace Finansium.Domain.SavingsGoals;
+﻿using Finansium.Domain.Shared;
+
+namespace Finansium.Domain.SavingsGoals;
 
 /// <summary>
 /// Цели накоплений
@@ -11,9 +13,9 @@ public sealed class SavingsGoal : Entity
 
     public string Name { get; private set; }
 
-    public decimal CurrentAmount { get; private set; }
+    public Money Current { get; private set; }
 
-    public decimal TargetAmount { get; private set; }
+    public Money Target { get; private set; }
 
     public DateTimeOffset StartDate { get; private set; }
 
@@ -22,8 +24,8 @@ public sealed class SavingsGoal : Entity
     public static SavingsGoal Create(
         Ulid userId,
         string name,
-        decimal currentAmount,
-        decimal targetAmount,
+        Money current,
+        Money target,
         DateTimeOffset startDate,
         DateTimeOffset endDate)
     {
@@ -31,8 +33,8 @@ public sealed class SavingsGoal : Entity
         {
             UserId = userId,
             Name = name,
-            CurrentAmount = currentAmount,
-            TargetAmount = targetAmount,
+            Current = current,
+            Target = target,
             StartDate = startDate,
             EndDate = endDate
         };

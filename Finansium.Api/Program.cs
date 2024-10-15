@@ -1,3 +1,4 @@
+using Asb.Bank.CABS.Persistence.Seed;
 using Finansium.Api.Extensions;
 using Finansium.Api.Middlewares;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -29,11 +30,14 @@ builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
+
 app.UseExceptionHandler();
 
 app.UseRequestContextLogging();
 
 app.ApplyMigrations();
+
+await app.Services.SeedDataAsync();
 
 if (app.Environment.IsDevelopment())
 {

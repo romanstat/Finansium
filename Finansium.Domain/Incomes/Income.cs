@@ -1,4 +1,5 @@
 ﻿using Finansium.Domain.Accounts;
+using Finansium.Domain.Shared;
 
 namespace Finansium.Domain.Incomes;
 
@@ -15,7 +16,7 @@ public sealed class Income : Entity
 
     public Account? Account { get; private set; }
 
-    public decimal Amount { get; private set; }
+    public Money Amount { get; private set; }
 
     public DateTimeOffset Date { get; private set; }
 }

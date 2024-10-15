@@ -11,7 +11,7 @@ public sealed class Account : Entity
 
     public string Name { get; private set; }
 
-    public decimal Balance { get; private set; }
+    public Money Balance { get; private set; }
 
     public DateTimeOffset CreatedAt { get; private set; }
 
@@ -20,7 +20,7 @@ public sealed class Account : Entity
     public static Account Create(
         Ulid userId,
         string name,
-        decimal balance,
+        Money balance,
         TimeProvider timeProvider)
     {
         var account = new Account
@@ -37,11 +37,11 @@ public sealed class Account : Entity
 
     public Result Transfer(
         Account targetAccount,
-        decimal amount,
+        Money amount,
         decimal conversionRate,
         TimeProvider timeProvider)
     {
-        if (amount <= 0)
+        if (amount.Amount <= 0)
         {
             return Result.Failure(AccountErrors.InvalidAmount);
         }
@@ -53,7 +53,7 @@ public sealed class Account : Entity
 
         Balance -= amount;
 
-        targetAccount.Balance += amount * conversionRate;
+        targetAccount.Balance += amount.Amount * conversionRate;
 
         ModifiedAt = timeProvider.GetUtcNow();
 

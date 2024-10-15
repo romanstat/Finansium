@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Finansium.Shared\Finansium.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Investments\" />
+  </ItemGroup>
+
 </Project>

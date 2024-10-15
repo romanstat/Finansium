@@ -1,6 +1,6 @@
 ﻿namespace Finansium.Domain.Accounts;
 
-public sealed class AccoutTransfer : Entity
+public sealed class AccountTransfer : Entity
 {
     public Ulid SourceAccountId { get; init; }
 
@@ -10,7 +10,7 @@ public sealed class AccoutTransfer : Entity
 
     public Account TargetAccount { get; init; }
 
-    public decimal Amount { get; init; }
+    public Money Amount { get; init; }
 
     public decimal ConversionRate { get; init; }
 }

@@ -2,13 +2,32 @@
 
 public sealed class Country : Entity
 {
-    public string ShortName { get; init; }
+    public string ShortName { get; private set; }
 
-    public string FullName { get; init; }
+    public string FullName { get; private set; }
 
-    public string Alpha2Code { get; init; }
+    public string Alpha2Code { get; private set; }
 
-    public string Alpha3Code { get; init; }
+    public string Alpha3Code { get; private set; }
 
-    public int NumericCode { get; init; }
+    public int NumericCode { get; private set; }
+
+    public static Country Create(
+        string shortName,
+        string fullName,
+        string alpha2Code,
+        string alpha3Code,
+        int numericCode)
+    {
+        var country = new Country
+        {
+            ShortName = shortName,
+            FullName = fullName,
+            Alpha2Code = alpha2Code,
+            Alpha3Code = alpha3Code,
+            NumericCode = numericCode
+        };
+
+        return country;
+    }
 }

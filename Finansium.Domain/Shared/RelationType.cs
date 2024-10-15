@@ -1,4 +1,4 @@
-﻿namespace Finansium.Domain.TODO;
+﻿namespace Finansium.Domain.Shared;
 
 public sealed record RelationType(char Name)
 {

@@ -15,7 +15,7 @@ public sealed class FinansiumDbContext(
 {
     public DbSet<Account> Accounts => Set<Account>();
 
-    public DbSet<AccoutTransfer> AccoutTransfers => Set<AccoutTransfer>();
+    public DbSet<AccountTransfer> AccountTransfers => Set<AccountTransfer>();
 
     public DbSet<ExpenseCategory> ExpenseCategories => Set<ExpenseCategory>();
 
