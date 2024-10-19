@@ -22,7 +22,7 @@ public sealed class User : Entity
 
     public string Surname { get; private set; }
 
-    public string Username { get; set; }
+    public string Username { get; private set; }
 
     public Email Email { get; private set; }
 
@@ -39,6 +39,7 @@ public sealed class User : Entity
     public IReadOnlyCollection<SavingsGoal> SavingTrackers => _savingTrackers;
 
     public static User Create(
+        Ulid countryId,
         string name,
         string surname,
         string username,
@@ -47,6 +48,7 @@ public sealed class User : Entity
     {
         var user = new User
         {
+            CountryId = countryId,
             Name = name,
             Surname = surname,
             Username = username,
@@ -55,5 +57,10 @@ public sealed class User : Entity
         };
 
         return user;
+    }
+
+    public void UpdatePassword(string newPassword)
+    {
+        Password = newPassword;
     }
 }

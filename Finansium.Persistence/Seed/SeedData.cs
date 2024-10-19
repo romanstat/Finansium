@@ -1,7 +1,6 @@
 ﻿using System.Transactions;
-using Finansium.Persistence.Seed;
 
-namespace Asb.Bank.CABS.Persistence.Seed;
+namespace Finansium.Persistence.Seed;
 
 public static class SeedData
 {

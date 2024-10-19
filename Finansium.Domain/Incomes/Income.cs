@@ -1,5 +1,4 @@
 ﻿using Finansium.Domain.Accounts;
-using Finansium.Domain.Shared;
 
 namespace Finansium.Domain.Incomes;
 

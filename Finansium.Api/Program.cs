@@ -1,6 +1,7 @@
-using Asb.Bank.CABS.Persistence.Seed;
-using Finansium.Api.Extensions;
+using Finansium.Api;
 using Finansium.Api.Middlewares;
+using Finansium.Persistence.Seed;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +18,7 @@ builder.Services.Configure<JsonOptions>(options =>
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwagger();
 builder.Services.AddProblemDetails();
 builder.Services.AddSingleton<CultureMiddleware>();
 builder.Services.AddScoped<RequestContextLoggingMiddleware>();
@@ -30,8 +30,14 @@ builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
-
 app.UseExceptionHandler();
+
+app.UseCookiePolicy(new CookiePolicyOptions
+{
+    MinimumSameSitePolicy = SameSiteMode.Lax,
+    HttpOnly = HttpOnlyPolicy.Always,
+    Secure = CookieSecurePolicy.Always
+});
 
 app.UseRequestContextLogging();
 
@@ -53,6 +59,10 @@ app.MapHealthChecks("health", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapEndpoints();
 

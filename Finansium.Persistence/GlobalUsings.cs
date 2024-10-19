@@ -1,3 +1,6 @@
+// Domain
+global using Finansium.Domain.Abstractions;
+
 // Application
 global using Finansium.Application.Abstractions.Data;
 

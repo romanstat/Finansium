@@ -2,4 +2,5 @@
 
 public interface IFinansiumDbContext
 {
+    DbSet<User> Users { get; }
 }

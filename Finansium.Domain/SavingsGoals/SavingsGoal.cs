@@ -1,6 +1,4 @@
-﻿using Finansium.Domain.Shared;
-
-namespace Finansium.Domain.SavingsGoals;
+﻿namespace Finansium.Domain.SavingsGoals;
 
 /// <summary>
 /// Цели накоплений
