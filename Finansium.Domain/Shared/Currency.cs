@@ -5,11 +5,13 @@ public sealed record Currency(string Code)
     internal static readonly Currency None = new("");
     public static readonly Currency Usd = new("USD");
     public static readonly Currency Eur = new("EUR");
+    public static readonly Currency By = new("BY");
 
     public static readonly IReadOnlyCollection<Currency> All =
     [
         Usd,
-        Eur
+        Eur,
+        By,
     ];
 
     public static Currency FromCode(string code)

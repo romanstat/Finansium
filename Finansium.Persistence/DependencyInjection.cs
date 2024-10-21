@@ -11,10 +11,10 @@ public static class DependencyInjection
         services.AddDbContext<FinansiumDbContext>(Schemas.FinansiumDbContext);
 
         services.AddScoped<IFinansiumDbContext, FinansiumDbContext>();
-
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<FinansiumDbContext>());
 
         services.AddRepositories();
+        services.AddServices();
 
         return services;
     }
@@ -51,6 +51,20 @@ public static class DependencyInjection
             .FromAssemblies(PersistenceAssembly)
             .AddClasses(
                 filter => filter.Where(x => x.Name.EndsWith("Repository", StringComparison.OrdinalIgnoreCase)),
+                publicOnly: false)
+            .UsingRegistrationStrategy(RegistrationStrategy.Throw)
+            .AsMatchingInterface()
+            .WithScopedLifetime());
+
+        return services;
+    }
+
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.Scan(scan => scan
+            .FromAssemblies(PersistenceAssembly)
+            .AddClasses(
+                filter => filter.Where(x => x.Name.EndsWith("Service", StringComparison.OrdinalIgnoreCase)),
                 publicOnly: false)
             .UsingRegistrationStrategy(RegistrationStrategy.Throw)
             .AsMatchingInterface()

@@ -13,7 +13,7 @@ internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        string requestName = typeof(TRequest).Name;
+        var requestName = typeof(TRequest).Name;
 
         Activity.Current?.SetTag("request.name", requestName);
 

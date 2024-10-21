@@ -20,12 +20,12 @@ internal sealed class RefreshTokenRepository(
         RefreshToken refreshToken,
         CancellationToken cancellationToken)
     {
-        await DeleteAsync(refreshToken.UserId, cancellationToken);
+        await DeleteByUserIdAsync(refreshToken.UserId, cancellationToken);
 
         Add(refreshToken);
     }
 
-    public async Task DeleteAsync(
+    public async Task DeleteByUserIdAsync(
         Ulid userId,
         CancellationToken cancellationToken)
     {

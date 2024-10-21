@@ -10,14 +10,14 @@ public sealed class Country : Entity
 
     public string Alpha3Code { get; private set; }
 
-    public int NumericCode { get; private set; }
+    public short NumericCode { get; private set; }
 
     public static Country Create(
         string shortName,
         string fullName,
         string alpha2Code,
         string alpha3Code,
-        int numericCode)
+        short numericCode)
     {
         var country = new Country
         {

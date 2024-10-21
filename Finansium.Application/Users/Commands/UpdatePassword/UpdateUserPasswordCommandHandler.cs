@@ -10,7 +10,15 @@ internal sealed class UpdateUserPasswordCommandHandler(
         UpdateUserPasswordCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByUsernameNoTrackingAsync(
+        if (!await userRepository.IsPasswordValidAsync(
+            userContext.Username,
+            request.OldPassword,
+            cancellationToken))
+        {
+            return Result.Failure(UserErrors.InvalidPassword);
+        }
+
+        var user = await userRepository.GetByUsernameAsync(
             userContext.Username,
             cancellationToken);
 

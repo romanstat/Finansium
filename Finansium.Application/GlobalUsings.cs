@@ -1,12 +1,15 @@
 // Domain
-global using Finansium.Domain.Abstractions;
 global using Finansium.Domain.Users;
+global using Finansium.Domain.Shared;
+global using Finansium.Domain.Abstractions;
 
 // Application
 global using Finansium.Application.Abstractions.Data;
 global using Finansium.Application.Abstractions.Messaging;
 global using Finansium.Application.Abstractions.Behaviors;
 global using Finansium.Application.Abstractions.Authentication;
+
+// Shared
 
 // Microsoft
 global using Microsoft.Extensions.Logging;

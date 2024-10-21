@@ -13,19 +13,22 @@ internal abstract class Repository<TEntity>
         _dbSet = _dbContext.Set<TEntity>();
     }
 
-    public virtual async Task<TEntity?> GetByIdAsync(
-        Ulid id,
-        CancellationToken cancellationToken) =>
-            await _dbSet.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+    public virtual async Task<TEntity?> GetByIdAsync(Ulid id, CancellationToken cancellationToken) =>
+        await _dbSet.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-    public virtual async Task<TEntity?> GetByIdNoTrackingAsync(
-        Ulid id,
-        CancellationToken cancellationToken) =>
-            await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+    public virtual async Task<TEntity?> GetByIdNoTrackingAsync(Ulid id, CancellationToken cancellationToken) =>
+        await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
     public virtual void Add(TEntity entity) => _dbContext.Add(entity);
 
     public virtual void Update(TEntity entity) => _dbContext.Update(entity);
+
+    public virtual async Task DeleteAsync(
+        Ulid id,
+        CancellationToken cancellationToken)
+    {
+        await DeleteAsync([id], cancellationToken);   
+    }
 
     public virtual async Task DeleteAsync(
         IEnumerable<Ulid> ids,

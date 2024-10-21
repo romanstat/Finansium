@@ -7,4 +7,7 @@ public static class UserErrors
 
     public static readonly Error InvalidCredentials = Error.Problem(
         $"{nameof(UserErrors)}.{nameof(InvalidCredentials)}", "Неверные данные для входа");
+
+    public static readonly Error InvalidPassword = Error.Problem(
+        $"{nameof(UserErrors)}.{nameof(InvalidPassword)}", "Пароли не совпадают");
 }

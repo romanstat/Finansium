@@ -41,6 +41,11 @@ public sealed class Account : Entity
         decimal conversionRate,
         TimeProvider timeProvider)
     {
+        if (Id == targetAccount.Id)
+        {
+            return Result.Failure(AccountErrors.TransferAccountConflict);
+        }
+
         if (amount.Amount <= 0)
         {
             return Result.Failure(AccountErrors.InvalidAmount);
@@ -51,12 +56,29 @@ public sealed class Account : Entity
             return Result.Failure(AccountErrors.InsufficientBalance);
         }
 
+        if (Balance.Currency.Code != amount.Currency.Code)
+        {
+            return Result.Failure(AccountErrors.DifferentCurrency);
+        }
+
         Balance -= amount;
+
+        if (Balance.Currency.Code == targetAccount.Balance.Currency.Code)
+        {
+            conversionRate = 1;
+        }
 
         targetAccount.Balance += amount.Amount * conversionRate;
 
         ModifiedAt = timeProvider.GetUtcNow();
+        targetAccount.ModifiedAt = timeProvider.GetUtcNow();
 
         return Result.Success();
+    }
+
+    public void Update(string name, Money balance)
+    {
+        Name = name;
+        Balance = balance;
     }
 }

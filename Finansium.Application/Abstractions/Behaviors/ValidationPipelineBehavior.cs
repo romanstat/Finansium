@@ -12,7 +12,7 @@ internal sealed class ValidationPipelineBehavior<TRequest, TResponse>(
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
-        ValidationFailure[] validationFailures = await ValidateAsync(request);
+        var validationFailures = await ValidateAsync(request);
 
         if (validationFailures.Length == 0)
         {

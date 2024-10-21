@@ -1,4 +1,5 @@
-﻿namespace Finansium.Domain.Users;
+﻿
+namespace Finansium.Domain.Users;
 
 public interface IRefreshTokenRepository
 {

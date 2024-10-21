@@ -44,11 +44,6 @@ public class Result
 
         return Success();
     }
-
-    public static Result Failure(object isUnique)
-    {
-        throw new NotImplementedException();
-    }
 }
 
 public class Result<TValue>(

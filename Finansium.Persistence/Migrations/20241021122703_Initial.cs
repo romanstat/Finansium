@@ -24,7 +24,7 @@ namespace Finansium.Persistence.Migrations
                     full_name = table.Column<string>(type: "text", nullable: false),
                     alpha2code = table.Column<string>(type: "text", nullable: false),
                     alpha3code = table.Column<string>(type: "text", nullable: false),
-                    numeric_code = table.Column<int>(type: "integer", nullable: false)
+                    numeric_code = table.Column<short>(type: "smallint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,7 +204,7 @@ namespace Finansium.Persistence.Migrations
                     id = table.Column<string>(type: "text", nullable: false),
                     user_id = table.Column<string>(type: "text", nullable: false),
                     token = table.Column<string>(type: "character varying(88)", maxLength: 88, nullable: false),
-                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 10, 19, 11, 3, 53, 426, DateTimeKind.Unspecified).AddTicks(6796), new TimeSpan(0, 0, 0, 0, 0))),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 10, 21, 12, 27, 2, 572, DateTimeKind.Unspecified).AddTicks(920), new TimeSpan(0, 0, 0, 0, 0))),
                     expired_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>

@@ -13,7 +13,7 @@ public static class DependencyInjection
         {
             config.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "CABS WebApi",
+                Title = "Finansium WebApi",
                 Version = "v1"
             });
 

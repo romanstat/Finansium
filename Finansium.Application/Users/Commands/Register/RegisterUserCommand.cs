@@ -6,4 +6,5 @@ public sealed record RegisterUserCommand(
     string Surname,
     string Email,
     string Username,
-    string Password) : ICommand;
+    string Password,
+    string RetryPassword) : ICommand;

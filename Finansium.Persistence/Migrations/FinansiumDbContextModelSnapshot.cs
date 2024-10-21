@@ -168,8 +168,8 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("full_name");
 
-                    b.Property<int>("NumericCode")
-                        .HasColumnType("integer")
+                    b.Property<short>("NumericCode")
+                        .HasColumnType("smallint")
                         .HasColumnName("numeric_code");
 
                     b.Property<string>("ShortName")
@@ -443,7 +443,7 @@ namespace Finansium.Persistence.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2024, 10, 19, 11, 3, 53, 426, DateTimeKind.Unspecified).AddTicks(6796), new TimeSpan(0, 0, 0, 0, 0)))
+                        .HasDefaultValue(new DateTimeOffset(new DateTime(2024, 10, 21, 12, 27, 2, 572, DateTimeKind.Unspecified).AddTicks(920), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("created_at");
 
                     b.Property<DateTimeOffset>("ExpiredAt")
