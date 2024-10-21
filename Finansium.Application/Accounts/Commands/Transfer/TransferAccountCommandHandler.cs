@@ -11,12 +11,13 @@ internal sealed class TransferAccountCommandHandler(
         CancellationToken cancellationToken)
     {
         var sourceAccount = await accountRepository.GetByIdAsync(request.SourceAccountId, cancellationToken);
-        var targetAccount = await accountRepository.GetByIdAsync(request.TargetAccountId, cancellationToken);
 
         if (sourceAccount is null)
         {
             return Result.Failure(AccountErrors.NotFound(request.SourceAccountId));
         }
+
+        var targetAccount = await accountRepository.GetByIdAsync(request.TargetAccountId, cancellationToken);
 
         if (targetAccount is null)
         {
@@ -31,7 +32,7 @@ internal sealed class TransferAccountCommandHandler(
             targetAccount,
             transferAmount,
             request.CurrencyRate,
-            timeProvider);
+            timeProvider.GetUtcNow());
 
         return transferResult;
     }

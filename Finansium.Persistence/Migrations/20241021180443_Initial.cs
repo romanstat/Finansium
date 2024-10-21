@@ -48,6 +48,23 @@ namespace Finansium.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "outbox_messages",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "text", nullable: false),
+                    occurred_on_utc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    type = table.Column<string>(type: "text", nullable: false),
+                    content = table.Column<string>(type: "text", nullable: false),
+                    processed_on_utc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    error = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_outbox_messages", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "roles",
                 schema: "core",
                 columns: table => new
@@ -115,6 +132,7 @@ namespace Finansium.Persistence.Migrations
                     name = table.Column<string>(type: "text", nullable: false),
                     balance_amount = table.Column<decimal>(type: "numeric", nullable: false),
                     balance_currency = table.Column<string>(type: "text", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     modified_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
@@ -204,7 +222,7 @@ namespace Finansium.Persistence.Migrations
                     id = table.Column<string>(type: "text", nullable: false),
                     user_id = table.Column<string>(type: "text", nullable: false),
                     token = table.Column<string>(type: "character varying(88)", maxLength: 88, nullable: false),
-                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTimeOffset(new DateTime(2024, 10, 21, 12, 27, 2, 572, DateTimeKind.Unspecified).AddTicks(920), new TimeSpan(0, 0, 0, 0, 0))),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     expired_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -247,43 +265,18 @@ namespace Finansium.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "savings_goals",
-                schema: "core",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "text", nullable: false),
-                    user_id = table.Column<string>(type: "text", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    current_amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    current_currency = table.Column<string>(type: "text", nullable: false),
-                    target_amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    target_currency = table.Column<string>(type: "text", nullable: false),
-                    start_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    end_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_savings_goals", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_savings_goals_users_user_id",
-                        column: x => x.user_id,
-                        principalSchema: "core",
-                        principalTable: "users",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "account_transfers",
                 schema: "core",
                 columns: table => new
                 {
                     id = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false),
                     source_account_id = table.Column<string>(type: "text", nullable: false),
                     target_account_id = table.Column<string>(type: "text", nullable: false),
                     amount_amount = table.Column<decimal>(type: "numeric", nullable: false),
                     amount_currency = table.Column<string>(type: "text", nullable: false),
-                    conversion_rate = table.Column<decimal>(type: "numeric", nullable: false)
+                    currency_rate = table.Column<decimal>(type: "numeric", nullable: false),
+                    transfer_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -300,6 +293,49 @@ namespace Finansium.Persistence.Migrations
                         column: x => x.target_account_id,
                         principalSchema: "core",
                         principalTable: "accounts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_account_transfers_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "core",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "savings_goals",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    account_id = table.Column<string>(type: "text", nullable: false),
+                    target_amount_amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    target_amount_currency = table.Column<string>(type: "text", nullable: false),
+                    note = table.Column<string>(type: "text", nullable: false),
+                    start_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    end_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    completed_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    is_completed = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_savings_goals", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_savings_goals_accounts_account_id",
+                        column: x => x.account_id,
+                        principalSchema: "core",
+                        principalTable: "accounts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_savings_goals_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "core",
+                        principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -417,6 +453,12 @@ namespace Finansium.Persistence.Migrations
                 column: "target_account_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_account_transfers_user_id",
+                schema: "core",
+                table: "account_transfers",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_accounts_user_id",
                 schema: "core",
                 table: "accounts",
@@ -501,6 +543,12 @@ namespace Finansium.Persistence.Migrations
                 column: "users_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_savings_goals_account_id",
+                schema: "core",
+                table: "savings_goals",
+                column: "account_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_savings_goals_user_id",
                 schema: "core",
                 table: "savings_goals",
@@ -548,6 +596,10 @@ namespace Finansium.Persistence.Migrations
                 schema: "core");
 
             migrationBuilder.DropTable(
+                name: "outbox_messages",
+                schema: "core");
+
+            migrationBuilder.DropTable(
                 name: "permissions",
                 schema: "core");
 
@@ -568,15 +620,15 @@ namespace Finansium.Persistence.Migrations
                 schema: "core");
 
             migrationBuilder.DropTable(
-                name: "accounts",
-                schema: "core");
-
-            migrationBuilder.DropTable(
                 name: "income_categories",
                 schema: "core");
 
             migrationBuilder.DropTable(
                 name: "roles",
+                schema: "core");
+
+            migrationBuilder.DropTable(
+                name: "accounts",
                 schema: "core");
 
             migrationBuilder.DropTable(

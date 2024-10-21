@@ -16,13 +16,8 @@ internal sealed class UpdateAccountCommandHandler(
             return Result.Failure(AccountErrors.NotFound(request.Id));
         }
 
-        var balance = new Money(
-            request.Amount,
-            Currency.FromCode(request.Currency));
-
         account.Update(
             request.Name,
-            balance,
             AccountStatus.FromName(request.Status));
 
         return Result.Success();

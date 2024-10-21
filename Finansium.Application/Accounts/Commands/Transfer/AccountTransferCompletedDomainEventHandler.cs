@@ -1,12 +1,15 @@
 ﻿using Finansium.Domain.Accounts;
 using Finansium.Domain.Accounts.Events;
+using Finansium.Domain.SavingsGoals;
 
 namespace Finansium.Application.Accounts.Commands.Transfer;
 
-internal sealed class AccountTransferCompletedDomainEventHandler(IAccountTransferRepository accountTransferRepository)
+internal sealed class AccountTransferCompletedDomainEventHandler(
+    IAccountTransferRepository accountTransferRepository,
+    ISavingsGoalRepository savingsGoalRepository)
     : INotificationHandler<AccountTransferCompletedDomainEvent>
 {
-    public Task Handle(
+    public async Task Handle(
         AccountTransferCompletedDomainEvent notification, 
         CancellationToken cancellationToken)
     {
@@ -20,6 +23,9 @@ internal sealed class AccountTransferCompletedDomainEventHandler(IAccountTransfe
 
         accountTransferRepository.Add(accountTransfer);
 
-        return Task.CompletedTask;
+        await savingsGoalRepository.UpdateTargetAmountAsync(
+            [notification.SourceAccountId,
+            notification.TargetAccountId],
+            cancellationToken);
     }
 }

@@ -6,13 +6,7 @@ internal sealed class SavingsGoalConfiguration : IEntityTypeConfiguration<Saving
 {
     public void Configure(EntityTypeBuilder<SavingsGoal> builder)
     {
-        builder.OwnsOne(savingsGoal => savingsGoal.Current, currentBuilder =>
-        {
-            currentBuilder.Property(money => money.Currency)
-                .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
-        });
-
-        builder.OwnsOne(savingsGoal => savingsGoal.Target, targetBuilder =>
+        builder.OwnsOne(savingsGoal => savingsGoal.TargetAmount, targetBuilder =>
         {
             targetBuilder.Property(money => money.Currency)
                 .HasConversion(currency => currency.Code, code => Currency.FromCode(code));

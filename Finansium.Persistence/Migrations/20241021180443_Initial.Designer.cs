@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241021151627_Initial3")]
-    partial class Initial3
+    [Migration("20241021180443_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,8 +46,9 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer")
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("status");
 
                     b.Property<string>("UserId")
@@ -435,6 +436,11 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnName("id")
                         .HasColumnOrder(0);
 
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("account_id");
+
                     b.Property<DateTimeOffset?>("CompletedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("completed_date");
@@ -452,6 +458,11 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("note");
+
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("start_date");
@@ -463,6 +474,9 @@ namespace Finansium.Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_savings_goals");
+
+                    b.HasIndex("AccountId")
+                        .HasDatabaseName("ix_savings_goals_account_id");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_savings_goals_user_id");
@@ -503,9 +517,7 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<DateTimeOffset>("CreatedAt")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTimeOffset(new DateTime(2024, 10, 21, 15, 16, 26, 44, DateTimeKind.Unspecified).AddTicks(1515), new TimeSpan(0, 0, 0, 0, 0)))
                         .HasColumnName("created_at");
 
                     b.Property<DateTimeOffset>("ExpiredAt")
@@ -850,6 +862,13 @@ namespace Finansium.Persistence.Migrations
 
             modelBuilder.Entity("Finansium.Domain.SavingsGoals.SavingsGoal", b =>
                 {
+                    b.HasOne("Finansium.Domain.Accounts.Account", "Account")
+                        .WithMany("SavingsGoals")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_savings_goals_accounts_account_id");
+
                     b.HasOne("Finansium.Domain.Users.User", "User")
                         .WithMany("SavingTrackers")
                         .HasForeignKey("UserId")
@@ -857,7 +876,7 @@ namespace Finansium.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_savings_goals_users_user_id");
 
-                    b.OwnsOne("Finansium.Domain.Shared.Money", "Current", b1 =>
+                    b.OwnsOne("Finansium.Domain.Shared.Money", "TargetAmount", b1 =>
                         {
                             b1.Property<string>("SavingsGoalId")
                                 .HasColumnType("text")
@@ -865,12 +884,12 @@ namespace Finansium.Persistence.Migrations
 
                             b1.Property<decimal>("Amount")
                                 .HasColumnType("numeric")
-                                .HasColumnName("current_amount");
+                                .HasColumnName("target_amount_amount");
 
                             b1.Property<string>("Currency")
                                 .IsRequired()
                                 .HasColumnType("text")
-                                .HasColumnName("current_currency");
+                                .HasColumnName("target_amount_currency");
 
                             b1.HasKey("SavingsGoalId");
 
@@ -881,34 +900,9 @@ namespace Finansium.Persistence.Migrations
                                 .HasConstraintName("fk_savings_goals_savings_goals_id");
                         });
 
-                    b.OwnsOne("Finansium.Domain.Shared.Money", "Target", b1 =>
-                        {
-                            b1.Property<string>("SavingsGoalId")
-                                .HasColumnType("text")
-                                .HasColumnName("id");
+                    b.Navigation("Account");
 
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("numeric")
-                                .HasColumnName("target_amount");
-
-                            b1.Property<string>("Currency")
-                                .IsRequired()
-                                .HasColumnType("text")
-                                .HasColumnName("target_currency");
-
-                            b1.HasKey("SavingsGoalId");
-
-                            b1.ToTable("savings_goals", "core");
-
-                            b1.WithOwner()
-                                .HasForeignKey("SavingsGoalId")
-                                .HasConstraintName("fk_savings_goals_savings_goals_id");
-                        });
-
-                    b.Navigation("Current")
-                        .IsRequired();
-
-                    b.Navigation("Target")
+                    b.Navigation("TargetAmount")
                         .IsRequired();
 
                     b.Navigation("User");
@@ -961,6 +955,11 @@ namespace Finansium.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_role_user_users_users_id");
+                });
+
+            modelBuilder.Entity("Finansium.Domain.Accounts.Account", b =>
+                {
+                    b.Navigation("SavingsGoals");
                 });
 
             modelBuilder.Entity("Finansium.Domain.Categories.ExpenseCategory", b =>

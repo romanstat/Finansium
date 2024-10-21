@@ -1,4 +1,5 @@
 ﻿using Finansium.Domain.Accounts.Events;
+using Finansium.Domain.SavingsGoals;
 
 namespace Finansium.Domain.Accounts;
 
@@ -7,6 +8,8 @@ namespace Finansium.Domain.Accounts;
 /// </summary>
 public sealed class Account : Entity
 {
+    private readonly List<SavingsGoal> _savingsGoals = [];
+
     public Ulid UserId { get; private set; }
 
     public User User { get; private set; }
@@ -20,6 +23,8 @@ public sealed class Account : Entity
     public DateTimeOffset CreatedAt { get; private set; }
 
     public DateTimeOffset ModifiedAt { get; private set; }
+
+    public IReadOnlyCollection<SavingsGoal> SavingsGoals => _savingsGoals;
 
     public static Account Create(
         Ulid userId,
@@ -43,8 +48,8 @@ public sealed class Account : Entity
     public Result Transfer(
         Account targetAccount,
         Money amount,
-        decimal conversionRate,
-        TimeProvider timeProvider)
+        decimal currencyRate,
+        DateTimeOffset modifiedAt)
     {
         if (Id == targetAccount.Id)
         {
@@ -70,29 +75,28 @@ public sealed class Account : Entity
 
         if (Balance.Currency.Code == targetAccount.Balance.Currency.Code)
         {
-            conversionRate = 1;
+            currencyRate = 1;
         }
 
-        targetAccount.Balance += amount.Amount * conversionRate;
+        targetAccount.Balance += amount.Amount * currencyRate;
 
-        ModifiedAt = timeProvider.GetUtcNow();
-        targetAccount.ModifiedAt = timeProvider.GetUtcNow();
+        ModifiedAt = modifiedAt;
+        targetAccount.ModifiedAt = modifiedAt;
 
         RaiseDomainEvent(new AccountTransferCompletedDomainEvent(
             UserId,
             Id,
             targetAccount.Id,
             amount,
-            conversionRate,
-            timeProvider.GetUtcNow()));
+            currencyRate,
+            modifiedAt));
 
         return Result.Success();
     }
 
-    public void Update(string name, Money balance, AccountStatus status)
+    public void Update(string name, AccountStatus status)
     {
         Name = name;
-        Balance = balance;
         Status = status;
     }
 }
