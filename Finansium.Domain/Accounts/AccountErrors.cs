@@ -1,6 +1,4 @@
-﻿
-
-namespace Finansium.Domain.Accounts;
+﻿namespace Finansium.Domain.Accounts;
 
 public static class AccountErrors
 {
@@ -14,7 +12,7 @@ public static class AccountErrors
         $"{nameof(AccountErrors)}.{nameof(DifferentCurrency)}", "Разные валюты");
 
     public static readonly Error TransferAccountConflict = Error.Problem(
-        $"{nameof(AccountErrors)}.{nameof(TransferAccountConflict)}", "Невозможно перевести на тот же аккаунт");
+        $"{nameof(AccountErrors)}.{nameof(TransferAccountConflict)}", "Невозможно перевести на тот же счёт");
 
     public static Error IsExists(string name) => Error.Problem(
         $"{nameof(AccountErrors)}.{nameof(IsExists)}", $"Счёт с именем '{name}' уже существует");
