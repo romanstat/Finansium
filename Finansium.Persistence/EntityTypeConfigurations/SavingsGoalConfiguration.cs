@@ -1,5 +1,4 @@
 ﻿using Finansium.Domain.SavingsGoals;
-using Finansium.Domain.Shared;
 
 namespace Finansium.Persistence.EntityTypeConfigurations;
 

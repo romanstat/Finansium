@@ -2,6 +2,7 @@ using Finansium.Application.Abstractions.Authentication;
 using Finansium.Infrastructure.Authentication.OptionSetup;
 using Finansium.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Finansium.Infrastructure.Outbox;
 
 namespace Finansium.Infrastructure;
 
@@ -29,7 +30,7 @@ public static class DependencyInjection
         services.AddTransient<IAuthenticationService, AuthenticationService>();
 
         services.AddHttpContextAccessor();
-
+        services.AddBackgroundJobs();
         services.AddAppHealthChecks();
 
         return services;
@@ -44,5 +45,19 @@ public static class DependencyInjection
         services.AddHealthChecks().AddNpgSql(databaseOptions.ConnectionString);
 
         return services;
+    }
+
+    private static void AddBackgroundJobs(this IServiceCollection services)
+    {
+        services.AddOptions<OutboxOptions>()
+            .BindConfiguration("Outbox")
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddQuartz();
+
+        services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+
+        services.ConfigureOptions<ProcessOutboxMessagesJobSetup>();
     }
 }

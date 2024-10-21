@@ -4,4 +4,5 @@ public sealed record AccountResponse(
     Ulid Id,
     string Name,
     decimal Amount,
-    string Currency);
+    string Currency,
+    string Status);

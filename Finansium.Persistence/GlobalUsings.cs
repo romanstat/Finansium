@@ -1,4 +1,5 @@
 // Domain
+global using Finansium.Domain.Shared;
 global using Finansium.Domain.Abstractions;
 
 // Application

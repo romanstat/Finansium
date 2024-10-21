@@ -22,7 +22,8 @@ internal sealed class UpdateAccountCommandHandler(
 
         account.Update(
             request.Name,
-            balance);
+            balance,
+            AccountStatus.FromName(request.Status));
 
         return Result.Success();
     }

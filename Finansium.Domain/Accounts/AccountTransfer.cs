@@ -2,15 +2,42 @@
 
 public sealed class AccountTransfer : Entity
 {
-    public Ulid SourceAccountId { get; init; }
+    public Ulid UserId { get; private set; }
 
-    public Account SourceAccount { get; init; }
+    public User? User { get; private set; }
 
-    public Ulid TargetAccountId { get; init; }
+    public Ulid SourceAccountId { get; private set; }
 
-    public Account TargetAccount { get; init; }
+    public Account? SourceAccount { get; private set; }
 
-    public Money Amount { get; init; }
+    public Ulid TargetAccountId { get; private set; }
 
-    public decimal ConversionRate { get; init; }
+    public Account? TargetAccount { get; private set; }
+
+    public Money Amount { get; private set; }
+
+    public decimal CurrencyRate { get; private set; }
+
+    public DateTimeOffset TransferDate { get; private set; }
+
+    public static AccountTransfer Create(
+        Ulid userId,
+        Ulid sourceAccountId,
+        Ulid targetAccountId,
+        Money amount,
+        decimal currencyRate,
+        DateTimeOffset transferDate)
+    {
+        var accountTransfer = new AccountTransfer
+        {
+            UserId = userId,
+            SourceAccountId = sourceAccountId,
+            TargetAccountId = targetAccountId,
+            Amount = amount,
+            CurrencyRate = currencyRate,
+            TransferDate = transferDate
+        };
+
+        return accountTransfer;
+    }
 }

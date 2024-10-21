@@ -19,6 +19,10 @@ public sealed class SavingsGoal : Entity
 
     public DateTimeOffset EndDate { get; private set; }
 
+    public DateTimeOffset? CompletedDate { get; private set; }
+
+    public bool IsCompleted { get; private set; }
+
     public static SavingsGoal Create(
         Ulid userId,
         string name,
@@ -34,7 +38,8 @@ public sealed class SavingsGoal : Entity
             Current = current,
             Target = target,
             StartDate = startDate,
-            EndDate = endDate
+            EndDate = endDate,
+            IsCompleted = false
         };
 
         return savingsGoal;

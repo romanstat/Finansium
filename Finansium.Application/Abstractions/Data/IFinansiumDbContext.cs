@@ -7,6 +7,8 @@ public interface IFinansiumDbContext
 {
     DbSet<Account> Accounts { get; }
 
+    DbSet<AccountTransfer> AccountTransfers { get; }
+
     DbSet<Country> Countries { get; }
 
     DbSet<User> Users { get; }

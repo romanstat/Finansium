@@ -11,7 +11,7 @@ internal sealed class RefreshTokenConfiguration : IEntityTypeConfiguration<Refre
             .IsRequired();
 
         builder.Property(refreshToken => refreshToken.CreatedAt)
-            .HasDefaultValue(TimeProvider.System.GetUtcNow())
+            .HasDefaultValue()
             .IsRequired();
 
         builder.Property(refreshToken => refreshToken.ExpiredAt).IsRequired();

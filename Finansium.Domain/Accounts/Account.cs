@@ -1,4 +1,6 @@
-﻿namespace Finansium.Domain.Accounts;
+﻿using Finansium.Domain.Accounts.Events;
+
+namespace Finansium.Domain.Accounts;
 
 /// <summary>
 /// Счета пользователя
@@ -12,6 +14,8 @@ public sealed class Account : Entity
     public string Name { get; private set; }
 
     public Money Balance { get; private set; }
+
+    public AccountStatus Status { get; set; }
 
     public DateTimeOffset CreatedAt { get; private set; }
 
@@ -28,6 +32,7 @@ public sealed class Account : Entity
             UserId = userId,
             Name = name,
             Balance = balance,
+            Status = AccountStatus.Active,
             CreatedAt = timeProvider.GetUtcNow(),
             ModifiedAt = timeProvider.GetUtcNow(),
         };
@@ -73,12 +78,21 @@ public sealed class Account : Entity
         ModifiedAt = timeProvider.GetUtcNow();
         targetAccount.ModifiedAt = timeProvider.GetUtcNow();
 
+        RaiseDomainEvent(new AccountTransferCompletedDomainEvent(
+            UserId,
+            Id,
+            targetAccount.Id,
+            amount,
+            conversionRate,
+            timeProvider.GetUtcNow()));
+
         return Result.Success();
     }
 
-    public void Update(string name, Money balance)
+    public void Update(string name, Money balance, AccountStatus status)
     {
         Name = name;
         Balance = balance;
+        Status = status;
     }
 }

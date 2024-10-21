@@ -2,7 +2,6 @@
 
 public sealed record Currency(string Code)
 {
-    internal static readonly Currency None = new("");
     public static readonly Currency Usd = new("USD");
     public static readonly Currency Eur = new("EUR");
     public static readonly Currency By = new("BY");
@@ -14,9 +13,7 @@ public sealed record Currency(string Code)
         By,
     ];
 
-    public static Currency FromCode(string code)
-    {
-        return All.FirstOrDefault(c => c.Code == code) ??
-               throw new ApplicationException("The currency code is invalid");
-    }
+    public static Currency FromCode(string code) =>
+        All.FirstOrDefault(c => c.Code == code) ??
+            throw new ApplicationException("The currency code is invalid");
 }
