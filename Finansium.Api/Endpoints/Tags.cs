@@ -9,5 +9,6 @@ internal static class Tags
     internal const string Currencies = nameof(Currencies);
     internal const string News = nameof(News);
     internal const string SavingsGoals = nameof(SavingsGoals);
+    internal const string Subscriptions = nameof(Subscriptions);
     internal const string Users = nameof(Users);
 }

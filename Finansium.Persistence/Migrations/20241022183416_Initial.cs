@@ -32,19 +32,19 @@ namespace Finansium.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "news",
+                name: "news_items",
                 schema: "core",
                 columns: table => new
                 {
                     id = table.Column<string>(type: "text", nullable: false),
                     title = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
-                    is_out_dated = table.Column<bool>(type: "boolean", nullable: false),
+                    is_outdated = table.Column<bool>(type: "boolean", nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_news", x => x.id);
+                    table.PrimaryKey("pk_news_items", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,6 +84,7 @@ namespace Finansium.Persistence.Migrations
                 {
                     id = table.Column<string>(type: "text", nullable: false),
                     country_id = table.Column<string>(type: "text", nullable: false),
+                    subscription_id = table.Column<string>(type: "text", nullable: false),
                     name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     surname = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     username = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
@@ -237,6 +238,29 @@ namespace Finansium.Persistence.Migrations
                     table.ForeignKey(
                         name: "fk_role_user_users_users_id",
                         column: x => x.users_id,
+                        principalSchema: "core",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "subscriptions",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false),
+                    type = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    expired_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_subscriptions", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_subscriptions_users_user_id",
+                        column: x => x.user_id,
                         principalSchema: "core",
                         principalTable: "users",
                         principalColumn: "id",
@@ -529,6 +553,12 @@ namespace Finansium.Persistence.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_subscriptions_user_id",
+                schema: "core",
+                table: "subscriptions",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_users_country_id",
                 schema: "core",
                 table: "users",
@@ -566,7 +596,7 @@ namespace Finansium.Persistence.Migrations
                 schema: "core");
 
             migrationBuilder.DropTable(
-                name: "news",
+                name: "news_items",
                 schema: "core");
 
             migrationBuilder.DropTable(
@@ -587,6 +617,10 @@ namespace Finansium.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "savings_goals",
+                schema: "core");
+
+            migrationBuilder.DropTable(
+                name: "subscriptions",
                 schema: "core");
 
             migrationBuilder.DropTable(

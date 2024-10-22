@@ -3,12 +3,15 @@ using Finansium.Domain.Counties;
 using Finansium.Domain.Expenses;
 using Finansium.Domain.Incomes;
 using Finansium.Domain.SavingsGoals;
+using Finansium.Domain.Subscriptions;
+using static Finansium.Domain.Subscriptions.SubscriptionType;
 
 namespace Finansium.Domain.Users;
 
 public sealed class User : Entity
 {
     private readonly List<Role> _roles = [];
+    private readonly List<Subscription> _subscription = [];
     private readonly List<Account> _accounts = [];
     private readonly List<AutomatedExpense> _automatedExpenses = [];
     private readonly List<AutomatedIncome> _automatedIncomes = [];
@@ -17,6 +20,8 @@ public sealed class User : Entity
     public Ulid CountryId { get; private set; }
 
     public Country? Country { get; private set; }
+
+    public Ulid SubscriptionId { get; private set; }
 
     public string Name { get; private set; }
 
@@ -29,6 +34,8 @@ public sealed class User : Entity
     public string Password { get; private set; }
 
     public IReadOnlyCollection<Role> Roles => _roles;
+
+    public IReadOnlyCollection<Subscription> Subscriptions => _subscription;
 
     public IReadOnlyCollection<Account> Accounts => _accounts;
 
@@ -44,7 +51,8 @@ public sealed class User : Entity
         string surname,
         string username,
         Email email,
-        string password)
+        string password,
+        DateTimeOffset createdAt)
     {
         var user = new User
         {
@@ -53,10 +61,22 @@ public sealed class User : Entity
             Surname = surname,
             Username = username,
             Email = email,
-            Password = password
+            Password = password,
         };
 
+        user.AddDefaultSubscription(createdAt);
+
         return user;
+    }
+
+    private void AddDefaultSubscription(DateTimeOffset startDate)
+    {
+        _subscription.Add(Subscription.Create(Id, new FreeSubscription(), startDate));
+    }
+
+    public void AddTrialSubscription(DateTimeOffset startDate)
+    {
+        _subscription.Add(Subscription.Create(Id, new TrialSubscription(), startDate));
     }
 
     public void UpdatePassword(string newPassword)

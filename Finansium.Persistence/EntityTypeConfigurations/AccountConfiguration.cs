@@ -12,7 +12,7 @@ internal sealed class AccountConfiguration : IEntityTypeConfiguration<Account>
                 .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
         });
 
-        builder.Property(monaccounty => monaccounty.Status)
+        builder.Property(account => account.Status)
             .HasConversion(status => status.Name, name => AccountStatus.FromName(name));
     }
 }

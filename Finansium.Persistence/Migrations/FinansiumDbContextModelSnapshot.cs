@@ -336,7 +336,7 @@ namespace Finansium.Persistence.Migrations
                     b.ToTable("incomes", "core");
                 });
 
-            modelBuilder.Entity("Finansium.Domain.News.News", b =>
+            modelBuilder.Entity("Finansium.Domain.News.NewsItem", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -352,9 +352,9 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<bool>("IsOutDated")
+                    b.Property<bool>("IsOutdated")
                         .HasColumnType("boolean")
-                        .HasColumnName("is_out_dated");
+                        .HasColumnName("is_outdated");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -362,9 +362,9 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnName("title");
 
                     b.HasKey("Id")
-                        .HasName("pk_news");
+                        .HasName("pk_news_items");
 
-                    b.ToTable("news", "core");
+                    b.ToTable("news_items", "core");
                 });
 
             modelBuilder.Entity("Finansium.Domain.OutboxMessages.OutboxMessage", b =>
@@ -455,6 +455,40 @@ namespace Finansium.Persistence.Migrations
                         .HasDatabaseName("ix_savings_goals_user_id");
 
                     b.ToTable("savings_goals", "core");
+                });
+
+            modelBuilder.Entity("Finansium.Domain.Subscriptions.Subscription", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTimeOffset>("ExpiredAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expired_at");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_subscriptions");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_subscriptions_user_id");
+
+                    b.ToTable("subscriptions", "core");
                 });
 
             modelBuilder.Entity("Finansium.Domain.Users.Permission", b =>
@@ -563,6 +597,11 @@ namespace Finansium.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("password");
+
+                    b.Property<string>("SubscriptionId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("subscription_id");
 
                     b.Property<string>("Surname")
                         .IsRequired()
@@ -873,6 +912,18 @@ namespace Finansium.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Finansium.Domain.Subscriptions.Subscription", b =>
+                {
+                    b.HasOne("Finansium.Domain.Users.User", "User")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_subscriptions_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Finansium.Domain.Users.Permission", b =>
                 {
                     b.HasOne("Finansium.Domain.Users.Role", null)
@@ -948,6 +999,8 @@ namespace Finansium.Persistence.Migrations
                     b.Navigation("AutomatedIncomes");
 
                     b.Navigation("SavingTrackers");
+
+                    b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
         }

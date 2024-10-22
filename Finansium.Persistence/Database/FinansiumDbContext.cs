@@ -7,6 +7,7 @@ using Finansium.Domain.Incomes;
 using Finansium.Domain.News;
 using Finansium.Domain.OutboxMessages;
 using Finansium.Domain.SavingsGoals;
+using Finansium.Domain.Subscriptions;
 using Finansium.Domain.Users;
 using Finansium.Persistence.Extensions;
 
@@ -38,6 +39,8 @@ public sealed class FinansiumDbContext(
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
     public DbSet<SavingsGoal> SavingsGoals => Set<SavingsGoal>();
+
+    public DbSet<Subscription> Subscriptions => Set<Subscription>();
 
     public DbSet<User> Users => Set<User>();
 

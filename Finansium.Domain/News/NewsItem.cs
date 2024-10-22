@@ -8,7 +8,7 @@ public sealed class NewsItem : Entity
 
     public string Description { get; private set; }
 
-    public bool IsOutDated { get; private set; }
+    public bool IsOutdated { get; private set; }
 
     public DateTimeOffset CreatedAt { get; private set; }
 
@@ -21,10 +21,15 @@ public sealed class NewsItem : Entity
         {
             Title = title,
             Description = description,
-            IsOutDated = false,
+            IsOutdated = false,
             CreatedAt = createdAt
         };
 
         return news;
+    }
+
+    public void OutDate()
+    {
+        IsOutdated = true;
     }
 }

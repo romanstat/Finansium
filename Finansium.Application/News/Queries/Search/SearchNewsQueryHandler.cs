@@ -8,7 +8,7 @@ internal sealed class SearchNewsQueryHandler(IFinansiumDbContext dbContext)
         CancellationToken cancellationToken)
     {
         var categories = await dbContext.NewsItems
-            .Where(news => !news.IsOutDated)
+            .Where(news => !news.IsOutdated)
             .Select(news => new NewsResponse(
                 news.Id,
                 news.Title,

@@ -3,6 +3,7 @@
 namespace Finansium.Application.Users.Commands.Register;
 
 internal sealed class RegisterUserCommandHandler(
+    TimeProvider timeProvider,
     ICountryRepository countryRepository,
     IUserRepository userRepository) : ICommandHandler<RegisterUserCommand>
 {
@@ -42,7 +43,8 @@ internal sealed class RegisterUserCommandHandler(
             request.Surname,
             request.Username,
             emailResult.Value,
-            request.Password);
+            request.Password,
+            timeProvider.GetUtcNow());
 
         userRepository.Add(user);
 
