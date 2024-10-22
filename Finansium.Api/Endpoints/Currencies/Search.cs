@@ -12,7 +12,7 @@ internal sealed class Search : IEndpoint
 
             return result.Match(Results.Ok, ApiResults.Problem);
         })
-            .AllowAnonymous()
+            .RequireAuthorization()
             .WithTags(Tags.Currencies);
     }
 }

@@ -15,7 +15,7 @@ internal sealed class GetRate : IEndpoint
 
             return result.Match(Results.Ok, ApiResults.Problem);
         })
-            .AllowAnonymous()
+            .RequireAuthorization()
             .WithTags(Tags.Currencies);
     }
 }
