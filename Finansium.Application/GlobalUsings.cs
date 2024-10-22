@@ -10,6 +10,9 @@ global using Finansium.Application.Abstractions.Behaviors;
 global using Finansium.Application.Abstractions.Authentication;
 
 // Shared
+global using Finansium.Shared.Extensions;
+
+// System
 
 // Microsoft
 global using Microsoft.Extensions.Logging;

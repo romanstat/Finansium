@@ -11,6 +11,9 @@ public static class StringExtensions
     public static bool CompareIgnoreCase(this string value, string? compareValue) =>
         string.Equals(value, compareValue, StringComparison.OrdinalIgnoreCase);
 
+    public static bool ContainsIgnoreCase(this string value, string compareValue) =>
+        value.Contains(compareValue, StringComparison.OrdinalIgnoreCase);
+
     /// <summary>
     /// Проверить строку на пустоту
     /// </summary>

@@ -17,6 +17,11 @@ internal sealed class RegisterUserCommandHandler(
             return Result.Failure(emailResult.Error);
         }
 
+        if (!await userRepository.IsUsernameUniqueAsync(request.Username, cancellationToken))
+        {
+            return Result.Failure(UserErrors.UsernameUnique(request.Username));
+        }
+
         if (!await userRepository.IsEmailUniqueAsync(emailResult.Value, cancellationToken))
         {
             return Result.Failure(EmailErrors.IsUnique);

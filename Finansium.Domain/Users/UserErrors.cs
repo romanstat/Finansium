@@ -10,4 +10,7 @@ public static class UserErrors
 
     public static readonly Error InvalidPassword = Error.Problem(
         $"{nameof(UserErrors)}.{nameof(InvalidPassword)}", "Пароли не совпадают");
+
+    public static Error UsernameUnique(string name) => Error.Problem(
+        $"{nameof(UserErrors)}.{nameof(UsernameUnique)}", $"Имя '{name}' пользователя уже занято");
 }
