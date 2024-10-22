@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241021180443_Initial")]
+    [Migration("20241022140916_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -110,37 +110,7 @@ namespace Finansium.Persistence.Migrations
                     b.ToTable("account_transfers", "core");
                 });
 
-            modelBuilder.Entity("Finansium.Domain.Categories.ExpenseCategory", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text")
-                        .HasColumnName("id")
-                        .HasColumnOrder(0);
-
-                    b.Property<decimal?>("MonthlyLimit")
-                        .HasColumnType("numeric")
-                        .HasColumnName("monthly_limit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_expense_categories");
-
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_expense_categories_user_id");
-
-                    b.ToTable("expense_categories", "core");
-                });
-
-            modelBuilder.Entity("Finansium.Domain.Categories.IncomeCategory", b =>
+            modelBuilder.Entity("Finansium.Domain.Categories.Category", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -152,18 +122,23 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("pk_income_categories");
+                        .HasName("pk_categories");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_income_categories_user_id");
+                        .HasDatabaseName("ix_categories_user_id");
 
-                    b.ToTable("income_categories", "core");
+                    b.ToTable("categories", "core");
                 });
 
             modelBuilder.Entity("Finansium.Domain.Counties.Country", b =>
@@ -214,10 +189,10 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("amount");
 
-                    b.Property<string>("ExpenseCategoryId")
+                    b.Property<string>("CategoryId")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("expense_category_id");
+                        .HasColumnName("category_id");
 
                     b.Property<DateTimeOffset?>("NextPaymentDate")
                         .HasColumnType("timestamp with time zone")
@@ -235,8 +210,8 @@ namespace Finansium.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_automated_expenses");
 
-                    b.HasIndex("ExpenseCategoryId")
-                        .HasDatabaseName("ix_automated_expenses_expense_category_id");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_automated_expenses_category_id");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_automated_expenses_user_id");
@@ -260,6 +235,11 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("acount");
 
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("category_id");
+
                     b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date");
@@ -269,19 +249,14 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
-                    b.Property<string>("ExpenseCategoryId")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("expense_category_id");
-
                     b.HasKey("Id")
                         .HasName("pk_expenses");
 
                     b.HasIndex("AccountId")
                         .HasDatabaseName("ix_expenses_account_id");
 
-                    b.HasIndex("ExpenseCategoryId")
-                        .HasDatabaseName("ix_expenses_expense_category_id");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_expenses_category_id");
 
                     b.ToTable("expenses", "core");
                 });
@@ -335,13 +310,14 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("acoount_id");
 
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("category_id");
+
                     b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date");
-
-                    b.Property<string>("IncomeCategoryId")
-                        .HasColumnType("text")
-                        .HasColumnName("income_category_id");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -354,8 +330,8 @@ namespace Finansium.Persistence.Migrations
                     b.HasIndex("AccountId")
                         .HasDatabaseName("ix_incomes_account_id");
 
-                    b.HasIndex("IncomeCategoryId")
-                        .HasDatabaseName("ix_incomes_income_category_id");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_incomes_category_id");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_incomes_user_id");
@@ -731,38 +707,26 @@ namespace Finansium.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Finansium.Domain.Categories.ExpenseCategory", b =>
+            modelBuilder.Entity("Finansium.Domain.Categories.Category", b =>
                 {
                     b.HasOne("Finansium.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_expense_categories_users_user_id");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Finansium.Domain.Categories.IncomeCategory", b =>
-                {
-                    b.HasOne("Finansium.Domain.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_income_categories_users_user_id");
+                        .HasConstraintName("fk_categories_users_user_id");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Finansium.Domain.Expenses.AutomatedExpense", b =>
                 {
-                    b.HasOne("Finansium.Domain.Categories.ExpenseCategory", "ExpenseCategory")
+                    b.HasOne("Finansium.Domain.Categories.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("ExpenseCategoryId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_automated_expenses_expense_categories_expense_category_id");
+                        .HasConstraintName("fk_automated_expenses_categories_category_id");
 
                     b.HasOne("Finansium.Domain.Users.User", "User")
                         .WithMany("AutomatedExpenses")
@@ -771,7 +735,7 @@ namespace Finansium.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_automated_expenses_users_user_id");
 
-                    b.Navigation("ExpenseCategory");
+                    b.Navigation("Category");
 
                     b.Navigation("User");
                 });
@@ -785,16 +749,16 @@ namespace Finansium.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_expenses_accounts_account_id");
 
-                    b.HasOne("Finansium.Domain.Categories.ExpenseCategory", "ExpenseCategory")
+                    b.HasOne("Finansium.Domain.Categories.Category", "Category")
                         .WithMany("Expenses")
-                        .HasForeignKey("ExpenseCategoryId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_expenses_expense_categories_expense_category_id");
+                        .HasConstraintName("fk_expenses_categories_category_id");
 
                     b.Navigation("Account");
 
-                    b.Navigation("ExpenseCategory");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Finansium.Domain.Incomes.AutomatedIncome", b =>
@@ -816,10 +780,12 @@ namespace Finansium.Persistence.Migrations
                         .HasForeignKey("AccountId")
                         .HasConstraintName("fk_incomes_accounts_account_id");
 
-                    b.HasOne("Finansium.Domain.Categories.IncomeCategory", null)
+                    b.HasOne("Finansium.Domain.Categories.Category", "Category")
                         .WithMany("Incomes")
-                        .HasForeignKey("IncomeCategoryId")
-                        .HasConstraintName("fk_incomes_income_categories_income_category_id");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_incomes_categories_category_id");
 
                     b.HasOne("Finansium.Domain.Users.User", "User")
                         .WithMany()
@@ -856,6 +822,8 @@ namespace Finansium.Persistence.Migrations
 
                     b.Navigation("Amount")
                         .IsRequired();
+
+                    b.Navigation("Category");
 
                     b.Navigation("User");
                 });
@@ -962,13 +930,10 @@ namespace Finansium.Persistence.Migrations
                     b.Navigation("SavingsGoals");
                 });
 
-            modelBuilder.Entity("Finansium.Domain.Categories.ExpenseCategory", b =>
+            modelBuilder.Entity("Finansium.Domain.Categories.Category", b =>
                 {
                     b.Navigation("Expenses");
-                });
 
-            modelBuilder.Entity("Finansium.Domain.Categories.IncomeCategory", b =>
-                {
                     b.Navigation("Incomes");
                 });
 

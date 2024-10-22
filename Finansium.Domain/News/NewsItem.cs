@@ -1,8 +1,8 @@
 ﻿namespace Finansium.Domain.News;
 
-public sealed class News : Entity
+public sealed class NewsItem : Entity
 {
-    private News() { }
+    private NewsItem() { }
 
     public string Title { get; private set; }
 
@@ -12,17 +12,17 @@ public sealed class News : Entity
 
     public DateTimeOffset CreatedAt { get; private set; }
 
-    public static News Create(
+    public static NewsItem Create(
         string title,
         string description,
-        TimeProvider timeProvider)
+        DateTimeOffset createdAt)
     {
-        var news = new News
+        var news = new NewsItem
         {
             Title = title,
             Description = description,
             IsOutDated = false,
-            CreatedAt = timeProvider.GetUtcNow()
+            CreatedAt = createdAt
         };
 
         return news;

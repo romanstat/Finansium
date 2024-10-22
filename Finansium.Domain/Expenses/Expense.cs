@@ -12,9 +12,9 @@ public sealed class Expense : Entity
 
     public Account? Account { get; private set; }
 
-    public Ulid ExpenseCategoryId { get; private set; }
+    public Ulid CategoryId { get; private set; }
 
-    public ExpenseCategory? ExpenseCategory { get; private set; }
+    public Category? Category { get; private set; }
 
     public decimal Acount { get; private set; }
 

@@ -1,6 +1,0 @@
-RegisterUserCommand/UpdatePassowrdCommand add PasswordHasher
-
-
-Account/Счета (создать, изменить, удалить, перевести, посмотреть список)
-AccountTransfer/Переводы (создать, посмотреть список)
-Цели накоплений (создать, пополнить, удалить)

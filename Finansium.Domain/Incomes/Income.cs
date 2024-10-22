@@ -1,4 +1,5 @@
 ﻿using Finansium.Domain.Accounts;
+using Finansium.Domain.Categories;
 
 namespace Finansium.Domain.Incomes;
 
@@ -14,6 +15,10 @@ public sealed class Income : Entity
     public Ulid AcoountId { get; private set; }
 
     public Account? Account { get; private set; }
+
+    public Ulid CategoryId { get; private set; }
+
+    public Category? Category { get; private set; }
 
     public Money Amount { get; private set; }
 

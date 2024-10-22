@@ -1,5 +1,7 @@
 ﻿using Finansium.Domain.Accounts;
+using Finansium.Domain.Categories;
 using Finansium.Domain.Counties;
+using Finansium.Domain.News;
 using Finansium.Domain.SavingsGoals;
 
 namespace Finansium.Application.Abstractions.Data;
@@ -10,7 +12,11 @@ public interface IFinansiumDbContext
 
     DbSet<AccountTransfer> AccountTransfers { get; }
 
+    DbSet<Category> Categories { get; }
+
     DbSet<Country> Countries { get; }
+
+    DbSet<NewsItem> NewsItems { get; }
 
     DbSet<SavingsGoal> SavingsGoals { get; }
 

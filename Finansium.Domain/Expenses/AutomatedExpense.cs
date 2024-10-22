@@ -8,9 +8,9 @@ public sealed class AutomatedExpense : Entity
 
     public User? User { get; private set; }
 
-    public Ulid ExpenseCategoryId { get; private set; }
+    public Ulid CategoryId { get; private set; }
 
-    public ExpenseCategory? ExpenseCategory { get; private set; }
+    public Category? Category { get; private set; }
 
     public decimal Amount { get; private set; }
 

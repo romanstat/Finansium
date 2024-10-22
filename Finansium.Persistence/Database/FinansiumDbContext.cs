@@ -21,9 +21,7 @@ public sealed class FinansiumDbContext(
 
     public DbSet<AccountTransfer> AccountTransfers => Set<AccountTransfer>();
 
-    public DbSet<ExpenseCategory> ExpenseCategories => Set<ExpenseCategory>();
-
-    public DbSet<IncomeCategory> IncomeCategories => Set<IncomeCategory>();
+    public DbSet<Category> Categories => Set<Category>();
 
     public DbSet<Country> Countries => Set<Country>();
 
@@ -35,7 +33,7 @@ public sealed class FinansiumDbContext(
 
     public DbSet<Income> Incomes => Set<Income>();
 
-    public DbSet<News> News => Set<News>();
+    public DbSet<NewsItem> NewsItems => Set<NewsItem>();
 
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
