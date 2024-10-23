@@ -1,4 +1,5 @@
 ﻿using Finansium.Domain.Accounts;
+using Finansium.Domain.SavingsGoals.Events;
 
 namespace Finansium.Domain.SavingsGoals;
 
@@ -58,6 +59,8 @@ public sealed class SavingsGoal : Entity
         if (currentAmount >= TargetAmount)
         {
             IsCompleted = true;
+
+            RaiseDomainEvent(new SavingsGoalCompletedDomainEvent(Id, UserId));
         }
     }
 }

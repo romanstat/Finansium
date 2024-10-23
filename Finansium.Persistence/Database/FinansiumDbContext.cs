@@ -36,6 +36,8 @@ public sealed class FinansiumDbContext(
 
     public DbSet<NewsItem> NewsItems => Set<NewsItem>();
 
+    public DbSet<Notification> Notifications => Set<Notification>();
+
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
     public DbSet<SavingsGoal> SavingsGoals => Set<SavingsGoal>();

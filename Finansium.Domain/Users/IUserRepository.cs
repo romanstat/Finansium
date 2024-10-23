@@ -1,8 +1,10 @@
 ﻿
+
 namespace Finansium.Domain.Users;
 
 public interface IUserRepository
 {
+    Task<User?> GetByIdAsync(Ulid id, CancellationToken cancellationToken);
     Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken);
     Task<User?> GetByUsernameNoTrackingAsync(string username, CancellationToken cancellationToken);
     Task<User?> GetByUsernameAndPasswordNoTrackingAsync(string username, string password, CancellationToken cancellationToken);

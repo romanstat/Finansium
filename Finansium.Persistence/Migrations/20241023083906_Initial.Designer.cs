@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241022183416_Initial")]
+    [Migration("20241023083906_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -494,6 +494,45 @@ namespace Finansium.Persistence.Migrations
                     b.ToTable("subscriptions", "core");
                 });
 
+            modelBuilder.Entity("Finansium.Domain.Users.Notification", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_viewed");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_notifications");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_notifications_user_id");
+
+                    b.ToTable("notifications", "core");
+                });
+
             modelBuilder.Entity("Finansium.Domain.Users.Permission", b =>
                 {
                     b.Property<string>("Id")
@@ -877,7 +916,7 @@ namespace Finansium.Persistence.Migrations
                         .HasConstraintName("fk_savings_goals_accounts_account_id");
 
                     b.HasOne("Finansium.Domain.Users.User", "User")
-                        .WithMany("SavingTrackers")
+                        .WithMany("SavingsGoals")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -923,6 +962,18 @@ namespace Finansium.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_subscriptions_users_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Finansium.Domain.Users.Notification", b =>
+                {
+                    b.HasOne("Finansium.Domain.Users.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_notifications_users_user_id");
 
                     b.Navigation("User");
                 });
@@ -1001,7 +1052,9 @@ namespace Finansium.Persistence.Migrations
 
                     b.Navigation("AutomatedIncomes");
 
-                    b.Navigation("SavingTrackers");
+                    b.Navigation("Notifications");
+
+                    b.Navigation("SavingsGoals");
 
                     b.Navigation("Subscriptions");
                 });

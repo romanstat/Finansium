@@ -18,6 +18,8 @@ public interface IFinansiumDbContext
 
     DbSet<NewsItem> NewsItems { get; }
 
+    DbSet<Notification> Notifications {  get; }
+
     DbSet<SavingsGoal> SavingsGoals { get; }
 
     DbSet<User> Users { get; }

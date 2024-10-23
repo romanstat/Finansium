@@ -195,6 +195,30 @@ namespace Finansium.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "notifications",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false),
+                    title = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    is_viewed = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_notifications", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_notifications_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "core",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "refresh_token",
                 schema: "core",
                 columns: table => new
@@ -523,6 +547,12 @@ namespace Finansium.Persistence.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_notifications_user_id",
+                schema: "core",
+                table: "notifications",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_permissions_role_id",
                 schema: "core",
                 table: "permissions",
@@ -597,6 +627,10 @@ namespace Finansium.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "news_items",
+                schema: "core");
+
+            migrationBuilder.DropTable(
+                name: "notifications",
                 schema: "core");
 
             migrationBuilder.DropTable(
