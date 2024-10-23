@@ -20,7 +20,7 @@ internal sealed class GetUserQueryHandler(
                 user.Surname,
                 user.Subscriptions.Single(subscrtion => 
                     subscrtion.UserId == userContext.UserId &&
-                    subscrtion.ExpiredAt >= timeProvider.GetUtcNow()).Type))
+                    subscrtion.ExpiredAt >= timeProvider.GetUtcNow()).Type.Name))
             .SingleOrDefaultAsync(cancellationToken);
 
         if (userResponse is null)

@@ -6,7 +6,7 @@ internal sealed class GetList : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("subscriptions/type/list", async (ISender sender) =>
+        app.MapGet("subscriptions/list", async (ISender sender) =>
         {
             var result = await sender.Send(new GetSubscriptionTypeListQuery());
 

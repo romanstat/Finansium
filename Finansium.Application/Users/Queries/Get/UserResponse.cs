@@ -1,6 +1,4 @@
-﻿using Finansium.Domain.Subscriptions;
-
-namespace Finansium.Application.Users.Queries.Get;
+﻿namespace Finansium.Application.Users.Queries.Get;
 
 public record UserResponse(
     Ulid Id,
@@ -8,4 +6,4 @@ public record UserResponse(
     string Email,
     string Name,
     string Surname,
-    SubscriptionType Subscription);
+    string Subscription);
