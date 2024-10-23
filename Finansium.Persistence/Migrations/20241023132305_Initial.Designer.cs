@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241023122104_Initial")]
+    [Migration("20241023132305_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
