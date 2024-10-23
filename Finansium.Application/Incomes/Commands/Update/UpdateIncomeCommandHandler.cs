@@ -5,7 +5,6 @@ using Finansium.Domain.Incomes;
 namespace Finansium.Application.Incomes.Commands.Update;
 
 internal sealed class UpdateIncomeCommandHandler(
-    TimeProvider timeProvider,
     ICategoryRepository categoryRepository,
     IAccountRepository accountRepository,
     IIncomeRepository incomeRepository)
@@ -42,7 +41,7 @@ internal sealed class UpdateIncomeCommandHandler(
             request.CategoryId,
             request.AccountId,
             amount,
-            timeProvider.GetUtcNow());
+            request.Date);
 
         return income.Id;
     }

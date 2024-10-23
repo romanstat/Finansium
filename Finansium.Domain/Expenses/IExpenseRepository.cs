@@ -3,6 +3,6 @@ namespace Finansium.Domain.Expenses;
 
 public interface IExpenseRepository
 {
-    void Add(Expense expense);
+    Task<Expense?> GetByIdAsync(Ulid id, CancellationToken cancellationToken);
     Task DeleteAsync(Ulid id, CancellationToken cancellationToken);
 }

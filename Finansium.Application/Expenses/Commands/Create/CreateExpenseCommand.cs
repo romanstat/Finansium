@@ -1,7 +1,8 @@
-﻿namespace Finansium.Application.Incomes.Commands.Create;
+﻿namespace Finansium.Application.Expenses.Commands.Create;
 
 public sealed record CreateExpenseCommand(
     Ulid CategoryId,
     Ulid AccountId,
     decimal Amount,
-    string Description) : ICommand<Ulid>;
+    string Description,
+    DateTimeOffset Date) : ICommand<Ulid>;

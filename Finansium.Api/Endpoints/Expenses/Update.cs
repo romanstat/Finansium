@@ -1,4 +1,4 @@
-﻿using Finansium.Application.Incomes.Commands.Update;
+﻿using Finansium.Application.Expenses.Commands.Update;
 
 namespace Finansium.Api.Endpoints.Expenses;
 

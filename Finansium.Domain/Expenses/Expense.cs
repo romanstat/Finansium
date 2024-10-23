@@ -8,10 +8,6 @@ namespace Finansium.Domain.Expenses;
 /// </summary>
 public sealed class Expense : Entity
 {
-    public Ulid UserId { get; private set; }
-
-    public User? User { get; private set; }
-
     public Ulid AccountId { get; private set; }
 
     public Account? Account { get; private set; }
@@ -27,23 +23,31 @@ public sealed class Expense : Entity
     public DateTimeOffset Date { get; private set; }
 
     public static Expense Create(
-        Ulid userId, 
-        Ulid categoryId, 
-        Ulid accountId, 
-        Money amount, 
-        string description, 
+        Ulid categoryId,
+        Money amount,
+        string description,
         DateTimeOffset date)
     {
         var income = new Expense
         {
-            UserId = userId,
             CategoryId = categoryId,
-            AccountId = accountId,
             Amount = amount,
             Description = description,
             Date = date
         };
 
         return income;
+    }
+
+    public void Update(
+        Ulid categoryId, 
+        Ulid accountId, 
+        Money amount, 
+        DateTimeOffset date)
+    {
+        CategoryId = categoryId;
+        AccountId = accountId;
+        Amount = amount;
+        Date = date;
     }
 }

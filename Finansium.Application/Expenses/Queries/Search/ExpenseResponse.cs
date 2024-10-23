@@ -1,4 +1,4 @@
-﻿namespace Finansium.Application.Incomes.Queries.Search;
+﻿namespace Finansium.Application.Expenses.Queries.Search;
 
 public sealed record ExpenseResponse(
     Ulid Id,

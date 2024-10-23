@@ -3,4 +3,5 @@
 public sealed record CreateIncomeCommand(
     Ulid CategoryId,
     Ulid AccountId,
-    decimal Amount) : ICommand<Ulid>;
+    decimal Amount,
+    DateTimeOffset Date) : ICommand<Ulid>;

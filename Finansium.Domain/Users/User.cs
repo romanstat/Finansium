@@ -1,7 +1,5 @@
 ﻿using Finansium.Domain.Accounts;
 using Finansium.Domain.Counties;
-using Finansium.Domain.Expenses;
-using Finansium.Domain.Incomes;
 using Finansium.Domain.SavingsGoals;
 using Finansium.Domain.Subscriptions;
 using static Finansium.Domain.Subscriptions.SubscriptionType;

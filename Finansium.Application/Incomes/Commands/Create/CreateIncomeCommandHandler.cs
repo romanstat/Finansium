@@ -5,15 +5,12 @@ using Finansium.Domain.Incomes;
 namespace Finansium.Application.Incomes.Commands.Create;
 
 internal sealed class CreateIncomeCommandHandler(
-    TimeProvider timeProvider,
-    IUserContext userContext,
     ICategoryRepository categoryRepository,
-    IAccountRepository accountRepository,
-    IIncomeRepository incomeRepository)
+    IAccountRepository accountRepository)
     : ICommandHandler<CreateIncomeCommand, Ulid>
 {
     public async Task<Result<Ulid>> Handle(
-        CreateIncomeCommand request, 
+        CreateIncomeCommand request,
         CancellationToken cancellationToken)
     {
         var category = await categoryRepository.GetByIdAsync(request.CategoryId, cancellationToken);
@@ -33,13 +30,11 @@ internal sealed class CreateIncomeCommandHandler(
         var amount = new Money(request.Amount, account.Balance.Currency);
 
         var income = Income.Create(
-            userContext.UserId,
-            request.CategoryId,
             request.AccountId,
             amount,
-            timeProvider.GetUtcNow());
+            request.Date);
 
-        incomeRepository.Add(income);
+        account.AddIncomes(income);
 
         return income.Id;
     }

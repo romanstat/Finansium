@@ -1,6 +1,6 @@
-﻿namespace Finansium.Application.Incomes.Commands.Update;
+﻿namespace Finansium.Application.Expenses.Commands.Update;
 
-public sealed record UpdateIncomeCommand(
+public sealed record UpdateExpenseCommand(
     Ulid Id,
     Ulid CategoryId,
     Ulid AccountId,

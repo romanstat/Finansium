@@ -1,4 +1,4 @@
-﻿using Finansium.Application.Incomes.Commands.Delete;
+﻿using Finansium.Application.Expenses.Commands.Delete;
 
 namespace Finansium.Api.Endpoints.Expenses;
 

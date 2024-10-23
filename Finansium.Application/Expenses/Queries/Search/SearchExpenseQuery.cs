@@ -1,3 +1,3 @@
-﻿namespace Finansium.Application.Incomes.Queries.Search;
+﻿namespace Finansium.Application.Expenses.Queries.Search;
 
 public sealed record SearchExpenseQuery : IQuery<IReadOnlyList<ExpenseResponse>>;

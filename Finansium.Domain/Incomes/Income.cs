@@ -8,10 +8,6 @@ namespace Finansium.Domain.Incomes;
 /// </summary>
 public sealed class Income : Entity
 {
-    public Ulid UserId { get; private set; }
-
-    public User? User { get; private set; }
-
     public Ulid CategoryId { get; private set; }
 
     public Category? Category { get; private set; }
@@ -25,19 +21,15 @@ public sealed class Income : Entity
     public DateTimeOffset Date { get; private set; }
 
     public static Income Create(
-        Ulid userId,
         Ulid categoryId,
-        Ulid accountId,
         Money amount,
-        DateTimeOffset dateTimeOffset)
+        DateTimeOffset date)
     {
         var income = new Income
         {
-            UserId = userId,
             CategoryId = categoryId,
-            AccountId = accountId,
             Amount = amount,
-            Date = dateTimeOffset
+            Date = date
         };
 
         return income;

@@ -1,4 +1,4 @@
-﻿namespace Finansium.Application.Incomes.Queries.Search;
+﻿namespace Finansium.Application.Expenses.Queries.Search;
 
 internal sealed class SearchExpenseQueryHandler(
     IUserContext userContext,
@@ -6,11 +6,11 @@ internal sealed class SearchExpenseQueryHandler(
     : IQueryHandler<SearchExpenseQuery, IReadOnlyList<ExpenseResponse>>
 {
     public async Task<Result<IReadOnlyList<ExpenseResponse>>> Handle(
-        SearchExpenseQuery request, 
+        SearchExpenseQuery request,
         CancellationToken cancellationToken)
     {
         var expenses = await dbContext.Expenses
-            .Where(expense => expense.UserId == userContext.UserId)
+            .Where(expense => expense.Account!.UserId == userContext.UserId)
             .Select(expense => new ExpenseResponse(
                 expense.Id,
                 expense.Category!.Name,

@@ -9,8 +9,8 @@ internal sealed class SearchIncomeQueryHandler(
         SearchIncomeQuery request, 
         CancellationToken cancellationToken)
     {
-        var incomes = await dbContext.Incomes
-            .Where(income => income.UserId == userContext.UserId)
+        var incomes = await dbContext.Expenses
+            .Where(income => income.Account!.UserId == userContext.UserId)
             .Select(income => new IncomeResponse(
                 income.Id,
                 income.Category!.Name,

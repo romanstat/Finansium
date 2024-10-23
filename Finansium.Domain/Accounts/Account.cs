@@ -1,4 +1,6 @@
 ﻿using Finansium.Domain.Accounts.Events;
+using Finansium.Domain.Expenses;
+using Finansium.Domain.Incomes;
 using Finansium.Domain.SavingsGoals;
 
 namespace Finansium.Domain.Accounts;
@@ -9,6 +11,8 @@ namespace Finansium.Domain.Accounts;
 public sealed class Account : Entity
 {
     private readonly List<SavingsGoal> _savingsGoals = [];
+    private readonly List<Expense> _expenses = [];
+    private readonly List<Income> _incomes = [];
 
     public Ulid UserId { get; private set; }
 
@@ -25,6 +29,10 @@ public sealed class Account : Entity
     public DateTimeOffset ModifiedAt { get; private set; }
 
     public IReadOnlyCollection<SavingsGoal> SavingsGoals => _savingsGoals;
+
+    public IReadOnlyCollection<Expense> Expenses => _expenses;
+
+    public IReadOnlyCollection<Income> Incomes => _incomes;
 
     public static Account Create(
         Ulid userId,
@@ -98,5 +106,15 @@ public sealed class Account : Entity
     {
         Name = name;
         Status = status;
+    }
+
+    public void AddExpenses(params Expense[] expenses)
+    {
+        _expenses.AddRange(expenses);
+    }
+
+    public void AddIncomes(params Income[] incomes)
+    {
+        _incomes.AddRange(incomes);
     }
 }

@@ -2,18 +2,15 @@
 using Finansium.Domain.Categories;
 using Finansium.Domain.Expenses;
 
-namespace Finansium.Application.Incomes.Commands.Create;
+namespace Finansium.Application.Expenses.Commands.Create;
 
 internal sealed class CreateExpenseCommandHandler(
-    TimeProvider timeProvider,
-    IUserContext userContext,
     ICategoryRepository categoryRepository,
-    IAccountRepository accountRepository,
-    IExpenseRepository expenseRepository)
+    IAccountRepository accountRepository)
     : ICommandHandler<CreateExpenseCommand, Ulid>
 {
     public async Task<Result<Ulid>> Handle(
-        CreateExpenseCommand request, 
+        CreateExpenseCommand request,
         CancellationToken cancellationToken)
     {
         var category = await categoryRepository.GetByIdAsync(request.CategoryId, cancellationToken);
@@ -33,14 +30,12 @@ internal sealed class CreateExpenseCommandHandler(
         var amount = new Money(request.Amount, account.Balance.Currency);
 
         var expense = Expense.Create(
-            userContext.UserId,
             request.CategoryId,
-            request.AccountId,
             amount,
             request.Description,
-            timeProvider.GetUtcNow());
+            request.Date);
 
-        expenseRepository.Add(expense);
+        account.AddExpenses(expense);
 
         return expense.Id;
     }

@@ -1,18 +1,17 @@
 ﻿using Finansium.Domain.Accounts;
 using Finansium.Domain.Categories;
-using Finansium.Domain.Incomes;
+using Finansium.Domain.Expenses;
 
-namespace Finansium.Application.Incomes.Commands.Update;
+namespace Finansium.Application.Expenses.Commands.Update;
 
 internal sealed class UpdateExpenseCommandHandler(
-    TimeProvider timeProvider,
     ICategoryRepository categoryRepository,
     IAccountRepository accountRepository,
-    IIncomeRepository incomeRepository)
-    : ICommandHandler<UpdateIncomeCommand, Ulid>
+    IExpenseRepository expenseRepository)
+    : ICommandHandler<UpdateExpenseCommand, Ulid>
 {
     public async Task<Result<Ulid>> Handle(
-        UpdateIncomeCommand request, 
+        UpdateExpenseCommand request,
         CancellationToken cancellationToken)
     {
         var category = await categoryRepository.GetByIdAsync(request.CategoryId, cancellationToken);
@@ -29,21 +28,21 @@ internal sealed class UpdateExpenseCommandHandler(
             return Result.Failure<Ulid>(AccountErrors.NotFound(request.AccountId));
         }
 
-        var income = await incomeRepository.GetByIdAsync(request.Id, cancellationToken);
+        var expense = await expenseRepository.GetByIdAsync(request.Id, cancellationToken);
 
-        if (income is null)
+        if (expense is null)
         {
-            return Result.Failure<Ulid>(IncomeErrors.NotFound(request.Id));
+            return Result.Failure<Ulid>(ExpenseErrors.NotFound(request.Id));
         }
 
         var amount = new Money(request.Amount, account.Balance.Currency);
 
-        income.Update(
+        expense.Update(
             request.CategoryId,
             request.AccountId,
             amount,
-            timeProvider.GetUtcNow());
+            request.Date);
 
-        return income.Id;
+        return expense.Id;
     }
 }

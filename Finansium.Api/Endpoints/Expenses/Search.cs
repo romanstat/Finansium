@@ -1,4 +1,4 @@
-﻿using Finansium.Application.Incomes.Queries.Search;
+﻿using Finansium.Application.Expenses.Queries.Search;
 
 namespace Finansium.Api.Endpoints.Expenses;
 
