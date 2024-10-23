@@ -1,6 +1,8 @@
 ﻿using Finansium.Domain.Accounts;
 using Finansium.Domain.Categories;
 using Finansium.Domain.Counties;
+using Finansium.Domain.Expenses;
+using Finansium.Domain.Incomes;
 using Finansium.Domain.News;
 using Finansium.Domain.SavingsGoals;
 
@@ -15,6 +17,10 @@ public interface IFinansiumDbContext
     DbSet<Category> Categories { get; }
 
     DbSet<Country> Countries { get; }
+
+    DbSet<Expense> Expenses { get; }
+
+    DbSet<Income> Incomes { get; }
 
     DbSet<NewsItem> NewsItems { get; }
 

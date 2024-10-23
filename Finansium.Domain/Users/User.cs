@@ -14,8 +14,6 @@ public sealed class User : Entity
     private readonly List<Subscription> _subscription = [];
     private readonly List<Notification> _notifications = [];
     private readonly List<Account> _accounts = [];
-    private readonly List<AutomatedExpense> _automatedExpenses = [];
-    private readonly List<AutomatedIncome> _automatedIncomes = [];
     private readonly List<SavingsGoal> _savingGoals = [];
 
     public Ulid CountryId { get; private set; }
@@ -41,10 +39,6 @@ public sealed class User : Entity
     public IReadOnlyCollection<Notification> Notifications => _notifications;
 
     public IReadOnlyCollection<Account> Accounts => _accounts;
-
-    public IReadOnlyCollection<AutomatedExpense> AutomatedExpenses => _automatedExpenses;
-
-    public IReadOnlyCollection<AutomatedIncome> AutomatedIncomes => _automatedIncomes;
 
     public IReadOnlyCollection<SavingsGoal> SavingsGoals => _savingGoals;
 

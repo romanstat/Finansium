@@ -26,11 +26,7 @@ public sealed class FinansiumDbContext(
 
     public DbSet<Country> Countries => Set<Country>();
 
-    public DbSet<AutomatedExpense> AutomatedExpenses => Set<AutomatedExpense>();
-
     public DbSet<Expense> Expenses => Set<Expense>();
-
-    public DbSet<AutomatedIncome> AutomatedIncomes => Set<AutomatedIncome>();
 
     public DbSet<Income> Incomes => Set<Income>();
 
