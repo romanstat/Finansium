@@ -1,6 +1,4 @@
-﻿using Finansium.Domain.Categories;
-
-namespace Finansium.Application.Categories.Queries.Search;
+﻿namespace Finansium.Application.Categories.Queries.Search;
 
 internal sealed class SearchCategoryQueryHandler(
     IUserContext userContext,
@@ -11,12 +9,12 @@ internal sealed class SearchCategoryQueryHandler(
         SearchCategoryQuery request, 
         CancellationToken cancellationToken)
     {
-        var categoryType = CategoryType.FromName(request.Type);
+        var categoryType = TransactionType.FromName(request.Type);
 
         var categories = await dbContext.Categories
             .Where(account => 
                 account.UserId == userContext.UserId &&
-                account.Type == categoryType)
+                account.TransactionType == categoryType)
             .Select(account => new CategoryResponse(
                 account.Id,
                 account.Name))

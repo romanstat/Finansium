@@ -13,7 +13,7 @@ internal sealed class CreateIncomeCategoryCommandHandler(
     {
         if (!await categoryRepository.IsNameUnique(
             request.Name,
-            CategoryType.Income,
+            TransactionType.Income,
             cancellationToken))
         {
             return Result.Failure<Ulid>(CategoryErrors.UniqueName(request.Name));
@@ -22,7 +22,7 @@ internal sealed class CreateIncomeCategoryCommandHandler(
         var category = Category.Create(
             userContext.UserId,
             request.Name,
-            CategoryType.Income);
+            TransactionType.Income);
 
         categoryRepository.Add(category);
 

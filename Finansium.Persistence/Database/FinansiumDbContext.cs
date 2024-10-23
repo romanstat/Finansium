@@ -1,11 +1,13 @@
 ﻿using System.Text.Json;
 using Finansium.Domain.Accounts;
+using Finansium.Domain.Budgets;
 using Finansium.Domain.Categories;
 using Finansium.Domain.Counties;
 using Finansium.Domain.Expenses;
 using Finansium.Domain.Incomes;
 using Finansium.Domain.News;
 using Finansium.Domain.OutboxMessages;
+using Finansium.Domain.RecurringTransactions;
 using Finansium.Domain.SavingsGoals;
 using Finansium.Domain.Subscriptions;
 using Finansium.Domain.Users;
@@ -22,6 +24,8 @@ public sealed class FinansiumDbContext(
 
     public DbSet<AccountTransfer> AccountTransfers => Set<AccountTransfer>();
 
+    public DbSet<Budget> Budgets => Set<Budget>();
+
     public DbSet<Category> Categories => Set<Category>();
 
     public DbSet<Country> Countries => Set<Country>();
@@ -32,9 +36,9 @@ public sealed class FinansiumDbContext(
 
     public DbSet<NewsItem> NewsItems => Set<NewsItem>();
 
-    public DbSet<Notification> Notifications => Set<Notification>();
-
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
+
+    public DbSet<RecurringTransaction> RecurringTransactions => Set<RecurringTransaction>();
 
     public DbSet<SavingsGoal> SavingsGoals => Set<SavingsGoal>();
 
@@ -45,6 +49,8 @@ public sealed class FinansiumDbContext(
     public DbSet<Role> Roles => Set<Role>();
 
     public DbSet<Permission> Permissions => Set<Permission>();
+
+    public DbSet<Notification> Notifications => Set<Notification>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

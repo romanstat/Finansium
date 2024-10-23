@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241023132305_Initial")]
+    [Migration("20241023182313_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -110,6 +110,36 @@ namespace Finansium.Persistence.Migrations
                     b.ToTable("account_transfers", "core");
                 });
 
+            modelBuilder.Entity("Finansium.Domain.Budgets.Budget", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("category_id");
+
+                    b.Property<decimal>("LimitAmount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("limit_amount");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_budgets");
+
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_budgets_category_id");
+
+                    b.ToTable("budgets", "core");
+                });
+
             modelBuilder.Entity("Finansium.Domain.Categories.Category", b =>
                 {
                     b.Property<string>("Id")
@@ -122,10 +152,10 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("TransactionType")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("type");
+                        .HasColumnName("transaction_type");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -313,6 +343,57 @@ namespace Finansium.Persistence.Migrations
                         .HasName("pk_outbox_messages");
 
                     b.ToTable("outbox_messages", "core");
+                });
+
+            modelBuilder.Entity("Finansium.Domain.RecurringTransactions.RecurringTransaction", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("AccountId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("account_id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("end_date");
+
+                    b.Property<TimeSpan>("Interval")
+                        .HasColumnType("interval")
+                        .HasColumnName("interval");
+
+                    b.Property<DateTimeOffset?>("NextPaymentDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("next_payment_date");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("start_date");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_recurring_transactions");
+
+                    b.HasIndex("AccountId")
+                        .HasDatabaseName("ix_recurring_transactions_account_id");
+
+                    b.ToTable("recurring_transactions", "core");
                 });
 
             modelBuilder.Entity("Finansium.Domain.SavingsGoals.SavingsGoal", b =>
@@ -695,6 +776,18 @@ namespace Finansium.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Finansium.Domain.Budgets.Budget", b =>
+                {
+                    b.HasOne("Finansium.Domain.Categories.Category", "Category")
+                        .WithMany("Budgets")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_budgets_categories_category_id");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Finansium.Domain.Categories.Category", b =>
                 {
                     b.HasOne("Finansium.Domain.Users.User", "User")
@@ -801,6 +894,45 @@ namespace Finansium.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Finansium.Domain.RecurringTransactions.RecurringTransaction", b =>
+                {
+                    b.HasOne("Finansium.Domain.Accounts.Account", "Account")
+                        .WithMany("RecurringTransactions")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_recurring_transactions_accounts_account_id");
+
+                    b.OwnsOne("Finansium.Domain.Shared.Money", "Amount", b1 =>
+                        {
+                            b1.Property<string>("RecurringTransactionId")
+                                .HasColumnType("text")
+                                .HasColumnName("id");
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("numeric")
+                                .HasColumnName("amount_amount");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("amount_currency");
+
+                            b1.HasKey("RecurringTransactionId");
+
+                            b1.ToTable("recurring_transactions", "core");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RecurringTransactionId")
+                                .HasConstraintName("fk_recurring_transactions_recurring_transactions_id");
+                        });
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Amount")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Finansium.Domain.SavingsGoals.SavingsGoal", b =>
@@ -930,11 +1062,15 @@ namespace Finansium.Persistence.Migrations
 
                     b.Navigation("Incomes");
 
+                    b.Navigation("RecurringTransactions");
+
                     b.Navigation("SavingsGoals");
                 });
 
             modelBuilder.Entity("Finansium.Domain.Categories.Category", b =>
                 {
+                    b.Navigation("Budgets");
+
                     b.Navigation("Expenses");
 
                     b.Navigation("Incomes");

@@ -13,7 +13,7 @@ internal sealed class CreateExpenseCategoryCommandHandler(
     {
         if (!await categoryRepository.IsNameUnique(
             request.Name,
-            CategoryType.Expense,
+            TransactionType.Expense,
             cancellationToken))
         {
             return Result.Failure<Ulid>(CategoryErrors.UniqueName(request.Name));
@@ -22,7 +22,7 @@ internal sealed class CreateExpenseCategoryCommandHandler(
         var category = Category.Create(
             userContext.UserId,
             request.Name,
-            CategoryType.Expense);
+            TransactionType.Expense);
 
         categoryRepository.Add(category);
 

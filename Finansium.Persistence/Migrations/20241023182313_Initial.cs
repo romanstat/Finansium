@@ -157,7 +157,7 @@ namespace Finansium.Persistence.Migrations
                     id = table.Column<string>(type: "text", nullable: false),
                     user_id = table.Column<string>(type: "text", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
-                    type = table.Column<string>(type: "text", nullable: false)
+                    transaction_type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -309,6 +309,35 @@ namespace Finansium.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "recurring_transactions",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "text", nullable: false),
+                    account_id = table.Column<string>(type: "text", nullable: false),
+                    amount_amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    amount_currency = table.Column<string>(type: "text", nullable: false),
+                    type = table.Column<string>(type: "text", nullable: false),
+                    interval = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    start_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    end_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    next_payment_date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_recurring_transactions", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_recurring_transactions_accounts_account_id",
+                        column: x => x.account_id,
+                        principalSchema: "core",
+                        principalTable: "accounts",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "savings_goals",
                 schema: "core",
                 columns: table => new
@@ -340,6 +369,28 @@ namespace Finansium.Persistence.Migrations
                         column: x => x.user_id,
                         principalSchema: "core",
                         principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "budgets",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "text", nullable: false),
+                    category_id = table.Column<string>(type: "text", nullable: false),
+                    type = table.Column<string>(type: "text", nullable: false),
+                    limit_amount = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_budgets", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_budgets_categories_category_id",
+                        column: x => x.category_id,
+                        principalSchema: "core",
+                        principalTable: "categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -432,6 +483,12 @@ namespace Finansium.Persistence.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_budgets_category_id",
+                schema: "core",
+                table: "budgets",
+                column: "category_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_categories_user_id",
                 schema: "core",
                 table: "categories",
@@ -472,6 +529,12 @@ namespace Finansium.Persistence.Migrations
                 schema: "core",
                 table: "permissions",
                 column: "role_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_recurring_transactions_account_id",
+                schema: "core",
+                table: "recurring_transactions",
+                column: "account_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_refresh_token_user_id",
@@ -525,6 +588,10 @@ namespace Finansium.Persistence.Migrations
                 schema: "core");
 
             migrationBuilder.DropTable(
+                name: "budgets",
+                schema: "core");
+
+            migrationBuilder.DropTable(
                 name: "expenses",
                 schema: "core");
 
@@ -546,6 +613,10 @@ namespace Finansium.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "permissions",
+                schema: "core");
+
+            migrationBuilder.DropTable(
+                name: "recurring_transactions",
                 schema: "core");
 
             migrationBuilder.DropTable(

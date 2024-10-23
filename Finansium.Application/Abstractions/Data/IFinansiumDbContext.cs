@@ -4,6 +4,7 @@ using Finansium.Domain.Counties;
 using Finansium.Domain.Expenses;
 using Finansium.Domain.Incomes;
 using Finansium.Domain.News;
+using Finansium.Domain.RecurringTransactions;
 using Finansium.Domain.SavingsGoals;
 
 namespace Finansium.Application.Abstractions.Data;
@@ -24,9 +25,11 @@ public interface IFinansiumDbContext
 
     DbSet<NewsItem> NewsItems { get; }
 
-    DbSet<Notification> Notifications {  get; }
+    DbSet<RecurringTransaction> RecurringTransactions { get; }
 
     DbSet<SavingsGoal> SavingsGoals { get; }
 
     DbSet<User> Users { get; }
+
+    DbSet<Notification> Notifications {  get; }
 }

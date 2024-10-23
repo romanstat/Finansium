@@ -1,6 +1,7 @@
 ﻿using Finansium.Domain.Accounts.Events;
 using Finansium.Domain.Expenses;
 using Finansium.Domain.Incomes;
+using Finansium.Domain.RecurringTransactions;
 using Finansium.Domain.SavingsGoals;
 
 namespace Finansium.Domain.Accounts;
@@ -13,6 +14,7 @@ public sealed class Account : Entity
     private readonly List<SavingsGoal> _savingsGoals = [];
     private readonly List<Expense> _expenses = [];
     private readonly List<Income> _incomes = [];
+    private readonly List<RecurringTransaction> _recurringTransactions = [];
 
     public Ulid UserId { get; private set; }
 
@@ -22,7 +24,7 @@ public sealed class Account : Entity
 
     public Money Balance { get; private set; }
 
-    public AccountStatus Status { get; set; }
+    public AccountStatus Status { get; private set; }
 
     public DateTimeOffset CreatedAt { get; private set; }
 
@@ -33,6 +35,8 @@ public sealed class Account : Entity
     public IReadOnlyCollection<Expense> Expenses => _expenses;
 
     public IReadOnlyCollection<Income> Incomes => _incomes;
+
+    public IReadOnlyCollection<RecurringTransaction> RecurringTransactions => _recurringTransactions;
 
     public static Account Create(
         Ulid userId,
@@ -116,5 +120,10 @@ public sealed class Account : Entity
     public void AddIncomes(params Income[] incomes)
     {
         _incomes.AddRange(incomes);
+    }
+
+    public void AddRange(params RecurringTransaction[] recurringTransactions)
+    {
+        _recurringTransactions.AddRange(recurringTransactions);
     }
 }
