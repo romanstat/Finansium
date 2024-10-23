@@ -2,7 +2,6 @@
 using Finansium.Domain.Counties;
 using Finansium.Domain.SavingsGoals;
 using Finansium.Domain.Subscriptions;
-using static Finansium.Domain.Subscriptions.SubscriptionType;
 
 namespace Finansium.Domain.Users;
 
