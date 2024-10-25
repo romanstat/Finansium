@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241025181519_Initial")]
+    [Migration("20241025181946_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -138,7 +138,7 @@ namespace Finansium.Persistence.Migrations
 
                     b.Property<string>("CategoryId")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasColumnType("character varying(26)")
                         .HasColumnName("category_id");
 
                     b.Property<decimal>("LimitAmount")
@@ -153,6 +153,9 @@ namespace Finansium.Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_budgets");
+
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_budgets_category_id");
 
                     b.HasIndex("Type")
                         .HasDatabaseName("ix_budgets_type");
@@ -169,7 +172,7 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("BudgetId")
-                        .HasColumnType("character varying(26)")
+                        .HasColumnType("text")
                         .HasColumnName("budget_id");
 
                     b.Property<string>("Name")
@@ -191,10 +194,6 @@ namespace Finansium.Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_categories");
-
-                    b.HasIndex("BudgetId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_categories_budget_id");
 
                     b.HasIndex("TransactionType")
                         .HasDatabaseName("ix_categories_transaction_type");
@@ -830,22 +829,26 @@ namespace Finansium.Persistence.Migrations
                     b.Navigation("TargetAccount");
                 });
 
+            modelBuilder.Entity("Finansium.Domain.Budgets.Budget", b =>
+                {
+                    b.HasOne("Finansium.Domain.Categories.Category", "Category")
+                        .WithMany("Budgets")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_budgets_categories_category_id");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Finansium.Domain.Categories.Category", b =>
                 {
-                    b.HasOne("Finansium.Domain.Budgets.Budget", "Budget")
-                        .WithOne("Category")
-                        .HasForeignKey("Finansium.Domain.Categories.Category", "BudgetId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("fk_categories_budgets_budget_id");
-
                     b.HasOne("Finansium.Domain.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_categories_users_user_id");
-
-                    b.Navigation("Budget");
 
                     b.Navigation("User");
                 });
@@ -1070,9 +1073,9 @@ namespace Finansium.Persistence.Migrations
                     b.Navigation("Transactions");
                 });
 
-            modelBuilder.Entity("Finansium.Domain.Budgets.Budget", b =>
+            modelBuilder.Entity("Finansium.Domain.Categories.Category", b =>
                 {
-                    b.Navigation("Category");
+                    b.Navigation("Budgets");
                 });
 
             modelBuilder.Entity("Finansium.Domain.Users.Role", b =>

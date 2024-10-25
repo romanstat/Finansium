@@ -8,11 +8,6 @@ internal sealed class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         builder.HasIndex(category => category.TransactionType);
 
-        builder.HasOne(category => category.Budget)
-               .WithOne(budget => budget.Category)
-               .HasForeignKey<Category>(category => category.BudgetId)
-               .OnDelete(DeleteBehavior.SetNull);
-
         builder.Property(category => category.Name)
             .HasMaxLength(30)
             .IsRequired();

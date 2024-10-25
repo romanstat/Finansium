@@ -15,21 +15,6 @@ namespace Finansium.Persistence.Migrations
                 name: "core");
 
             migrationBuilder.CreateTable(
-                name: "budgets",
-                schema: "core",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
-                    category_id = table.Column<string>(type: "text", nullable: false),
-                    type = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    limit_amount = table.Column<decimal>(type: "numeric", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_budgets", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "countries",
                 schema: "core",
                 columns: table => new
@@ -172,20 +157,13 @@ namespace Finansium.Persistence.Migrations
                 {
                     id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
                     user_id = table.Column<string>(type: "character varying(26)", nullable: false),
-                    budget_id = table.Column<string>(type: "character varying(26)", nullable: true),
+                    budget_id = table.Column<string>(type: "text", nullable: true),
                     name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     transaction_type = table.Column<string>(type: "character varying(7)", maxLength: 7, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_categories", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_categories_budgets_budget_id",
-                        column: x => x.budget_id,
-                        principalSchema: "core",
-                        principalTable: "budgets",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "fk_categories_users_user_id",
                         column: x => x.user_id,
@@ -389,6 +367,28 @@ namespace Finansium.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "budgets",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
+                    category_id = table.Column<string>(type: "character varying(26)", nullable: false),
+                    type = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    limit_amount = table.Column<decimal>(type: "numeric", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_budgets", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_budgets_categories_category_id",
+                        column: x => x.category_id,
+                        principalSchema: "core",
+                        principalTable: "categories",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "transactions",
                 schema: "core",
                 columns: table => new
@@ -440,17 +440,16 @@ namespace Finansium.Persistence.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_budgets_category_id",
+                schema: "core",
+                table: "budgets",
+                column: "category_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_budgets_type",
                 schema: "core",
                 table: "budgets",
                 column: "type");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_categories_budget_id",
-                schema: "core",
-                table: "categories",
-                column: "budget_id",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "ix_categories_transaction_type",
@@ -581,6 +580,10 @@ namespace Finansium.Persistence.Migrations
                 schema: "core");
 
             migrationBuilder.DropTable(
+                name: "budgets",
+                schema: "core");
+
+            migrationBuilder.DropTable(
                 name: "news_items",
                 schema: "core");
 
@@ -630,10 +633,6 @@ namespace Finansium.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "categories",
-                schema: "core");
-
-            migrationBuilder.DropTable(
-                name: "budgets",
                 schema: "core");
 
             migrationBuilder.DropTable(
