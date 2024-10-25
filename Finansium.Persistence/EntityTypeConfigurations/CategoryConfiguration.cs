@@ -6,6 +6,8 @@ internal sealed class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)
     {
+        builder.HasIndex(category => category.TransactionType);
+
         builder.HasOne(category => category.Budget)
                .WithOne(budget => budget.Category)
                .HasForeignKey<Category>(category => category.BudgetId)

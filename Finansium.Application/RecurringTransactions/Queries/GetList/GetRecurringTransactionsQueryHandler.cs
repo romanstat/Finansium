@@ -11,7 +11,9 @@ internal sealed class GetRecurringTransactionsQueryHandler(
     {
         var recurringTransactions = await dbContext.RecurringTransactions
             .Include(recurringTransaction => recurringTransaction.Account)
-            .Where(recurringTransaction => recurringTransaction.Account!.UserId == userContext.UserId)
+            .Where(recurringTransaction => 
+                recurringTransaction.Account!.UserId == userContext.UserId &&
+                recurringTransaction.Type == TransactionType.FromName(request.Type))
             .Select(recurringTransaction => new RecurringTransactionResponse(
                 recurringTransaction.Id,
                 recurringTransaction.Account!.Name,

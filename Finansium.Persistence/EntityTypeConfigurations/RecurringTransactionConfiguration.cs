@@ -6,6 +6,8 @@ internal sealed class RecurringTransactionConfiguration : IEntityTypeConfigurati
 {
     public void Configure(EntityTypeBuilder<RecurringTransaction> builder)
     {
+        builder.Property(recurringTransaction => recurringTransaction.Type);
+
         builder.Property(recurringTransaction => recurringTransaction.Type)
             .HasMaxLength(EntityConfigurations.TransactionTypeMaxLength)
             .HasConversion(transactionType => transactionType.Name, name => TransactionType.FromName(name))

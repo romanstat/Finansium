@@ -6,6 +6,8 @@ internal sealed class TransactionConfiguration : IEntityTypeConfiguration<Transa
 {
     public void Configure(EntityTypeBuilder<Transaction> builder)
     {
+        builder.Property(transaction => transaction.Type);
+
         builder.Property(transaction => transaction.Type)
             .HasMaxLength(EntityConfigurations.TransactionTypeMaxLength)
             .HasConversion(transactionType => transactionType.Name, name => TransactionType.FromName(name))
