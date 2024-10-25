@@ -1,4 +1,4 @@
-﻿namespace Finansium.Application.RecurringTransactions.Queries.GetList;
+﻿namespace Finansium.Application.RecurringTransactions.Queries.Search;
 
 public sealed record RecurringTransactionResponse(
     Ulid Id,

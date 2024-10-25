@@ -1,17 +1,17 @@
-﻿namespace Finansium.Application.RecurringTransactions.Queries.GetList;
+﻿namespace Finansium.Application.RecurringTransactions.Queries.Search;
 
-internal sealed class GetRecurringTransactionsQueryHandler(
+internal sealed class SearchRecurringTransactionsQueryHandler(
     IUserContext userContext,
     IFinansiumDbContext dbContext)
-    : IQueryHandler<GetRecurringTransactionsQuery, IReadOnlyList<RecurringTransactionResponse>>
+    : IQueryHandler<SearchRecurringTransactionsQuery, IReadOnlyList<RecurringTransactionResponse>>
 {
     public async Task<Result<IReadOnlyList<RecurringTransactionResponse>>> Handle(
-        GetRecurringTransactionsQuery request, 
+        SearchRecurringTransactionsQuery request,
         CancellationToken cancellationToken)
     {
         var recurringTransactions = await dbContext.RecurringTransactions
             .Include(recurringTransaction => recurringTransaction.Account)
-            .Where(recurringTransaction => 
+            .Where(recurringTransaction =>
                 recurringTransaction.Account!.UserId == userContext.UserId &&
                 recurringTransaction.Type == TransactionType.FromName(request.Type))
             .Select(recurringTransaction => new RecurringTransactionResponse(

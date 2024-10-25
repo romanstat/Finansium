@@ -1,4 +1,4 @@
-﻿using Finansium.Application.RecurringTransactions.Queries.GetList;
+﻿using Finansium.Application.RecurringTransactions.Queries.Search;
 
 namespace Finansium.Api.Endpoints.RecurringTransactions;
 
@@ -6,7 +6,7 @@ internal sealed class GetList : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("recurring-transactions/list", async (GetRecurringTransactionsQuery query, ISender sender) =>
+        app.MapPost("recurring-transactions/search", async (SearchRecurringTransactionsQuery query, ISender sender) =>
         {
             var result = await sender.Send(query);
 
