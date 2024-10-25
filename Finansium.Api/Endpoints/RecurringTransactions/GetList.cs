@@ -6,9 +6,9 @@ internal sealed class GetList : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("recurring-transactions/list", async (ISender sender) =>
+        app.MapGet("recurring-transactions/list", async (GetRecurringTransactionsQuery query, ISender sender) =>
         {
-            var result = await sender.Send(new GetRecurringTransactionsQuery());
+            var result = await sender.Send(query);
 
             return result.Match(Results.Ok, ApiResults.Problem);
         })

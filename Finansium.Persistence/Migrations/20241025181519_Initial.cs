@@ -104,7 +104,7 @@ namespace Finansium.Persistence.Migrations
                     patronymic = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     username = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     email = table.Column<string>(type: "character varying(254)", maxLength: 254, nullable: false),
-                    password = table.Column<string>(type: "character varying(97)", maxLength: 97, nullable: false)
+                    password_hash = table.Column<string>(type: "character varying(97)", maxLength: 97, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -440,11 +440,23 @@ namespace Finansium.Persistence.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_budgets_type",
+                schema: "core",
+                table: "budgets",
+                column: "type");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_categories_budget_id",
                 schema: "core",
                 table: "categories",
                 column: "budget_id",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "ix_categories_transaction_type",
+                schema: "core",
+                table: "categories",
+                column: "transaction_type");
 
             migrationBuilder.CreateIndex(
                 name: "ix_categories_user_id",

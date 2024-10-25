@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241025180427_Initial")]
+    [Migration("20241025181519_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -154,6 +154,9 @@ namespace Finansium.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_budgets");
 
+                    b.HasIndex("Type")
+                        .HasDatabaseName("ix_budgets_type");
+
                     b.ToTable("budgets", "core");
                 });
 
@@ -192,6 +195,9 @@ namespace Finansium.Persistence.Migrations
                     b.HasIndex("BudgetId")
                         .IsUnique()
                         .HasDatabaseName("ix_categories_budget_id");
+
+                    b.HasIndex("TransactionType")
+                        .HasDatabaseName("ix_categories_transaction_type");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_categories_user_id");
@@ -704,11 +710,11 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("character varying(30)")
                         .HasColumnName("name");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(97)
                         .HasColumnType("character varying(97)")
-                        .HasColumnName("password");
+                        .HasColumnName("password_hash");
 
                     b.Property<string>("Patronymic")
                         .HasMaxLength(50)
