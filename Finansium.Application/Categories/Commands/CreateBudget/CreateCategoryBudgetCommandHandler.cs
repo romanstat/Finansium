@@ -11,7 +11,7 @@ internal sealed class CreateCategoryBudgetCommandHandler(
         CreateCategoryBudgetCommand request, 
         CancellationToken cancellationToken)
     {
-        var category = await categoryRepository.GetByIdAsync(request.CategoryId, cancellationToken);
+        var category = await categoryRepository.GetByIdWithBudgetsAsync(request.CategoryId, cancellationToken);
 
         if (category is null)
         {
@@ -22,7 +22,12 @@ internal sealed class CreateCategoryBudgetCommandHandler(
             BudgetType.FromName(request.BudgetType),
             request.LimitAmount);
 
-        category.AddBudget(budget);
+        var addBudgetResult = category.AddBudget(budget);
+
+        if (addBudgetResult.IsFailure)
+        {
+            return Result.Failure<Ulid>(addBudgetResult.Error);
+        }
 
         return budget.Id;
     }

@@ -41,8 +41,15 @@ public sealed class Category : Entity
         Name = name;
     }
 
-    public void AddBudget(Budget budget)
+    public Result AddBudget(Budget budget)
     {
+        if (_budget.Any(b => b.Type == budget.Type))
+        {
+            return Result.Failure(CategoryErrors.BudgetAlreadyExists(budget.Type));
+        }
+
         _budget.Add(budget);
+
+        return Result.Success();
     }
 }
