@@ -1,11 +1,9 @@
-﻿using Finansium.Domain.Accounts;
-using Finansium.Domain.Categories;
+﻿using Finansium.Domain.Categories;
 using Finansium.Domain.Counties;
-using Finansium.Domain.Expenses;
-using Finansium.Domain.Incomes;
 using Finansium.Domain.News;
 using Finansium.Domain.RecurringTransactions;
 using Finansium.Domain.SavingsGoals;
+using Finansium.Domain.Transactions;
 
 namespace Finansium.Application.Abstractions.Data;
 
@@ -19,15 +17,13 @@ public interface IFinansiumDbContext
 
     DbSet<Country> Countries { get; }
 
-    DbSet<Expense> Expenses { get; }
-
-    DbSet<Income> Incomes { get; }
-
     DbSet<NewsItem> NewsItems { get; }
 
     DbSet<RecurringTransaction> RecurringTransactions { get; }
 
     DbSet<SavingsGoal> SavingsGoals { get; }
+
+    DbSet<Transaction> Transactions { get; }
 
     DbSet<User> Users { get; }
 

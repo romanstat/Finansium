@@ -22,7 +22,7 @@ internal sealed class CreateCategoryBudgetCommandHandler(
             BudgetType.FromName(request.BudgetType),
             request.LimitAmount);
 
-        category.AddBudgets(budget);
+        category.AddBudget(budget);
 
         return budget.Id;
     }

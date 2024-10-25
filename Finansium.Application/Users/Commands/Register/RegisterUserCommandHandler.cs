@@ -5,7 +5,8 @@ namespace Finansium.Application.Users.Commands.Register;
 internal sealed class RegisterUserCommandHandler(
     TimeProvider timeProvider,
     ICountryRepository countryRepository,
-    IUserRepository userRepository) : ICommandHandler<RegisterUserCommand>
+    IUserRepository userRepository,
+    IPasswordHasher passwordHasher) : ICommandHandler<RegisterUserCommand>
 {
     public async Task<Result> Handle(
         RegisterUserCommand request,
@@ -41,9 +42,10 @@ internal sealed class RegisterUserCommandHandler(
             request.CountryId,
             request.Name,
             request.Surname,
+            request.Patronymic,
             request.Username,
             emailResult.Value,
-            request.Password,
+            passwordHasher.Hash(request.Password),
             timeProvider.GetUtcNow());
 
         userRepository.Add(user);

@@ -8,13 +8,11 @@ public sealed class RecurringTransaction : Entity
 
     public Account? Account { get; private set; }
 
-    public Money Amount { get; private set; }
-
     public TransactionType Type { get; private set; }
 
-    public TimeSpan Interval { get; private set; }
+    public Money Amount { get; private set; }
 
-    public string Description { get; private set; }
+    public TimeSpan Interval { get; private set; }
 
     public DateTimeOffset StartDate { get; private set; }
 
@@ -24,15 +22,17 @@ public sealed class RecurringTransaction : Entity
 
     public DateTimeOffset? NextPaymentDate { get; private set; }
 
+    public string? Description { get; private set; }
+
     public static RecurringTransaction Create(
         Ulid accountId,
         Money amount,
         TransactionType transactionType,
         TimeSpan interval,
-        string description,
         DateTimeOffset startDate,
         DateTimeOffset endDate,
-        DateTimeOffset createdAt)
+        DateTimeOffset createdAt,
+        string? description = default)
     {
         var recurringTransaction = new RecurringTransaction
         {

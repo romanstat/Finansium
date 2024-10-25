@@ -10,14 +10,14 @@ internal sealed class GetAccountTransferListQueryHandler(
         CancellationToken cancellationToken)
     {
         var accountTransfers = await dbContext.AccountTransfers
-            .Where(accountTransfer => accountTransfer.UserId == userContext.UserId)
+            .Where(accountTransfer => accountTransfer.SourceAccount!.UserId == userContext.UserId)
             .Select(accountTransfer => new AccountTransferResponse(
                 accountTransfer.Id,
                 accountTransfer.SourceAccount!.Name,
                 accountTransfer.TargetAccount!.Name,
                 accountTransfer.Amount.Amount,
                 accountTransfer.CurrencyRate,
-                accountTransfer.TransferDate))
+                accountTransfer.Date))
             .ToListAsync(cancellationToken);
 
         return accountTransfers;

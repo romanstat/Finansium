@@ -5,10 +5,11 @@ global using Finansium.Domain.Abstractions;
 // Application
 global using Finansium.Application.Abstractions.Data;
 
-// Persistnce
+// Persistence
 global using Finansium.Persistence.Options;
 global using Finansium.Persistence.Database;
 global using Finansium.Persistence.Converters;
+global using static Finansium.Persistence.Constants;
 
 // System
 global using System.Reflection;

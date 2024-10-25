@@ -1,5 +1,4 @@
-﻿using Finansium.Domain.Accounts;
-using Finansium.Domain.SavingsGoals;
+﻿using Finansium.Domain.SavingsGoals;
 
 namespace Finansium.Application.SavingsGoals.Commands.Deposit;
 

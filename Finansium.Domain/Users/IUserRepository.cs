@@ -7,7 +7,6 @@ public interface IUserRepository
     Task<User?> GetByIdAsync(Ulid id, CancellationToken cancellationToken);
     Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken);
     Task<User?> GetByUsernameNoTrackingAsync(string username, CancellationToken cancellationToken);
-    Task<User?> GetByUsernameAndPasswordNoTrackingAsync(string username, string password, CancellationToken cancellationToken);
     void Add(User user);
     Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken);
     Task<bool> IsUsernameUniqueAsync(string username, CancellationToken cancellationToken);

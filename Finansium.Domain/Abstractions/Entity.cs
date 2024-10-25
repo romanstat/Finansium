@@ -19,6 +19,7 @@ public abstract class Entity
 
     [Key]
     [Column(Order = 0)]
+    [MaxLength(26)]
     public Ulid Id { get; init; }
 
     public IReadOnlyCollection<IDomainEvent> DomainEvents => [.. _domainEvents];

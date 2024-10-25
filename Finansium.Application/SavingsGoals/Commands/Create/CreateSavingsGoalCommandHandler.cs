@@ -1,10 +1,8 @@
-﻿using Finansium.Domain.Accounts;
-using Finansium.Domain.SavingsGoals;
+﻿using Finansium.Domain.SavingsGoals;
 
 namespace Finansium.Application.SavingsGoals.Commands.Create;
 
 internal sealed class CreateSavingsGoalCommandHandler(
-    IUserContext userContext,
     IAccountRepository accountRepository,
     ISavingsGoalRepository savingsGoalRepository)
     : ICommandHandler<CreateSavingsGoalCommand, Ulid>
@@ -13,14 +11,6 @@ internal sealed class CreateSavingsGoalCommandHandler(
         CreateSavingsGoalCommand request,
         CancellationToken cancellationToken)
     {
-        if (!await savingsGoalRepository.IsNameUniqueAsync(
-            userContext.UserId,
-            request.Name,
-            cancellationToken))
-        {
-            return Result.Failure<Ulid>(SavingsGoalErrors.UniqueName(request.Name));
-        }
-
         var account = await accountRepository.GetByIdAsync(request.AccountId, cancellationToken);
 
         if (account is null)
@@ -28,12 +18,19 @@ internal sealed class CreateSavingsGoalCommandHandler(
             return Result.Failure<Ulid>(AccountErrors.NotFound(request.AccountId));
         }
 
+        if (!await savingsGoalRepository.IsNameUniqueAsync(
+            account.Id,
+            request.Name,
+            cancellationToken))
+        {
+            return Result.Failure<Ulid>(SavingsGoalErrors.UniqueName(request.Name));
+        }
+
         var targetAmount = new Money(
             request.TargetAmount,
             account.Balance.Currency);
 
         var savingsGoal = SavingsGoal.Create(
-            userContext.UserId,
             request.AccountId,
             request.Name,
             targetAmount,

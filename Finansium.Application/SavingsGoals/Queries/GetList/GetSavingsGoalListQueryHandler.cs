@@ -10,16 +10,17 @@ internal sealed class GetSavingsGoalListQueryHandler(
         CancellationToken cancellationToken)
     {
         var savingsGoal = await dbContext.SavingsGoals
-            .Where(savingsGoal => savingsGoal.UserId == userContext.UserId)
+            .Where(savingsGoal => savingsGoal.Account!.UserId == userContext.UserId)
             .Select(savingsGoal => new SavingsGoalResponse(
                 savingsGoal.Id,
                 savingsGoal.Name,
                 savingsGoal.Account!.Balance.Amount,
                 savingsGoal.TargetAmount.Amount,
-                savingsGoal.Account.Balance.Currency.Code,
+                savingsGoal.Account.Balance.Currency,
                 savingsGoal.Note,
                 savingsGoal.StartDate,
                 savingsGoal.EndDate,
+                savingsGoal.CompletedDate,
                 savingsGoal.IsCompleted))
             .ToListAsync(cancellationToken);
 

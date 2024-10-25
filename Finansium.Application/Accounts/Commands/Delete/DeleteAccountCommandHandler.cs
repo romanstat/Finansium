@@ -1,6 +1,4 @@
-﻿using Finansium.Domain.Accounts;
-
-namespace Finansium.Application.Accounts.Commands.Delete;
+﻿namespace Finansium.Application.Accounts.Commands.Delete;
 
 internal sealed class DeleteAccountCommandHandler(IAccountRepository accountRepository) 
     : ICommandHandler<DeleteAccountCommand>

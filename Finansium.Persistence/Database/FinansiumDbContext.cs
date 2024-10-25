@@ -3,13 +3,12 @@ using Finansium.Domain.Accounts;
 using Finansium.Domain.Budgets;
 using Finansium.Domain.Categories;
 using Finansium.Domain.Counties;
-using Finansium.Domain.Expenses;
-using Finansium.Domain.Incomes;
 using Finansium.Domain.News;
 using Finansium.Domain.OutboxMessages;
 using Finansium.Domain.RecurringTransactions;
 using Finansium.Domain.SavingsGoals;
 using Finansium.Domain.Subscriptions;
+using Finansium.Domain.Transactions;
 using Finansium.Domain.Users;
 using Finansium.Persistence.Extensions;
 
@@ -30,10 +29,6 @@ public sealed class FinansiumDbContext(
 
     public DbSet<Country> Countries => Set<Country>();
 
-    public DbSet<Expense> Expenses => Set<Expense>();
-
-    public DbSet<Income> Incomes => Set<Income>();
-
     public DbSet<NewsItem> NewsItems => Set<NewsItem>();
 
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
@@ -43,6 +38,8 @@ public sealed class FinansiumDbContext(
     public DbSet<SavingsGoal> SavingsGoals => Set<SavingsGoal>();
 
     public DbSet<Subscription> Subscriptions => Set<Subscription>();
+
+    public DbSet<Transaction> Transactions => Set<Transaction>();
 
     public DbSet<User> Users => Set<User>();
 

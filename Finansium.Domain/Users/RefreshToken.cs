@@ -8,21 +8,21 @@ public sealed class RefreshToken : Entity
 
     public string Token { get; private set; }
 
-    public DateTimeOffset CreatedAt { get; private set; }
+    public DateTimeOffset StartAt { get; private set; }
 
     public DateTimeOffset ExpiredAt { get; private set; }
 
     public static RefreshToken Create(
         Ulid userId,
         string token,
-        TimeProvider timeProvider,
+        DateTimeOffset startAt,
         DateTimeOffset expiredAt)
     {
         var refreshToken = new RefreshToken
         {
             UserId = userId,
             Token = token,
-            CreatedAt = timeProvider.GetUtcNow(),
+            StartAt = startAt,
             ExpiredAt = expiredAt
         };
 

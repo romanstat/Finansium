@@ -13,17 +13,8 @@ internal sealed class SavingsGoalCompletedDomainEventHandler(
         SavingsGoalCompletedDomainEvent notification,
         CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdAsync(
-            notification.UserId,
-            cancellationToken);
-
-        if (user is null)
-        {
-            return;
-        }
-
-        var savingsGoal = await savingsGoalRepository.GetByIdNoTrackingAsync(
-            notification.SavingsGoalId,
+        var savingsGoal = await savingsGoalRepository.GetByIdWithAccountNoTrackingAsync(
+            notification.Id,
             cancellationToken);
 
         if (savingsGoal is null)
@@ -31,8 +22,16 @@ internal sealed class SavingsGoalCompletedDomainEventHandler(
             return;
         }
 
+        var user = await userRepository.GetByIdAsync(
+            savingsGoal.Account!.UserId,
+            cancellationToken);
+
+        if (user is null)
+        {
+            return;
+        }
+
         var userNotification = Notification.Create(
-            notification.UserId,
             "Цель достигнута",
             $"Поздравляем! {savingsGoal.Name} цель завершилась",
             timeProvider.GetUtcNow());

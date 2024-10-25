@@ -1,6 +1,4 @@
-﻿using Finansium.Domain.Accounts;
-
-namespace Finansium.Application.Accounts.Commands.Update;
+﻿namespace Finansium.Application.Accounts.Commands.Update;
 
 internal sealed class UpdateAccountCommandHandler(
     IAccountRepository accountRepository) : ICommandHandler<UpdateAccountCommand>

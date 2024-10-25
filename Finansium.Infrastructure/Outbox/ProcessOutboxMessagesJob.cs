@@ -56,8 +56,8 @@ internal sealed class ProcessOutboxMessagesJob(
     private async Task<List<OutboxMessageResponse>> GetOutboxMessagesAsync()
     {
         var outboxMessages = await dbContext.OutboxMessages
-            .Where(outboxMessage => outboxMessage.ProcessedOnUtc == null)
-            .OrderBy(outboxMessage => outboxMessage.ProcessedOnUtc)
+            .Where(outboxMessage => outboxMessage.ProcessedAt == null)
+            .OrderBy(outboxMessage => outboxMessage.ProcessedAt)
             .Take(outboxOptions.CurrentValue.BatchSize)
             .Select(outboxMessage => new OutboxMessageResponse(
                 outboxMessage.Id,
@@ -77,7 +77,7 @@ internal sealed class ProcessOutboxMessagesJob(
         await dbContext.OutboxMessages
             .Where(outbox => outbox.Id == outboxMessage.Id)
             .ExecuteUpdateAsync(outbox => outbox
-                .SetProperty(p => p.ProcessedOnUtc, p => timeProvider.GetUtcNow())
+                .SetProperty(p => p.ProcessedAt, p => timeProvider.GetUtcNow())
                 .SetProperty(p => p.Error, p => error));
     }
 

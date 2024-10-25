@@ -18,10 +18,10 @@ internal sealed class GetRecurringTransactionsQueryHandler(
                 recurringTransaction.Amount,
                 recurringTransaction.Type.Name,
                 recurringTransaction.Interval,
-                recurringTransaction.Description,
                 recurringTransaction.StartDate,
                 recurringTransaction.EndDate,
-                recurringTransaction.NextPaymentDate))
+                recurringTransaction.NextPaymentDate,
+                recurringTransaction.Description))
             .ToListAsync(cancellationToken);
 
         return recurringTransactions;

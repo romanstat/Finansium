@@ -28,6 +28,7 @@ public static class DependencyInjection
         services.AddScoped<IUserContext, UserContext>();
         services.AddScoped<ITokenProvider, TokenProvider>();
         services.AddTransient<IAuthenticationService, AuthenticationService>();
+        services.AddTransient<IPasswordHasher, PasswordHasher>();
 
         services.AddHttpContextAccessor();
         services.AddBackgroundJobs();

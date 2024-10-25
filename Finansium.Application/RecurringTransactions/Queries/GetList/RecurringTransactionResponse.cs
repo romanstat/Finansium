@@ -6,7 +6,7 @@ public sealed record RecurringTransactionResponse(
     Money Amount,
     string Type,
     TimeSpan Interval,
-    string Description,
     DateTimeOffset StartDate,
     DateTimeOffset EndDate,
-    DateTimeOffset? NextPaymentDate);
+    DateTimeOffset? NextPaymentDate,
+    string? Description);

@@ -15,14 +15,12 @@ public sealed class Notification : Entity
     public bool IsViewed { get; private set; }
 
     public static Notification Create(
-        Ulid userId,
         string title,
         string description,
         DateTimeOffset createdAt)
     {
         var notification = new Notification
         {
-            UserId = userId,
             Title = title,
             Description = description,
             CreatedAt = createdAt,
@@ -32,7 +30,7 @@ public sealed class Notification : Entity
         return notification;
     }
 
-    public void UserViewed()
+    public void Viewed()
     {
         IsViewed = true;
     }

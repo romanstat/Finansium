@@ -1,6 +1,4 @@
-﻿using Finansium.Domain.Accounts;
-
-namespace Finansium.Application.Accounts.Commands.Transfer;
+﻿namespace Finansium.Application.Accounts.Commands.Transfer;
 
 internal sealed class TransferAccountCommandHandler(
     TimeProvider timeProvider,

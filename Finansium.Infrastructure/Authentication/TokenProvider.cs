@@ -49,7 +49,7 @@ internal sealed class TokenProvider(
         var refreshTokenResult = RefreshToken.Create(
             user.Id,
             token,
-            timeProvider,
+            timeProvider.GetUtcNow(),
             timeProvider.GetUtcNow().AddMinutes(jwtOptios.Value.RefreshTokenTimeInMinutes));
 
         return refreshTokenResult;

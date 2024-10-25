@@ -1,5 +1,4 @@
-﻿using Finansium.Domain.Accounts;
-using Finansium.Domain.RecurringTransactions;
+﻿using Finansium.Domain.RecurringTransactions;
 
 namespace Finansium.Application.RecurringTransactions.Commands.Update;
 

@@ -1,8 +1,7 @@
 ﻿using Finansium.Domain.Accounts.Events;
-using Finansium.Domain.Expenses;
-using Finansium.Domain.Incomes;
 using Finansium.Domain.RecurringTransactions;
 using Finansium.Domain.SavingsGoals;
+using Finansium.Domain.Transactions;
 
 namespace Finansium.Domain.Accounts;
 
@@ -12,13 +11,12 @@ namespace Finansium.Domain.Accounts;
 public sealed class Account : Entity
 {
     private readonly List<SavingsGoal> _savingsGoals = [];
-    private readonly List<Expense> _expenses = [];
-    private readonly List<Income> _incomes = [];
+    private readonly List<Transaction> _transactions = [];
     private readonly List<RecurringTransaction> _recurringTransactions = [];
 
     public Ulid UserId { get; private set; }
 
-    public User User { get; private set; }
+    public User? User { get; private set; }
 
     public string Name { get; private set; }
 
@@ -32,9 +30,7 @@ public sealed class Account : Entity
 
     public IReadOnlyCollection<SavingsGoal> SavingsGoals => _savingsGoals;
 
-    public IReadOnlyCollection<Expense> Expenses => _expenses;
-
-    public IReadOnlyCollection<Income> Incomes => _incomes;
+    public IReadOnlyCollection<Transaction> Transactions => _transactions;
 
     public IReadOnlyCollection<RecurringTransaction> RecurringTransactions => _recurringTransactions;
 
@@ -42,7 +38,7 @@ public sealed class Account : Entity
         Ulid userId,
         string name,
         Money balance,
-        TimeProvider timeProvider)
+        DateTimeOffset createdAt)
     {
         var account = new Account
         {
@@ -50,8 +46,8 @@ public sealed class Account : Entity
             Name = name,
             Balance = balance,
             Status = AccountStatus.Active,
-            CreatedAt = timeProvider.GetUtcNow(),
-            ModifiedAt = timeProvider.GetUtcNow(),
+            CreatedAt = createdAt,
+            ModifiedAt = createdAt,
         };
 
         return account;
@@ -96,7 +92,6 @@ public sealed class Account : Entity
         targetAccount.ModifiedAt = modifiedAt;
 
         RaiseDomainEvent(new AccountTransferCompletedDomainEvent(
-            UserId,
             Id,
             targetAccount.Id,
             amount,
@@ -112,14 +107,9 @@ public sealed class Account : Entity
         Status = status;
     }
 
-    public void AddExpenses(params Expense[] expenses)
+    public void AddTransactions(params Transaction[] transactions)
     {
-        _expenses.AddRange(expenses);
-    }
-
-    public void AddIncomes(params Income[] incomes)
-    {
-        _incomes.AddRange(incomes);
+        _transactions.AddRange(transactions);
     }
 
     public void AddRange(params RecurringTransaction[] recurringTransactions)

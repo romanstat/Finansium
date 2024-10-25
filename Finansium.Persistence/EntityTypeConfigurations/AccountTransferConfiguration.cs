@@ -9,7 +9,13 @@ internal sealed class AccountTransferConfiguration : IEntityTypeConfiguration<Ac
         builder.OwnsOne(accountTransfer => accountTransfer.Amount, amountBuilder =>
         {
             amountBuilder.Property(money => money.Currency)
-                .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
+                .HasMaxLength(EntityConfigurations.CurrencyMaxLength)
+                .HasConversion(currency => currency.Code, code => Currency.FromCode(code))
+                .IsRequired();
         });
+
+        builder.Property(accountTransfer => accountTransfer.Date)
+            .HasDefaultValueSql(EntityConfigurations.DateDefaultSql)
+            .IsRequired();
     }
 }

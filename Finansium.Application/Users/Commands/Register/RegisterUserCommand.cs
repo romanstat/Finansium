@@ -4,6 +4,7 @@ public sealed record RegisterUserCommand(
     Ulid CountryId,
     string Name,
     string Surname,
+    string Patronymic,
     string Email,
     string Username,
     string Password,

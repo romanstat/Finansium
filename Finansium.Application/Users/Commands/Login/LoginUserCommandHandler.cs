@@ -4,18 +4,18 @@ internal sealed class LoginUserCommandHandler(
     IUserRepository userRepository,
     IAuthenticationService authenticationService,
     ITokenProvider tokenProvider,
-    IRefreshTokenRepository refreshTokenRepository) : ICommandHandler<LoginUserCommand, TokenResponse>
+    IRefreshTokenRepository refreshTokenRepository,
+    IPasswordHasher passwordHasher) : ICommandHandler<LoginUserCommand, TokenResponse>
 {
     public async Task<Result<TokenResponse>> Handle(
         LoginUserCommand request,
         CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByUsernameAndPasswordNoTrackingAsync(
+        var user = await userRepository.GetByUsernameNoTrackingAsync(
             request.Username,
-            request.Password,
             cancellationToken);
 
-        if (user is null)
+        if (user is null || !passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
         {
             return Result.Failure<TokenResponse>(UserErrors.InvalidCredentials);
         }

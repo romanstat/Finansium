@@ -10,9 +10,12 @@ internal sealed class RefreshTokenConfiguration : IEntityTypeConfiguration<Refre
             .HasMaxLength(88)
             .IsRequired();
 
-        builder.Property(refreshToken => refreshToken.CreatedAt)
+        builder.Property(refreshToken => refreshToken.StartAt)
+            .HasDefaultValueSql(EntityConfigurations.DateDefaultSql)
             .IsRequired();
 
-        builder.Property(refreshToken => refreshToken.ExpiredAt).IsRequired();
+        builder.Property(refreshToken => refreshToken.ExpiredAt)
+            .HasDefaultValueSql(EntityConfigurations.DateDefaultSql)
+            .IsRequired();
     }
 }

@@ -8,15 +8,11 @@ namespace Finansium.Domain.SavingsGoals;
 /// </summary>
 public sealed class SavingsGoal : Entity
 {
-    public Ulid UserId { get; private set; }
-
-    public User? User { get; private set; }
-
-    public string Name { get; private set; }
-
     public Ulid AccountId { get; private set; }
 
     public Account? Account { get; private set; }
+
+    public string Name { get; private set; }
 
     public Money TargetAmount { get; private set; }
 
@@ -31,7 +27,6 @@ public sealed class SavingsGoal : Entity
     public bool IsCompleted { get; private set; }
 
     public static SavingsGoal Create(
-        Ulid userId,
         Ulid accountId,
         string name,
         Money targetAmount,
@@ -41,7 +36,6 @@ public sealed class SavingsGoal : Entity
     {
         var savingsGoal = new SavingsGoal
         {
-            UserId = userId,
             AccountId = accountId,
             Name = name,
             TargetAmount = targetAmount,
@@ -60,7 +54,7 @@ public sealed class SavingsGoal : Entity
         {
             IsCompleted = true;
 
-            RaiseDomainEvent(new SavingsGoalCompletedDomainEvent(Id, UserId));
+            RaiseDomainEvent(new SavingsGoalCompletedDomainEvent(Id));
         }
     }
 }

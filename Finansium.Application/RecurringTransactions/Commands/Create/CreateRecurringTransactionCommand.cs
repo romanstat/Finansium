@@ -5,7 +5,6 @@ public sealed record CreateRecurringTransactionCommand(
     decimal Amount,
     string Type,
     TimeSpan Interval,
-    string Description,
     DateTimeOffset StartDate,
-    DateTimeOffset EndDate
-    ) : ICommand<Ulid>;
+    DateTimeOffset EndDate,
+    string? Description) : ICommand<Ulid>;

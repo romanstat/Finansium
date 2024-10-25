@@ -1,6 +1,4 @@
 ﻿using Finansium.Domain.Budgets;
-using Finansium.Domain.Expenses;
-using Finansium.Domain.Incomes;
 
 namespace Finansium.Domain.Categories;
 
@@ -9,33 +7,27 @@ namespace Finansium.Domain.Categories;
 /// </summary>
 public sealed class Category : Entity
 {
-    private readonly List<Income> _incomes = [];
-    private readonly List<Expense> _expenses = [];
-    private readonly List<Budget> _budgets = [];
-
     public Ulid UserId { get; private set; }
 
-    public User User { get; private set; }
+    public User? User { get; private set; }
+
+    public Ulid? BudgetId { get; private set; }
+
+    public Budget? Budget { get; private set; }
 
     public string Name { get; private set; }
 
     public TransactionType TransactionType { get; private set; }
 
-    public IReadOnlyCollection<Income> Incomes => _incomes;
-
-    public IReadOnlyCollection<Expense> Expenses => _expenses;
-
-    public IReadOnlyCollection<Budget> Budgets => _budgets;
-
     public static Category Create(
         Ulid userId,
-        string Name,
+        string name,
         TransactionType transactionType)
     {
         var category = new Category
         {
             UserId = userId,
-            Name = Name,
+            Name = name,
             TransactionType = transactionType
         };
 
@@ -47,8 +39,8 @@ public sealed class Category : Entity
         Name = name;
     }
 
-    public void AddBudgets(params Budget[] budgets)
+    public void AddBudget(Budget budget)
     {
-        _budgets.AddRange(budgets);
+        Budget = budget;
     }
 }

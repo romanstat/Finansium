@@ -1,6 +1,4 @@
-﻿using Finansium.Domain.Accounts;
-
-namespace Finansium.Application.Accounts.Commands.Create;
+﻿namespace Finansium.Application.Accounts.Commands.Create;
 
 internal sealed class CreateAccountCommandHandler(
     IUserContext userContext,
@@ -28,7 +26,7 @@ internal sealed class CreateAccountCommandHandler(
             userContext.UserId,
             request.Name,
             balance,
-            timeProvider);
+            timeProvider.GetUtcNow());
 
         accountRepository.Add(account);
 

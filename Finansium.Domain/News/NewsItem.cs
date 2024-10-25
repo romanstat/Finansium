@@ -2,8 +2,6 @@
 
 public sealed class NewsItem : Entity
 {
-    private NewsItem() { }
-
     public string Title { get; private set; }
 
     public string Description { get; private set; }

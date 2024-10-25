@@ -6,4 +6,4 @@ public sealed record AccountTransferResponse(
     string TargetAccountName,
     decimal Amount,
     decimal CurrencyRate,
-    DateTimeOffset TransfeDate);
+    DateTimeOffset Date);

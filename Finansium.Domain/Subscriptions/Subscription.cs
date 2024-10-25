@@ -8,21 +8,21 @@ public sealed class Subscription : Entity
 
     public SubscriptionType Type { get; private set; }
 
-    public DateTimeOffset CreatedAt { get; private set; }
+    public DateTimeOffset StartAt { get; private set; }
 
     public DateTimeOffset ExpiredAt { get; private set; }
 
     public static Subscription Create(
         Ulid userId,
         SubscriptionType type,
-        DateTimeOffset startDate)
+        DateTimeOffset startAt)
     {
         var subscription = new Subscription
         {
             UserId = userId,
             Type = type,
-            CreatedAt = startDate,
-            ExpiredAt = type.CalculateExpiration(startDate)
+            StartAt = startAt,
+            ExpiredAt = type.CalculateExpiration(startAt)
         };
 
         return subscription;

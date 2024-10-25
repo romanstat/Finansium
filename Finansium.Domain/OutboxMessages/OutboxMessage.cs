@@ -2,24 +2,24 @@
 
 public sealed class OutboxMessage : Entity
 {
-    public DateTimeOffset OccurredOnUtc { get; private set; }
+    public DateTimeOffset OccurredAt { get; private set; }
 
     public string Type { get; private set; }
 
     public string Content { get; private set; }
 
-    public DateTimeOffset? ProcessedOnUtc { get; private set; }
+    public DateTimeOffset? ProcessedAt { get; private set; }
 
     public string? Error { get; private set; }
 
     public static OutboxMessage Create(
-        DateTimeOffset occurredOnUtc,
+        DateTimeOffset occurredAt,
         string type,
         string content)
     {
         var outboxMessage = new OutboxMessage
         {
-            OccurredOnUtc = occurredOnUtc,
+            OccurredAt = occurredAt,
             Type = type,
             Content = content
         };

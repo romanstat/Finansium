@@ -6,13 +6,29 @@ internal sealed class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
     public void Configure(EntityTypeBuilder<Account> builder)
     {
-        builder.OwnsOne(account => account.Balance, balanceBuilder =>
+        builder.Property(account => account.Name)
+            .HasMaxLength(30)
+            .IsRequired();
+
+        builder.ComplexProperty(account => account.Balance, balanceBuilder =>
         {
             balanceBuilder.Property(money => money.Currency)
-                .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
+                .HasMaxLength(EntityConfigurations.CurrencyMaxLength)
+                .HasConversion(currency => currency.Code, code => Currency.FromCode(code))
+                .IsRequired();
         });
 
         builder.Property(account => account.Status)
-            .HasConversion(status => status.Name, name => AccountStatus.FromName(name));
+            .HasMaxLength(8)
+            .HasConversion(status => status.Name, name => AccountStatus.FromName(name))
+            .IsRequired();
+
+        builder.Property(account => account.CreatedAt)
+            .HasDefaultValueSql(EntityConfigurations.DateDefaultSql)
+            .IsRequired();
+
+        builder.Property(account => account.ModifiedAt)
+            .HasDefaultValueSql(EntityConfigurations.DateDefaultSql)
+            .IsRequired();
     }
 }

@@ -7,8 +7,7 @@ internal static class Tags
     internal const string Categories = nameof(Categories);
     internal const string Countries = nameof(Countries);
     internal const string Currencies = nameof(Currencies);
-    internal const string Expenses = nameof(Expenses);
-    internal const string Incomes = nameof(Incomes);
+    internal const string Transactions = nameof(Transactions);
     internal const string News = nameof(News); 
     internal const string RecurringTransactions = nameof(RecurringTransactions);
     internal const string SavingsGoals = nameof(SavingsGoals);

@@ -7,6 +7,8 @@ internal sealed class BudgetConfiguration : IEntityTypeConfiguration<Budget>
     public void Configure(EntityTypeBuilder<Budget> builder)
     {
         builder.Property(budget => budget.Type)
-            .HasConversion(type => type.Name, name => BudgetType.FromName(name));
+            .HasMaxLength(10)
+            .HasConversion(type => type.Name, name => BudgetType.FromName(name))
+            .IsRequired();
     }
 }

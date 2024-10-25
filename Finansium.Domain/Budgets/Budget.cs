@@ -2,6 +2,9 @@
 
 namespace Finansium.Domain.Budgets;
 
+/// <summary>
+/// Бюджет на категорию
+/// </summary>
 public sealed class Budget : Entity
 {
     public Ulid CategoryId { get; private set; }

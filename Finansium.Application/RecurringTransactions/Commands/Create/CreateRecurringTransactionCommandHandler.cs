@@ -1,5 +1,4 @@
-﻿using Finansium.Domain.Accounts;
-using Finansium.Domain.RecurringTransactions;
+﻿using Finansium.Domain.RecurringTransactions;
 
 namespace Finansium.Application.RecurringTransactions.Commands.Create;
 
@@ -24,10 +23,10 @@ internal sealed class CreateRecurringTransactionCommandHandler(
             new Money(request.Amount, account.Balance.Currency),
             TransactionType.FromName(request.Type),
             request.Interval,
-            request.Description,
             request.StartDate,
             request.EndDate,
-            timeProvider.GetUtcNow());
+            timeProvider.GetUtcNow(),
+            request.Description);
 
         account.AddRange(recurringTransaction);
 

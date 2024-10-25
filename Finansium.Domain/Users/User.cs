@@ -17,17 +17,17 @@ public sealed class User : Entity
 
     public Country? Country { get; private set; }
 
-    public Ulid SubscriptionId { get; private set; }
-
     public string Name { get; private set; }
 
     public string Surname { get; private set; }
+
+    public string? Patronymic { get; private set; }
 
     public string Username { get; private set; }
 
     public Email Email { get; private set; }
 
-    public string Password { get; private set; }
+    public string PasswordHash { get; private set; }
 
     public IReadOnlyCollection<Role> Roles => _roles;
 
@@ -43,9 +43,10 @@ public sealed class User : Entity
         Ulid countryId,
         string name,
         string surname,
+        string patronymic,
         string username,
         Email email,
-        string password,
+        string passwordHash,
         DateTimeOffset createdAt)
     {
         var user = new User
@@ -53,9 +54,10 @@ public sealed class User : Entity
             CountryId = countryId,
             Name = name,
             Surname = surname,
+            Patronymic = patronymic,
             Username = username,
             Email = email,
-            Password = password,
+            PasswordHash = passwordHash,
         };
 
         user.AddDefaultSubscription(createdAt);
@@ -63,23 +65,18 @@ public sealed class User : Entity
         return user;
     }
 
-    private void AddDefaultSubscription(DateTimeOffset startDate)
-    {
-        _subscription.Add(Subscription.Create(Id, new FreeSubscription(), startDate));
-    }
-
-    public void AddTrialSubscription(DateTimeOffset startDate)
-    {
-        _subscription.Add(Subscription.Create(Id, new TrialSubscription(), startDate));
-    }
-
     public void UpdatePassword(string newPassword)
     {
-        Password = newPassword;
+        PasswordHash = newPassword;
     }
 
     public void AddNotifications(params Notification[] notifications)
     {
         _notifications.AddRange(notifications);
+    }
+
+    private void AddDefaultSubscription(DateTimeOffset startDate)
+    {
+        _subscription.Add(Subscription.Create(Id, new FreeSubscription(), startDate));
     }
 }
