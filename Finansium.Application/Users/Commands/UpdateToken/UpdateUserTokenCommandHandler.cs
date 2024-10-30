@@ -12,7 +12,7 @@ internal sealed class UpdateUserTokenCommandHandler(
         UpdateUserTokenCommand request,
         CancellationToken cancellationToken)
     {
-        var authCookieResult = authenticationService.GetAuthCokookie();
+        var authCookieResult = authenticationService.GetAuthCookie();
 
         if (authCookieResult.IsFailure)
         {

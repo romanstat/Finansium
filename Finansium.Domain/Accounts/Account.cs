@@ -59,6 +59,8 @@ public sealed class Account : Entity
         decimal currencyRate,
         DateTimeOffset modifiedAt)
     {
+        const decimal SameCurrencyRate = 1;
+        
         if (Id == targetAccount.Id)
         {
             return Result.Failure(AccountErrors.TransferAccountConflict);
@@ -83,7 +85,7 @@ public sealed class Account : Entity
 
         if (Balance.Currency.Code == targetAccount.Balance.Currency.Code)
         {
-            currencyRate = 1;
+            currencyRate = SameCurrencyRate;
         }
 
         targetAccount.Balance += amount.Amount * currencyRate;

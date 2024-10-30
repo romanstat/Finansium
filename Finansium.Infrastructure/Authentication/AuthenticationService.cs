@@ -26,7 +26,7 @@ internal sealed class AuthenticationService(
             });
     }
 
-    public Result<AuthCookieDetails> GetAuthCokookie()
+    public Result<AuthCookieDetails> GetAuthCookie()
     {
         var username = httpContextAccessor.HttpContext!.Request.Cookies[USERNAME];
         var refreshToken = httpContextAccessor.HttpContext!.Request.Cookies[REFRESH_TOKEN];

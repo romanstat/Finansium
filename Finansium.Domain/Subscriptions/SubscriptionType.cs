@@ -13,7 +13,7 @@ public abstract record SubscriptionType(string Name, decimal Price)
 
     public static SubscriptionType FromName(string name) =>
         All.FirstOrDefault(c => c.Name == name) ??
-            throw new ApplicationException("The subcription type is invalid");
+            throw new ApplicationException("The subscription type is invalid");
 
     public abstract DateTimeOffset CalculateExpiration(DateTimeOffset startDate);
 }

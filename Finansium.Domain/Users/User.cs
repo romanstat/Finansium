@@ -77,6 +77,6 @@ public sealed class User : Entity
 
     private void AddDefaultSubscription(DateTimeOffset startDate)
     {
-        _subscription.Add(Subscription.Create(Id, new FreeSubscription(), startDate));
+        _subscription.Add(Subscription.Create(Id, SubscriptionType.FromName("Free"), startDate));
     }
 }
