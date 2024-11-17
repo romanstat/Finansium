@@ -9,17 +9,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
+		Finansium.Web\Finansium.Web.esproj = Finansium.Web\Finansium.Web.esproj
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Finansium.Domain", "Finansium.Domain\Finansium.Domain.csproj", "{686EDB17-EF22-4A11-91EB-5A6F09E24E27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finansium.Application", "Finansium.Application\Finansium.Application.csproj", "{D7CC17A4-4E80-4FC1-AA1E-B70E132508D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Finansium.Application", "Finansium.Application\Finansium.Application.csproj", "{D7CC17A4-4E80-4FC1-AA1E-B70E132508D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finansium.Persistence", "Finansium.Persistence\Finansium.Persistence.csproj", "{5C083839-3108-43BA-88A4-CD1C8733E17D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Finansium.Persistence", "Finansium.Persistence\Finansium.Persistence.csproj", "{5C083839-3108-43BA-88A4-CD1C8733E17D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finansium.Infrastructure", "Finansium.Infrastructure\Finansium.Infrastructure.csproj", "{1BE5BFF2-8BB0-4DFC-BA85-8E0C9744BB53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Finansium.Infrastructure", "Finansium.Infrastructure\Finansium.Infrastructure.csproj", "{1BE5BFF2-8BB0-4DFC-BA85-8E0C9744BB53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finansium.Shared", "Finansium.Shared\Finansium.Shared.csproj", "{8833061E-0AE6-47FD-A5A5-32F328C38250}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Finansium.Shared", "Finansium.Shared\Finansium.Shared.csproj", "{8833061E-0AE6-47FD-A5A5-32F328C38250}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Finansium.Web", "Finansium.Web\Finansium.Web.esproj", "{B3D8C0B8-1C22-4A10-A088-1E4F85B1BAC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +54,12 @@ Global
 		{8833061E-0AE6-47FD-A5A5-32F328C38250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8833061E-0AE6-47FD-A5A5-32F328C38250}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8833061E-0AE6-47FD-A5A5-32F328C38250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3D8C0B8-1C22-4A10-A088-1E4F85B1BAC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3D8C0B8-1C22-4A10-A088-1E4F85B1BAC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3D8C0B8-1C22-4A10-A088-1E4F85B1BAC9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B3D8C0B8-1C22-4A10-A088-1E4F85B1BAC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3D8C0B8-1C22-4A10-A088-1E4F85B1BAC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3D8C0B8-1C22-4A10-A088-1E4F85B1BAC9}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
