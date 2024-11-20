@@ -1,0 +1,142 @@
+<div class="wrapper">
+  <aside id="sidebar" [class.expand]="isSidebarExpanded">
+    <div class="d-flex">
+      <button class="toggle-btn" type="button" (click)="toggleSidebar()">
+        <i class="bi bi-layout-sidebar"></i>
+      </button>
+      <div class="sidebar-logo">
+        <a href="#">Finansium</a>
+      </div>
+    </div>
+    <ul class="sidebar-nav">
+      <li class="sidebar-item">
+        <a class="sidebar-link" routerLink="profile">
+          <i class="bi bi-person"></i>
+          <span>Профиль</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a
+          href="#"
+          class="sidebar-link collapsed has-dropdown"
+          data-bs-toggle="collapse"
+          data-bs-target="#auth"
+          aria-expanded="false"
+          aria-controls="auth"
+        >
+          <i class="bi bi-incognito"></i>
+          <span>Авторизация</span>
+        </a>
+        <ul
+          id="auth"
+          class="sidebar-dropdown list-unstyled collapse"
+          data-bs-parent="#sidebar"
+        >
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="login">Вход</a>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="register">Регистрация</a>
+          </li>
+        </ul>
+      </li>
+      <li class="sidebar-item">
+        <a
+          href="#"
+          class="sidebar-link collapsed has-dropdown"
+          data-bs-toggle="collapse"
+          data-bs-target="#admin"
+          aria-expanded="false"
+          aria-controls="admin"
+        >
+          <i class="bi bi-person-gear"></i>
+          <span>Администратор</span>
+        </a>
+        <ul
+          id="admin"
+          class="sidebar-dropdown list-unstyled collapse"
+          data-bs-parent="#sidebar"
+        >
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="users">
+              <i class="bi bi-people-fill"></i>
+              Пользователи
+            </a>
+          </li>
+          <li class="sidebar-item">
+            <a class="sidebar-link" routerLink="country">
+              <i class="bi bi-houses"></i>
+              Страны
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="sidebar-item">
+        <a
+          href="#"
+          class="sidebar-link collapsed has-dropdown"
+          data-bs-toggle="collapse"
+          data-bs-target="#fin"
+          aria-expanded="false"
+          aria-controls="fin"
+        >
+          <i class="bi bi-cash-stack"></i>
+          <span>Финансами</span>
+        </a>
+        <ul
+          id="fin"
+          class="sidebar-dropdown list-unstyled collapse"
+          data-bs-parent="#sidebar"
+        >
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link">Cчета</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link">Расходы и Доходы</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link">Цели</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link">Категории</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link">Бюджет</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="#" class="sidebar-link">Повторяющиеся платежи</a>
+          </li>
+        </ul>
+      </li>
+      <li class="sidebar-item">
+        <a href="#" class="sidebar-link">
+          <i class="bi bi-pie-chart"></i>
+          <span>Аналитика</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a class="sidebar-link" routerLink="notification">
+          <i class="bi bi-bell"></i>
+          <span>Уведомления</span>
+          <span class="badge text-bg-secondary">4</span>
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a class="sidebar-link" routerLink="news">
+          <i class="bi bi-newspaper"></i>
+          <span>Новости</span>
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <a class="sidebar-link" (click)="logout()">
+        <i class="bi bi-box-arrow-in-left"></i>
+        <span>Выход</span>
+      </a>
+    </div>
+  </aside>
+
+  <div class="main p-3">
+    <router-outlet></router-outlet>
+  </div>
+</div>
