@@ -1,30 +1,38 @@
 <div class="container mt-5">
+  <h1 class="text-center">
+    Информация о профиле пользователя
+  </h1>
+  <hr class="mb-5">
   <div>
     <p class="user-col">Имя</p>
-    <p>Роман</p>
+    <p>{{ user.name }}</p>
   </div>
   <div>
     <p class="user-col">Фамилия</p>
-    <p>Статкевич</p>
+    <p>{{ user.surname }}</p>
   </div>
   <div>
     <p class="user-col">Отчество</p>
-    <p>Викторович</p>
+    <p>{{ user.patronymic }}</p>
   </div>
   <div>
     <p class="user-col">Страна проживания</p>
-    <p>Беларусь</p>
+    <p>{{ user.country }}</p>
   </div>
   <div>
     <p class="user-col">Почта</p>
-    <p>romanstatmail.ru</p>
+    <p>{{ user.email }}</p>
   </div>
   <div>
     <p class="user-col">Имя пользователя</p>
-    <p>b00045873</p>
+    <p>{{ user.username }}</p>
+  </div>
+  <div>
+    <p class="user-col">Роли пользователя</p>
+    <p>{{ userRoles }}</p>
   </div>
   <div>
     <p class="user-col">Учетная запись заблокирована</p>
-    <p>Нет</p>
+    <p>{{ user.isBlocked ? 'Да' : 'Нет' }}</p>
   </div>
 </div>

@@ -1,44 +1,43 @@
 <div class="register">
-  <form>
+  <form [formGroup]="registerForm">
     <p style="color: #0e2238; font-size: 22px"><b>Регистрация</b></p>
     <div class="form-group mb-3">
       <label for="country" class="form-label">Страна проживания</label>
-      <select class="form-select" id="country">
-        <option selected>Выберите страну из списка</option>
-        <option value="1">Беларусь</option>
-        <option value="2">Мышь</option>
-        <option value="3">Обезьяна</option>
+      <select class="form-select" id="country" (ngModel)="countries" formControlName="countryId">
+        <option *ngFor="let country of countries" [value]="country.id" data-toggle="tooltip" [title]="country.fullName">
+          {{country.shortName}}
+        </option>
       </select>
     </div>
     <div class="form-group mb-3">
       <label for="name" class="form-label">Имя</label>
-      <input type="text" class="form-control" id="name" />
+      <input type="text" class="form-control" id="name" formControlName="name" />
     </div>
     <div class="form-group mb-3">
       <label for="surname" class="form-label">Фамилия</label>
-      <input type="text" class="form-control" id="surname" />
+      <input type="text" class="form-control" id="surname" formControlName="surname" />
     </div>
     <div class="form-group mb-3">
       <label for="patronymic" class="form-label">Отчество (опционально)</label>
-      <input type="text" class="form-control" id="patronymic" />
+      <input type="text" class="form-control" id="patronymic" formControlName="patronymic" />
     </div>
     <div class="form-group mb-3">
       <label for="username" class="form-label">Имя пользователя</label>
-      <input type="text" class="form-control" id="username" />
+      <input type="text" class="form-control" id="username" formControlName="username" />
     </div>
     <div class="form-group mb-3">
       <label for="email" class="form-label">Почта</label>
-      <input type="email" class="form-control" id="email" />
+      <input type="email" class="form-control" id="email" formControlName="email" />
     </div>
     <div class="form-group mb-3">
       <label for="password" class="form-label">Пароль</label>
-      <input type="password" class="form-control" id="password" />
+      <input type="password" class="form-control" id="password" formControlName="password" />
     </div>
     <div class="form-group mb-3">
-      <label for="password" class="form-label">Повторите пароль</label>
-      <input type="password" class="form-control" id="password" />
+      <label for="retryPassword" class="form-label">Повторите пароль</label>
+      <input type="password" class="form-control" id="retryPassword" formControlName="retryPassword" />
     </div>
-    <button type="submit" class="w-100 btn-auth">Зарегистрироваться</button>
+    <button type="submit" class="w-100 btn-auth" (click)="onSubmit()">Зарегистрироваться</button>
   </form>
 </div>
 

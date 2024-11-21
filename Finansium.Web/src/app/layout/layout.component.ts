@@ -12,28 +12,27 @@ import { User } from '../core/model/common.model';
   styleUrl: './layout.component.scss',
 })
 export class LayoutComponent implements OnInit {
-  injector = inject(Injector);
   router = inject(Router);
   authService = inject(AuthService);
 
-  user: User | null = null;
-  isLoggedIn = false;
+  isLoggedIn = true;
   isSidebarExpanded = false;
 
   logout() {
+    this.isLoggedIn = false;
     this.authService.logout();
-    this.checkAuthStatus();
-  }
-
-  ngOnInit(): void {
-    this.checkAuthStatus();
-  }
-
-  checkAuthStatus(): void {
-    this.user = this.authService.getUserInfo();
+    this.router.navigate(['login']);
   }
 
   toggleSidebar(): void {
     this.isSidebarExpanded = !this.isSidebarExpanded;
+  }
+
+  ngOnInit(): void {
+    if (!this.isLoggedIn) {
+      this.router.navigate(['login']);
+    } else {
+      this.router.navigate(['profile']);
+    }
   }
 }
