@@ -13,16 +13,18 @@ export const httpInterceptor: HttpInterceptorFn = (req, next) => {
         Authorization: `Bearer ${localStorage.getItem(Constants.AccessToken)}`,
       },
     });
+
+    req = req.clone({
+      withCredentials: true,
+    });
   }
 
   return next(req).pipe(
-    retry(2),
     catchError((e: HttpErrorResponse) => {
-      if (e.status == 401) {
+      if (e.status === 401) {
         authService.logout();
       }
-
-      return throwError(e.error);
+      return throwError(() => e.error);
     })
   );
 };

@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Constants } from '../core/constant';
 import { Router } from '@angular/router';
-import { User } from '../core/model/common.model';
+import { User } from '../core/common.model';
 
 @Injectable({
   providedIn: 'root',
@@ -12,15 +12,20 @@ export class AuthService {
   httpClient = inject(HttpClient);
   router = inject(Router);
 
+  private userSubject = new BehaviorSubject<User | null>(null);
+  user$ = this.userSubject.asObservable();
+
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
+
   login(credentials: any) {
     return this.httpClient
-      .post<{ access_token: string }>(
+      .post<{ accessToken: string }>(
         `${Constants.ApiUrl}/users/login`,
         credentials
       )
       .pipe(
         map((response) =>
-          localStorage.setItem(Constants.AccessToken, response.access_token)
+          localStorage.setItem(Constants.AccessToken, response.accessToken)
         )
       );
   }
@@ -29,67 +34,39 @@ export class AuthService {
     return this.httpClient.post(`${Constants.ApiUrl}/users/register`, payload);
   }
 
-  getUser(): User {
-    
-    localStorage.setItem(
-      Constants.User,
-      JSON.stringify({
-        id: '123',
-        country: 'РБ',
-        name: 'Роман',
-        surname: 'Статкевич',
-        patronymic: 'Викторович',
-        email: 'romanstat@mail.ru',
-        username: 'b00045873',
-        isBlocked: false,
-        roles: [
-          {
-            id: '123',
-            name: 'user',
-          },
-          {
-            id: '1234',
-            name: 'admin',
-          },
-        ],
-      })
-    );
-    
-    var user = localStorage.getItem(Constants.User);
-
-    if (!user) {
-      this.httpClient
-        .get<User>(`${Constants.ApiUrl}/users`)
-        .pipe(
-          map((user) =>
-            localStorage.setItem(Constants.User, JSON.stringify(user))
-          )
-        );
-    }
-
-    return JSON.parse(localStorage.getItem(Constants.User)!);
+  setUser() {
+    this.httpClient.get<User>(`${Constants.ApiUrl}/users`).subscribe({
+      next: (result) => {
+        result.roles = [{id: '123', name: 'Admin'}]; // TO DO
+        this.isLoggedInSubject.next(true);
+        this.userSubject.next(result);
+      },
+    });
   }
 
   logout(): void {
+    this.userSubject.next(null);
+    this.isLoggedInSubject.next(false);
     localStorage.removeItem(Constants.AccessToken);
-    localStorage.removeItem(Constants.User);
   }
 
   isLoggedIn(): boolean {
-    const token = localStorage.getItem(Constants.AccessToken);
+    return !!localStorage.getItem(Constants.AccessToken);
+  }
 
-    return !!token;
+  get isLoggedIn$() {
+    return this.isLoggedInSubject.asObservable();
   }
 
   refreshToken() {
     return this.httpClient
-      .post<{ access_token: string }>(
+      .post<{ accessToken: string }>(
         `${Constants.ApiUrl}/users/refresh-token`,
         {}
       )
       .pipe(
         map((response) => {
-          localStorage.setItem(Constants.AccessToken, response.access_token);
+          localStorage.setItem(Constants.AccessToken, response.accessToken);
         })
       );
   }

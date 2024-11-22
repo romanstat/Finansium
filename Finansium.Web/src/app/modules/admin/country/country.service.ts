@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Constants } from '../../../core/constant';
 import { HttpClient } from '@angular/common/http';
-import { Country } from '../../../core/model/common.model';
+import { Country } from '../../../core/common.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -10,7 +10,10 @@ import { Observable } from 'rxjs';
 export class CountryService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  getAll() {
-    return this.httpClient.get<Country[]>(`${Constants.ApiUrl}/countries`);
+  getAll(searchTerm: string = '') {
+    return this.httpClient.post<Country[]>(
+      `${Constants.ApiUrl}/countries/search`,
+      { searchTerm }
+    );
   }
 }

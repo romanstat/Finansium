@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router, RouterOutlet } from '@angular/router';
-import { Country } from '../../core/model/common.model';
+import { Country } from '../../core/common.model';
 import { CommonModule } from '@angular/common';
 import { CountryService } from '../../modules/admin/country/country.service';
 

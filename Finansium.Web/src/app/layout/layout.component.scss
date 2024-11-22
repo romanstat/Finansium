@@ -34,7 +34,6 @@
 
 .toggle-btn {
   background-color: transparent;
-  cursor: pointer;
   border: 0;
   padding: 1rem 1.5rem;
 }
@@ -85,6 +84,11 @@ a.sidebar-link:hover {
 
 .sidebar-item {
   position: relative;
+  cursor: pointer;
+}
+
+.sidebar-link {
+  cursor: pointer;
 }
 
 #sidebar.expand .sidebar-dropdown .sidebar-link {

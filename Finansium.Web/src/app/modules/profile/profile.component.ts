@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { User } from '../../core/model/common.model';
+import { User } from '../../core/common.model';
 import { Constants } from '../../core/constant';
 import { AuthService } from '../../auth/auth.service';
 
@@ -16,10 +16,16 @@ export class ProfileComponent implements OnInit {
   user!: User;
 
   get userRoles(): string {
-    return this.user.roles.map(x => x.name).join(', ');
+    return this.user.roles.map((x) => x.name).join(', ');
   }
 
   ngOnInit(): void {
-    this.user = this.authService.getUser();
+    this.authService.setUser();
+
+    this.authService.user$.subscribe({
+      next: (user) => {
+        this.user = user!;
+      },
+    });
   }
 }

@@ -10,18 +10,18 @@ export class NewsService {
   constructor(private readonly httpClient: HttpClient) {}
 
   getAll() {
-    return this.httpClient.get<News[]>(`${Constants.ApiUrl}/news`);
+    return this.httpClient.get<News[]>(`${Constants.ApiUrl}/news/search/relevant`);
   }
 
   create(payload: any) {
-    return this.httpClient.post<News[]>(`${Constants.ApiUrl}/news`, payload);
+    return this.httpClient.post<string>(`${Constants.ApiUrl}/news`, payload);
   }
 
   update(payload: any) {
-    return this.httpClient.put<News[]>(`${Constants.ApiUrl}/news`, payload);
+    return this.httpClient.put<string>(`${Constants.ApiUrl}/news`, payload);
   }
 
-  delete(id: string) {
-    return this.httpClient.delete(`${Constants.ApiUrl}/news/${id}`);
+  outdate(id: string) {
+    return this.httpClient.post(`${Constants.ApiUrl}/news/${id}/outdate`, []);
   }
 }

@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Injector, OnInit } from '@angular/core';
 import { RouterModule, RouterLink, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { User } from '../core/model/common.model';
+import { User } from '../core/common.model';
+import { NotificationService } from '../modules/notification/notification.service';
 
 @Component({
   selector: 'app-layout',
@@ -14,9 +15,11 @@ import { User } from '../core/model/common.model';
 export class LayoutComponent implements OnInit {
   router = inject(Router);
   authService = inject(AuthService);
+  notificationService = inject(NotificationService);
 
-  isLoggedIn = true;
+  isLoggedIn = false;
   isSidebarExpanded = false;
+  unreadCount = 0;
 
   logout() {
     this.isLoggedIn = false;
@@ -28,11 +31,30 @@ export class LayoutComponent implements OnInit {
     this.isSidebarExpanded = !this.isSidebarExpanded;
   }
 
+  private startPollingUnreadCount(): void {
+    setInterval(() => {
+      this.notificationService.updateUnreadCount();
+    }, 5000);
+  }
+
   ngOnInit(): void {
-    if (!this.isLoggedIn) {
-      this.router.navigate(['login']);
-    } else {
-      this.router.navigate(['profile']);
-    }
+    this.notificationService.unreadCount$.subscribe({
+      next: (unreadCount) => {
+        this.unreadCount = unreadCount!;
+      },
+    });
+
+    this.startPollingUnreadCount();
+
+    this.authService.isLoggedIn$.subscribe({
+      next: (loggedIn) => {
+        this.isLoggedIn = loggedIn;
+        if (!this.isLoggedIn) {
+          this.router.navigate(['login']);
+        } else {
+          this.router.navigate(['profile']);
+        }
+      },
+    });
   }
 }

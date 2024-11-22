@@ -1,1 +1,17 @@
-<p>account works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 mb-3">
+            <div class="card" *ngFor="let account of accounts">
+                <div class="card-header">
+                    {{account.name}}
+                  </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{account.name}}</h5>
+                    <p class="card-text">{{account.amount}}</p>
+                    <p class="card-text">{{account.currency}}</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

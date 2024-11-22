@@ -1,46 +1,36 @@
 <div class="container mt-5">
   <h2>Уведомления за сегодня</h2>
   <div class="today-notifications mb-5">
-    <div class="notification">
+    <div class="notification" *ngFor="let notification of todayNotifications;">
       <div>
-        <div class="notification-title">New Comment</div>
-        <div class="notification-description">
-          You have a new comment on your post
-        </div>
-        <div class="notification-date">2024-11-19</div>
+        <div class="notification-title">{{notification.title}}</div>
+        <div class="notification-description">{{notification.description}}</div>
+        <div class="notification-date">{{notification.createdAt | date: 'yyyy-MM-dd'}}</div>
       </div>
-      <div><i class="icon unread-icon">✖</i></div>
-    </div>
-    <div class="notification">
       <div>
-        <div class="notification-title">New Comment</div>
-        <div class="notification-description">
-          You have a new comment on your post
-        </div>
-        <div class="notification-date">2024-11-19</div>
+        <button type="button" style="background-color: #fafbfe;" (click)="toggleViewed(notification)">
+          <i class="icon" [ngClass]="notification.isViewed ? 'read-icon' : 'unread-icon'">
+            {{notification.isViewed ? '✔' : '✖'}}
+          </i>
+        </button>
       </div>
-      <div><i class="icon unread-icon">✔</i></div>
-    </div>
-    <div class="notification">
-      <div>
-        <div class="notification-title">New Comment</div>
-        <div class="notification-description">
-          You have a new comment on your post
-        </div>
-        <div class="notification-date">2024-11-19</div>
-      </div>
-      <div><i class="icon unread-icon">✖</i></div>
     </div>
   </div>
   <h2>Все остальные уведомления</h2>
   <div class="other-notifications">
-    <div class="notification">
+    <div class="notification" *ngFor="let notification of otherNotifications;">
       <div>
-        <div class="notification-title">Weekly Report</div>
-        <div class="notification-description">Your weekly report is ready</div>
-        <div class="notification-date">2024-11-18</div>
+        <div class="notification-title">{{notification.title}}</div>
+        <div class="notification-description">{{notification.description}}</div>
+        <div class="notification-date">{{notification.createdAt | date: 'yyyy-MM-dd'}}</div>
       </div>
-      <div><i class="icon read-icon">✔</i></div>
+      <div>
+        <button type="button" style="background-color: #fafbfe;" (click)="toggleViewed(notification)">
+          <i class="icon" [ngClass]="notification.isViewed ? 'read-icon' : 'unread-icon'">
+            {{notification.isViewed ? '✔' : '✖'}}
+          </i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

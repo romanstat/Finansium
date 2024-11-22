@@ -17,6 +17,7 @@ builder.Services.Configure<JsonOptions>(options =>
     options.SerializerOptions.WriteIndented = true;
 });
 
+builder.Services.AddCors();
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
@@ -30,6 +31,12 @@ builder.Services.AddPersistence();
 builder.Services.AddInfrastructure();
 
 var app = builder.Build();
+
+app.UseCors(config => config
+    .WithOrigins("http://localhost:4200")
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials());
 
 app.UseExceptionHandler();
 
