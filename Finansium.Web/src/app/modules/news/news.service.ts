@@ -22,6 +22,6 @@ export class NewsService {
   }
 
   outdate(id: string) {
-    return this.httpClient.post(`${Constants.ApiUrl}/news/${id}/outdate`, []);
+    return this.httpClient.put(`${Constants.ApiUrl}/news/${id}/outdate`, []);
   }
 }

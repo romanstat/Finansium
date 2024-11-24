@@ -1,16 +1,23 @@
 <div class="container mt-5">
+  <div class="d-flex justify-content-end">
+    <button type="button" (click)="viewedAll()">Просмотреть все</button>
+  </div>
   <h2>Уведомления за сегодня</h2>
   <div class="today-notifications mb-5">
-    <div class="notification" *ngFor="let notification of todayNotifications;">
+    <div class="notification" *ngFor="let notification of todayNotifications">
       <div>
-        <div class="notification-title">{{notification.title}}</div>
-        <div class="notification-description">{{notification.description}}</div>
-        <div class="notification-date">{{notification.createdAt | date: 'yyyy-MM-dd'}}</div>
+        <div class="notification-title">{{ notification.title }}</div>
+        <div class="notification-description">
+          {{ notification.description }}
+        </div>
+        <div class="notification-date">
+          {{ notification.createdAt | date : "yyyy-MM-dd" }}
+        </div>
       </div>
       <div>
-        <button type="button" style="background-color: #fafbfe;" (click)="toggleViewed(notification)">
+        <button type="button" style="background-color: #fafbfe" (click)="toggleViewed(notification)">
           <i class="icon" [ngClass]="notification.isViewed ? 'read-icon' : 'unread-icon'">
-            {{notification.isViewed ? '✔' : '✖'}}
+            {{ notification.isViewed ? "✔" : "✖" }}
           </i>
         </button>
       </div>
@@ -18,16 +25,20 @@
   </div>
   <h2>Все остальные уведомления</h2>
   <div class="other-notifications">
-    <div class="notification" *ngFor="let notification of otherNotifications;">
+    <div class="notification" *ngFor="let notification of otherNotifications">
       <div>
-        <div class="notification-title">{{notification.title}}</div>
-        <div class="notification-description">{{notification.description}}</div>
-        <div class="notification-date">{{notification.createdAt | date: 'yyyy-MM-dd'}}</div>
+        <div class="notification-title">{{ notification.title }}</div>
+        <div class="notification-description">
+          {{ notification.description }}
+        </div>
+        <div class="notification-date">
+          {{ notification.createdAt | date : "yyyy-MM-dd" }}
+        </div>
       </div>
       <div>
-        <button type="button" style="background-color: #fafbfe;" (click)="toggleViewed(notification)">
+        <button type="button" style="background-color: #fafbfe" (click)="toggleViewed(notification)">
           <i class="icon" [ngClass]="notification.isViewed ? 'read-icon' : 'unread-icon'">
-            {{notification.isViewed ? '✔' : '✖'}}
+            {{ notification.isViewed ? "✔" : "✖" }}
           </i>
         </button>
       </div>

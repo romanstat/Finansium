@@ -9,7 +9,7 @@ internal sealed class BudgetConfiguration : IEntityTypeConfiguration<Budget>
         builder.HasIndex(budget => budget.Type);
 
         builder.Property(budget => budget.Type)
-            .HasMaxLength(10)
+            .HasMaxLength(20)
             .HasConversion(type => type.Name, name => BudgetType.FromName(name))
             .IsRequired();
     }

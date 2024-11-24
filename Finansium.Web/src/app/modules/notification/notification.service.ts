@@ -15,26 +15,33 @@ export class NotificationService {
 
   getAllToday() {
     return this.httpClient.get<Notify[]>(
-      `${Constants.ApiUrl}/users/notifications`
+      `${Constants.ApiUrl}/notifications/today`
     );
   }
 
   getAllNotToday() {
     return this.httpClient.get<Notify[]>(
-      `${Constants.ApiUrl}/users/notifications`
+      `${Constants.ApiUrl}/notifications/older`
+    );
+  }
+
+  viewedAll() {
+    return this.httpClient.put(
+      `${Constants.ApiUrl}/notifications/viewed-all`,
+      []
     );
   }
 
   updateViewed(id: string) {
     return this.httpClient.put(
-      `${Constants.ApiUrl}/users/notifications/${id}/change-view`,
+      `${Constants.ApiUrl}/notifications/${id}/view-status`,
       []
     );
   }
 
   updateUnreadCount() {
     this.httpClient
-      .get<number>(`${Constants.ApiUrl}/users/notifications/unread-count`)
+      .get<number>(`${Constants.ApiUrl}/notifications/unread-count`)
       .subscribe({
         next: (result) => {
           this.unreadCountSubject.next(result);

@@ -33,6 +33,8 @@ public sealed class Category : Entity
             TransactionType = transactionType
         };
 
+        category.AddDefaultBudgets();
+
         return category;
     }
 
@@ -41,15 +43,11 @@ public sealed class Category : Entity
         Name = name;
     }
 
-    public Result AddBudget(Budget budget)
+    private void AddDefaultBudgets()
     {
-        if (_budget.Any(b => b.Type == budget.Type))
-        {
-            return Result.Failure(CategoryErrors.BudgetAlreadyExists(budget.Type));
-        }
-
-        _budget.Add(budget);
-
-        return Result.Success();
+        _budget.AddRange([
+            Budget.Create(BudgetType.Weekly, 0),
+            Budget.Create(BudgetType.Monthly, 0),
+            Budget.Create(BudgetType.Annual, 0)]);
     }
 }

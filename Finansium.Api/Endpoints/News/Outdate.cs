@@ -6,7 +6,7 @@ internal sealed class Outdate : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("news/{id}/outdate", async (Ulid id, ISender sender) =>
+        app.MapPut("news/{id}/outdate", async (Ulid id, ISender sender) =>
         {
             var result = await sender.Send(new OutdateNewsCommand(id));
 

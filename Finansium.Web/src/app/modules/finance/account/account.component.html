@@ -1,17 +1,191 @@
-<div class="container">
-    <div class="row">
-        <div class="col-sm-3 mb-3">
-            <div class="card" *ngFor="let account of accounts">
-                <div class="card-header">
-                    {{account.name}}
-                  </div>
+<div class="container my-5">
+    <h1 class="mb-4">Счета</h1>
+
+    <div class="d-flex justify-content-between mb-4">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAccountModal">
+            Добавить новый счёт
+        </button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#transferModal">
+            Перевод между счетами
+        </button>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col" *ngFor="let account of accounts">
+            <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{account.name}}</h5>
-                    <p class="card-text">{{account.amount}}</p>
-                    <p class="card-text">{{account.currency}}</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div *ngIf="!isEditing(account)">
+                            <h5 class="card-title">{{ account.name }}</h5>
+                        </div>
+                        <div *ngIf="isEditing(account)">
+                            <input type="text" [(ngModel)]="account.name" class="form-control form-control-sm" />
+                            <button type="button" class="btn btn-link p-0 text-success" (click)="save(account)">
+                                <i class="bi bi-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-link p-0 text-danger" (click)="cancelEditing()">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="card-text">
+                        <strong>Баланс:</strong> {{ account.balance }}
+                        {{ account.currency }}
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">Дата создания: {{ account.createdAt | date: 'yyyy:MM:dd'}}</small>
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">Дата изменения: {{ account.modifiedAt | date: 'yyyy:MM:dd' }}</small>
+                    </p>
+                </div>
+                <div class="card-footer text-end">
+                    <button type="button" class="btn btn-link p-0" (click)="edit(account)">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button class="btn btn-link p-0 text-danger" (click)="delete(account.id)">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <h2 class="mt-5">Переводы между счетами</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Источник</th>
+                    <th>Целевой счет</th>
+                    <th>Сумма</th>
+                    <th>Валюта</th>
+                    <th>Курс валюты</th>
+                    <th>Дата перевода</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let accountTransfer of accountTransfers">
+                    <td>{{ accountTransfer.id }}</td>
+                    <td>{{ accountTransfer.sourceAccount }}</td>
+                    <td>{{ accountTransfer.targetAccount }}</td>
+                    <td>{{ accountTransfer.amount }}</td>
+                    <td>
+                        {{ accountTransfer.sourceCurrency }} ->
+                        {{ accountTransfer.targetCurrency }}
+                    </td>
+                    <td>{{ accountTransfer.currencyRate }}</td>
+                    <td>{{ accountTransfer.date }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="createAccountModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createAccountModalTitle">Создать новый счёт</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <form [formGroup]="createForm">
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="name" class="form-label">Название счета</label>
+                        <input type="text" class="form-control" id="name" formControlName="name"
+                            placeholder="Введите название счета" />
+                        <div *ngIf="createForm.get('name')?.invalid && createForm.get('name')?.touched"
+                            class="text-danger">
+                            Название счета обязательно (макс. 50 символов)
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="currency" class="form-label">Валюта</label>
+                        <select class="form-select" id="currency" formControlName="currency">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="RUB">RUB</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="balance" class="form-label">Начальный баланс</label>
+                        <input type="number" class="form-control" id="balance" formControlName="balance"
+                            placeholder="Введите начальный баланс" />
+                        <div *ngIf="createForm.get('balance')?.invalid && createForm.get('balance')?.touched"
+                            class="text-danger">
+                            Баланс должен быть не меньше 0
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary" (click)="add()"
+                        [disabled]="createForm.invalid">Создать</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно: Перевод между счетами -->
+<div class="modal fade" id="transferModal" tabindex="-1" role="dialog" aria-labelledby="transferModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="transferModalTitle">Перевод между счетами</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <form [formGroup]="transferForm">
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="sourceAccount" class="form-label">Источник</label>
+                        <select id="sourceAccount" class="form-select" formControlName="sourceAccount">
+                            <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
+                        </select>
+                        <div *ngIf="transferForm.get('sourceAccount')?.invalid && transferForm.get('sourceAccount')?.touched"
+                            class="text-danger">
+                            Выберите источник счета
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="targetAccount" class="form-label">Целевой счет</label>
+                        <select id="targetAccount" class="form-select" formControlName="targetAccount">
+                            <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
+                        </select>
+                        <div *ngIf="transferForm.get('targetAccount')?.invalid && transferForm.get('targetAccount')?.touched"
+                            class="text-danger">
+                            Выберите целевой счет
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="amount" class="form-label">Сумма</label>
+                        <input type="number" class="form-control" id="amount" formControlName="amount"
+                            placeholder="Введите сумму перевода" />
+                        <div *ngIf="transferForm.get('amount')?.invalid && transferForm.get('amount')?.touched"
+                            class="text-danger">
+                            Сумма должна быть больше 0
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="currencyRate" class="form-label">Курс обмена</label>
+                        <input type="number" step="0.01" class="form-control" id="currencyRate"
+                            formControlName="currencyRate" placeholder="Введите курс обмена" />
+                        <div *ngIf="transferForm.get('currencyRate')?.invalid && transferForm.get('currencyRate')?.touched"
+                            class="text-danger">
+                            Курс должен быть больше 0.01
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-success" (click)="transfer()"
+                        [disabled]="transferForm.invalid">Перевести</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

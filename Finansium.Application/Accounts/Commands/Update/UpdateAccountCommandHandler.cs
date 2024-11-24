@@ -14,9 +14,7 @@ internal sealed class UpdateAccountCommandHandler(
             return Result.Failure(AccountErrors.NotFound(request.Id));
         }
 
-        account.Update(
-            request.Name,
-            AccountStatus.FromName(request.Status));
+        account.Update(request.Name);
 
         return Result.Success();
     }

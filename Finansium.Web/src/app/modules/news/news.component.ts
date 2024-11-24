@@ -35,7 +35,7 @@ export class NewsComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.saveForm = this.fb.group({
-      id: new FormControl({ value: '', disabled: true }, []),
+      id: new FormControl({ value: '', readonly: true }, []),
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
     });

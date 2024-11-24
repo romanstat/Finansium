@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -69,12 +70,28 @@ namespace Finansium.Persistence.Migrations
                 schema: "core",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_roles", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "subscription",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
+                    type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    start_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
+                    expired_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_subscription", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,7 +106,8 @@ namespace Finansium.Persistence.Migrations
                     patronymic = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     username = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     email = table.Column<string>(type: "character varying(254)", maxLength: 254, nullable: false),
-                    password_hash = table.Column<string>(type: "character varying(97)", maxLength: 97, nullable: false)
+                    password_hash = table.Column<string>(type: "character varying(97)", maxLength: 97, nullable: false),
+                    createde_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
@@ -108,9 +126,10 @@ namespace Finansium.Persistence.Migrations
                 schema: "core",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
-                    role_id = table.Column<string>(type: "character varying(26)", nullable: false),
-                    name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    role_id = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -120,8 +139,7 @@ namespace Finansium.Persistence.Migrations
                         column: x => x.role_id,
                         principalSchema: "core",
                         principalTable: "roles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -225,7 +243,7 @@ namespace Finansium.Persistence.Migrations
                 schema: "core",
                 columns: table => new
                 {
-                    roles_id = table.Column<string>(type: "character varying(26)", nullable: false),
+                    roles_id = table.Column<long>(type: "bigint", nullable: false),
                     users_id = table.Column<string>(type: "character varying(26)", nullable: false)
                 },
                 constraints: table =>
@@ -241,29 +259,6 @@ namespace Finansium.Persistence.Migrations
                     table.ForeignKey(
                         name: "fk_role_user_users_users_id",
                         column: x => x.users_id,
-                        principalSchema: "core",
-                        principalTable: "users",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "subscriptions",
-                schema: "core",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
-                    user_id = table.Column<string>(type: "character varying(26)", nullable: false),
-                    type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    start_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
-                    expired_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_subscriptions", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_subscriptions_users_user_id",
-                        column: x => x.user_id,
                         principalSchema: "core",
                         principalTable: "users",
                         principalColumn: "id",
@@ -373,7 +368,7 @@ namespace Finansium.Persistence.Migrations
                 {
                     id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
                     category_id = table.Column<string>(type: "character varying(26)", nullable: false),
-                    type = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
                     limit_amount = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
@@ -498,6 +493,13 @@ namespace Finansium.Persistence.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_permissions_name",
+                schema: "core",
+                table: "permissions",
+                column: "name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_permissions_role_id",
                 schema: "core",
                 table: "permissions",
@@ -522,6 +524,13 @@ namespace Finansium.Persistence.Migrations
                 column: "users_id");
 
             migrationBuilder.CreateIndex(
+                name: "ix_roles_name",
+                schema: "core",
+                table: "roles",
+                column: "name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "ix_savings_goals_account_id",
                 schema: "core",
                 table: "savings_goals",
@@ -531,12 +540,6 @@ namespace Finansium.Persistence.Migrations
                 name: "ix_savings_goals_user_id",
                 schema: "core",
                 table: "savings_goals",
-                column: "user_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_subscriptions_user_id",
-                schema: "core",
-                table: "subscriptions",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
@@ -616,7 +619,7 @@ namespace Finansium.Persistence.Migrations
                 schema: "core");
 
             migrationBuilder.DropTable(
-                name: "subscriptions",
+                name: "subscription",
                 schema: "core");
 
             migrationBuilder.DropTable(

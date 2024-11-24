@@ -2,8 +2,11 @@
 
 public record UserResponse(
     Ulid Id,
+    string Country,
     string Username,
     string Email,
     string Name,
     string Surname,
-    string Subscription);
+    string? Patronymic,
+    DateTimeOffset CreatedAt,
+    IReadOnlyList<Role> Roles);

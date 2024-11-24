@@ -30,8 +30,8 @@ public sealed class Notification : Entity
         return notification;
     }
 
-    public void Viewed()
+    public void Viewed(bool isViewed)
     {
-        IsViewed = true;
+        IsViewed = isViewed;
     }
 }

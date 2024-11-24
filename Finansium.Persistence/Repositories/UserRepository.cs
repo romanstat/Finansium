@@ -5,6 +5,16 @@ namespace Finansium.Persistence.Repositories;
 internal sealed class UserRepository(FinansiumDbContext finansiumDbContext)
     : Repository<User>(finansiumDbContext), IUserRepository
 {
+    public override void Add(User user)
+    {
+        foreach (Role role in user.Roles)
+        {
+            _dbContext.Attach(role);
+        }
+
+        base.Add(user);
+    }
+
     public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken) =>
         await _dbSet.SingleOrDefaultAsync(user => user.Username == username, cancellationToken);
 

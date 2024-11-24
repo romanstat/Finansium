@@ -1,7 +1,6 @@
 ﻿namespace Finansium.Application.Users.Queries.Get;
 
 internal sealed class GetUserQueryHandler(
-    TimeProvider timeProvider,
     IUserContext userContext,
     IFinansiumDbContext dbContext)
     : IQueryHandler<GetUserQuery, UserResponse>
@@ -14,13 +13,14 @@ internal sealed class GetUserQueryHandler(
             .Where(user => user.Username == userContext.Username)
             .Select(user => new UserResponse(
                 user.Id,
+                user.Country!.ShortName,
                 user.Username,
                 user.Email.Value,
                 user.Name,
                 user.Surname,
-                user.Subscriptions.Single(subscrtion => 
-                    subscrtion.UserId == userContext.UserId &&
-                    subscrtion.ExpiredAt >= timeProvider.GetUtcNow()).Type.Name))
+                user.Patronymic,
+                user.CreatedeAt,
+                user.Roles.ToList()))
             .SingleOrDefaultAsync(cancellationToken);
 
         if (userResponse is null)

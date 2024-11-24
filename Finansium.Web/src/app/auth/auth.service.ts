@@ -37,7 +37,6 @@ export class AuthService {
   setUser() {
     this.httpClient.get<User>(`${Constants.ApiUrl}/users`).subscribe({
       next: (result) => {
-        result.roles = [{id: '123', name: 'Admin'}]; // TO DO
         this.isLoggedInSubject.next(true);
         this.userSubject.next(result);
       },

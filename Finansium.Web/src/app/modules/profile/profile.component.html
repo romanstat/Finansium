@@ -28,11 +28,11 @@
     <p>{{ user.username }}</p>
   </div>
   <div>
-    <p class="user-col">Роли пользователя</p>
-    <p>{{ userRoles }}</p>
+    <p class="user-col">Дата создания аккаунта</p>
+    <p>{{ user.createdAt | date: 'yyyy-MM-dd HH:MM'}}</p>
   </div>
   <div>
-    <p class="user-col">Учетная запись заблокирована</p>
-    <p>{{ user.isBlocked ? 'Да' : 'Нет' }}</p>
+    <p class="user-col">Роли пользователя</p>
+    <p>{{ userRoles }}</p>
   </div>
 </div>

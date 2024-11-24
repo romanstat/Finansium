@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constants } from '../../../core/constant';
-import { CategoryBudget } from './budget.model';
+import { BudgetType, CategoryBudget } from './budget.model';
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +9,17 @@ import { CategoryBudget } from './budget.model';
 export class BudgetService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  getAll() {
-    return this.httpClient.get<CategoryBudget[]>(
-      `${Constants.ApiUrl}/categories/budgets`
+  search(type: string) {
+    return this.httpClient.post<CategoryBudget[]>(
+      `${Constants.ApiUrl}/categories/expense/budgets/search`,
+      { type }
+    );
+  }
+
+  save(budget: CategoryBudget) {
+    return this.httpClient.put(
+      `${Constants.ApiUrl}/categories/expense/budgets`,
+      budget
     );
   }
 }

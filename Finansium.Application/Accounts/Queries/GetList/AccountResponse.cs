@@ -3,6 +3,7 @@
 public sealed record AccountResponse(
     Ulid Id,
     string Name,
-    decimal Amount,
+    decimal Balance,
     string Currency,
-    string Status);
+    DateTimeOffset CreatedAt,
+    DateTimeOffset ModifiedAt);

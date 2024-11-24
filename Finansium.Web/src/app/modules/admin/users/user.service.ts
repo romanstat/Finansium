@@ -9,11 +9,10 @@ import { Constants } from '../../../core/constant';
 export class UserService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  getAll(searchTerm: string) {
-    return this.httpClient.post<User[]>(
-      `${Constants.ApiUrl}/users/search`,
-      searchTerm
-    );
+  getAll(searchTerm: string = '') {
+    return this.httpClient.post<User[]>(`${Constants.ApiUrl}/users/search`, {
+      searchTerm,
+    });
   }
 
   update(user: User) {

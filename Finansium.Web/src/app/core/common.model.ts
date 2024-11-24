@@ -3,15 +3,15 @@ export interface User {
   country: string;
   name: string;
   surname: string;
-  patronymic: string;
+  patronymic?: string;
   email: string;
   username: string;
-  isBlocked: boolean;
+  createdAt: Date;
   roles: Role[];
 }
 
 export interface Role {
-  id: string;
+  id: number;
   name: string;
 }
 

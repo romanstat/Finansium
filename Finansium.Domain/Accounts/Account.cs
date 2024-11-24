@@ -103,10 +103,9 @@ public sealed class Account : Entity
         return Result.Success();
     }
 
-    public void Update(string name, AccountStatus status)
+    public void Update(string name)
     {
         Name = name;
-        Status = status;
     }
 
     public void AddTransactions(params Transaction[] transactions)

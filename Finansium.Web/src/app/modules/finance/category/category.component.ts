@@ -20,7 +20,11 @@ export class CategoryComponent implements OnInit {
   editingCategory: Category | null = null;
 
   addExpense() {
-    const newCategory: Category = { id: '', name: '' };
+    const newCategory: Category = {
+      id: '',
+      name: '',
+      type: TransactionType.Expense,
+    };
 
     this.categoryService.createExpense(newCategory).subscribe((result) => {
       newCategory.id = result;
@@ -30,7 +34,11 @@ export class CategoryComponent implements OnInit {
   }
 
   addIncome() {
-    const newCategory: Category = { id: '', name: '' };
+    const newCategory: Category = {
+      id: '',
+      name: '',
+      type: TransactionType.Income,
+    };
 
     this.categoryService.createIncome(newCategory).subscribe((result) => {
       newCategory.id = result;
@@ -46,10 +54,12 @@ export class CategoryComponent implements OnInit {
   }
 
   save(category: Category) {
-    this.editingCategory = null;
+    this.categoryService.update(category).subscribe({
+      next: () => {
+        this.editingCategory = null;
 
-    this.categoryService.update(category).subscribe(() => {
-      this.loadCategories();
+        this.loadCategories();
+      },
     });
   }
 
@@ -57,7 +67,7 @@ export class CategoryComponent implements OnInit {
     this.editingCategory = category;
   }
 
-  cancelEdit() {
+  cancelEditing() {
     this.editingCategory = null;
   }
 

@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241025181946_Initial")]
+    [Migration("20241124200420_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -147,8 +147,8 @@ namespace Finansium.Persistence.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("type");
 
                     b.HasKey("Id")
@@ -488,18 +488,10 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("character varying(20)")
                         .HasColumnName("type");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("character varying(26)")
-                        .HasColumnName("user_id");
-
                     b.HasKey("Id")
-                        .HasName("pk_subscriptions");
+                        .HasName("pk_subscription");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_subscriptions_user_id");
-
-                    b.ToTable("subscriptions", "core");
+                    b.ToTable("subscription", "core");
                 });
 
             modelBuilder.Entity("Finansium.Domain.Transactions.Transaction", b =>
@@ -598,11 +590,12 @@ namespace Finansium.Persistence.Migrations
 
             modelBuilder.Entity("Finansium.Domain.Users.Permission", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(26)
-                        .HasColumnType("character varying(26)")
-                        .HasColumnName("id")
-                        .HasColumnOrder(0);
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -610,13 +603,16 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("name");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("character varying(26)")
+                    b.Property<long?>("RoleId")
+                        .HasColumnType("bigint")
                         .HasColumnName("role_id");
 
                     b.HasKey("Id")
                         .HasName("pk_permissions");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("ix_permissions_name");
 
                     b.HasIndex("RoleId")
                         .HasDatabaseName("ix_permissions_role_id");
@@ -666,11 +662,12 @@ namespace Finansium.Persistence.Migrations
 
             modelBuilder.Entity("Finansium.Domain.Users.Role", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(26)
-                        .HasColumnType("character varying(26)")
-                        .HasColumnName("id")
-                        .HasColumnOrder(0);
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -680,6 +677,10 @@ namespace Finansium.Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_roles");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("ix_roles_name");
 
                     b.ToTable("roles", "core");
                 });
@@ -696,6 +697,12 @@ namespace Finansium.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("character varying(26)")
                         .HasColumnName("country_id");
+
+                    b.Property<DateTimeOffset>("CreatedeAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("createde_at")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -751,8 +758,8 @@ namespace Finansium.Persistence.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.Property<string>("RolesId")
-                        .HasColumnType("character varying(26)")
+                    b.Property<long>("RolesId")
+                        .HasColumnType("bigint")
                         .HasColumnName("roles_id");
 
                     b.Property<string>("UsersId")
@@ -938,18 +945,6 @@ namespace Finansium.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Finansium.Domain.Subscriptions.Subscription", b =>
-                {
-                    b.HasOne("Finansium.Domain.Users.User", "User")
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_subscriptions_users_user_id");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Finansium.Domain.Transactions.Transaction", b =>
                 {
                     b.HasOne("Finansium.Domain.Accounts.Account", "Account")
@@ -1013,14 +1008,10 @@ namespace Finansium.Persistence.Migrations
 
             modelBuilder.Entity("Finansium.Domain.Users.Permission", b =>
                 {
-                    b.HasOne("Finansium.Domain.Users.Role", "Role")
+                    b.HasOne("Finansium.Domain.Users.Role", null)
                         .WithMany("Permissions")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_permissions_roles_role_id");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Finansium.Domain.Users.RefreshToken", b =>
@@ -1090,8 +1081,6 @@ namespace Finansium.Persistence.Migrations
                     b.Navigation("Notifications");
 
                     b.Navigation("SavingsGoals");
-
-                    b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
         }

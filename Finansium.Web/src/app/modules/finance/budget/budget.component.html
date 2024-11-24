@@ -1,1 +1,36 @@
-<p>budget works!</p>
+<div class="container mt-4">
+    <ul class="nav nav-tabs" id="budgetTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="weekly-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="weekly" aria-selected="true" (click)="changeBudgetType('Еженедельно')">Еженедельно</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="monthly" aria-selected="false" (click)="changeBudgetType('Ежемесячно')">Ежемесячно</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="annual-tab" data-bs-toggle="tab" type="button" role="tab" aria-controls="annual" aria-selected="false" (click)="changeBudgetType('Ежегодно')">Ежегодно</button>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-3">
+        <h5>Бюджет для {{ currentBudgetType }}</h5>
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Категория</th>
+                    <th scope="col">Бюджет (Лимит)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let budget of budgets">
+                    <td>{{ budget.name }}</td>
+                    <td>
+                        <input type="number" class="form-control" [(ngModel)]="budget.limitAmount" placeholder="Введите бюджет" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn-save btn-sm me-2" (click)="save(budget)">Сохранить</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -25,6 +25,12 @@ export class NotificationComponent implements OnInit {
     });
   }
 
+  viewedAll(): void {
+    this.notificationService.viewedAll().subscribe(() =>{
+      this.loadNotifications()
+    });
+  }
+
   ngOnInit(): void {
     this.loadNotifications();
   }

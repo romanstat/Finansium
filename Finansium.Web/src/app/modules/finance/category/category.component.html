@@ -22,7 +22,7 @@
                                     <i class="bi-check" (click)="save(category)"></i>
                                 </button>
                                 <button *ngIf="isEditing(category)" type="button" class="me-2">
-                                    <i class="bi-x" (click)="cancelEdit()"></i>
+                                    <i class="bi-x" (click)="cancelEditing()"></i>
                                 </button>
                                 <button *ngIf="!isEditing(category)" type="button" class="me-2"
                                     (click)="delete(category.id)">
@@ -56,7 +56,7 @@
                                     <i class="bi-check" (click)="save(category)"></i>
                                 </button>
                                 <button *ngIf="isEditing(category)" type="button" class="me-2">
-                                    <i class="bi-x" (click)="cancelEdit()"></i>
+                                    <i class="bi-x" (click)="cancelEditing()"></i>
                                 </button>
                                 <button *ngIf="!isEditing(category)" type="button" class="me-2"
                                     (click)="delete(category.id)">

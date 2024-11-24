@@ -2,5 +2,5 @@
 
 public sealed record CreateAccountCommand(
     string Name,
-    decimal Amount,
+    decimal Balance,
     string Currency) : ICommand<Ulid>;

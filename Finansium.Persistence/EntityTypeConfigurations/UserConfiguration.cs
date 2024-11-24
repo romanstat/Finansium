@@ -33,5 +33,9 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(user => user.PasswordHash)
             .HasMaxLength(97)
             .IsRequired();
+
+        builder.Property(user => user.CreatedeAt)
+            .HasDefaultValueSql(Constants.EntityConfigurations.DateDefaultSql)
+            .IsRequired();
     }
 }

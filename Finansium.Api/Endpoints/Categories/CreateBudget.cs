@@ -6,7 +6,7 @@ internal sealed class CreateBudget : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("categories/expense/budget", async (CreateCategoryBudgetCommand command, ISender sender) =>
+        app.MapPut("categories/expense/budgets", async (CreateCategoryBudgetCommand command, ISender sender) =>
         {
             var result = await sender.Send(command);
 

@@ -30,4 +30,10 @@ public sealed class NewsItem : Entity
     {
         IsOutdated = true;
     }
+
+    public void Update(string title, string description)
+    {
+        Title = title;
+        Description = description;
+    }
 }

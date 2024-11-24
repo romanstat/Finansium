@@ -12,12 +12,13 @@ internal sealed class SearchCategoryQueryHandler(
         var categoryType = TransactionType.FromName(request.Type);
 
         var categories = await dbContext.Categories
-            .Where(account => 
-                account.UserId == userContext.UserId &&
-                account.TransactionType == categoryType)
-            .Select(account => new CategoryResponse(
-                account.Id,
-                account.Name))
+            .Where(category => 
+                category.UserId == userContext.UserId &&
+                category.TransactionType == categoryType)
+            .Select(category => new CategoryResponse(
+                category.Id,
+                category.Name,
+                category.TransactionType.Name))
             .ToListAsync(cancellationToken);
 
         return categories;

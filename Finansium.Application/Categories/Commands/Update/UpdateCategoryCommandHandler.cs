@@ -10,6 +10,14 @@ internal sealed class UpdateCategoryCommandHandler(
         UpdateCategoryCommand request, 
         CancellationToken cancellationToken)
     {
+        if (!await categoryRepository.IsNameUnique(
+            request.Name,
+            TransactionType.FromName(request.Type),
+            cancellationToken))
+        {
+            return Result.Failure<Ulid>(CategoryErrors.UniqueName(request.Name));
+        }
+
         var category = await categoryRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (category is null)

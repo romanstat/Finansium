@@ -1,17 +1,21 @@
-﻿
-namespace Finansium.Application.Users.Queries.GetNotifications;
+﻿using Finansium.Application.Notifications.Queries.GetToday;
 
-internal sealed class GetUserNotificationsQueryHandler(
+namespace Finansium.Application.Notifications.Queries.GetOlder;
+
+internal sealed class GetOlderNotificationsQueryHandler(
     IUserContext userContext,
-    IFinansiumDbContext finansiumDbContext)
-    : IQueryHandler<GetUserNotificationsQuery, IReadOnlyList<NotififcationResponse>>
+    IFinansiumDbContext finansiumDbContext,
+    TimeProvider timeProvider)
+    : IQueryHandler<GetOlderNotificationsQuery, IReadOnlyList<NotififcationResponse>>
 {
     public async Task<Result<IReadOnlyList<NotififcationResponse>>> Handle(
-        GetUserNotificationsQuery request,
+        GetOlderNotificationsQuery request,
         CancellationToken cancellationToken)
     {
         var userNotifications = await finansiumDbContext.Notifications
-            .Where(notification => notification.Id == userContext.UserId)
+            .Where(notification =>
+                notification.UserId == userContext.UserId &&
+                notification.CreatedAt.Date < timeProvider.GetUtcNow().Date)
             .Select(notification => new NotififcationResponse(
                 notification.Id,
                 notification.Title,

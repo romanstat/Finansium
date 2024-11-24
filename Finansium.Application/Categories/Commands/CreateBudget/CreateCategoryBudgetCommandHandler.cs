@@ -1,5 +1,4 @@
-﻿using Finansium.Domain.Budgets;
-using Finansium.Domain.Categories;
+﻿using Finansium.Domain.Categories;
 
 namespace Finansium.Application.Categories.Commands.CreateBudget;
 
@@ -11,23 +10,18 @@ internal sealed class CreateCategoryBudgetCommandHandler(
         CreateCategoryBudgetCommand request, 
         CancellationToken cancellationToken)
     {
-        var category = await categoryRepository.GetByIdWithBudgetsAsync(request.CategoryId, cancellationToken);
+        var category = await categoryRepository.GetByIdWithBudgetsAsync(
+            request.CategoryId, 
+            cancellationToken);
 
         if (category is null)
         {
             return Result.Failure<Ulid>(CategoryErrors.NotFound(request.CategoryId));
         }
 
-        var budget = Budget.Create(
-            BudgetType.FromName(request.BudgetType),
-            request.LimitAmount);
+        var budget = category.Budgets.Single(b => b.Id == request.Id);
 
-        var addBudgetResult = category.AddBudget(budget);
-
-        if (addBudgetResult.IsFailure)
-        {
-            return Result.Failure<Ulid>(addBudgetResult.Error);
-        }
+        budget.ChangeAmount(request.LimitAmount);
 
         return budget.Id;
     }

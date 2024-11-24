@@ -12,4 +12,12 @@ export class AccountService {
   getAll() {
     return this.httpClient.get<Account[]>(`${Constants.ApiUrl}/accounts/list`);
   }
+
+  update(account: Account) {
+    return this.httpClient.put(`${Constants.ApiUrl}/accounts`, account);
+  }
+
+  delete(id: string) {
+    return this.httpClient.delete(`${Constants.ApiUrl}/accounts/${id}`);
+  }
 }

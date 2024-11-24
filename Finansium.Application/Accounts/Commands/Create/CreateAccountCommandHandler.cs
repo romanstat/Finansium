@@ -19,7 +19,7 @@ internal sealed class CreateAccountCommandHandler(
         }
 
         var balance = new Money(
-            request.Amount,
+            request.Balance,
             Currency.FromCode(request.Currency));
 
         var account = Account.Create(

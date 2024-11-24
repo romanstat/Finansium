@@ -78,7 +78,7 @@
               <a class="sidebar-link">Cчета</a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link">Расходы и Доходы ???</a>
+              <a class="sidebar-link" routerLink="income-expense">Доходы и расходы</a>
             </li>
             <li class="sidebar-item" routerLink="savings-goal">
               <a class="sidebar-link">Цели</a>
@@ -103,8 +103,8 @@
         <li class="sidebar-item">
           <a class="sidebar-link" routerLink="notification">
             <i class="bi bi-bell"></i>
-            <span>Уведомления</span>
-            <span *ngIf="unreadCount != 0" class="badge text-bg-secondary">{{unreadCount}}</span>
+            <span class="me-1">Уведомления</span>
+            <span *ngIf="unreadCount !== 0" class="badge text-bg-secondary">{{unreadCount}}</span>
           </a>
         </li>
         <li class="sidebar-item">

@@ -27,4 +27,9 @@ public sealed class Budget : Entity
 
         return budget;
     }
+
+    public void ChangeAmount(decimal limitAmount)
+    {
+        LimitAmount = limitAmount;
+    }
 }

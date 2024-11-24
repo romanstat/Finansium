@@ -2,8 +2,10 @@
 
 public sealed record AccountTransferResponse(
     Ulid Id,
-    string SourceAccountName,
-    string TargetAccountName,
+    string SourceAccount,
+    string TargetAccount,
     decimal Amount,
+    string SourceCurrency,
+    string TargetCurrency,
     decimal CurrencyRate,
     DateTimeOffset Date);

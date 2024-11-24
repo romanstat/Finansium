@@ -1,10 +1,8 @@
 ﻿namespace Finansium.Domain.Users;
 
-public sealed class Permission : Entity
+public sealed class Permission
 {
-    public Ulid RoleId { get; private set; }
-
-    public Role? Role { get; private set; }
+    public long Id { get; init; }
 
     public string Name { get; init; }
 }

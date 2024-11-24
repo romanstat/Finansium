@@ -2,4 +2,5 @@
 
 public sealed record UpdateCategoryCommand(
     Ulid Id, 
-    string Name) : ICommand<Ulid>;
+    string Name,
+    string Type) : ICommand<Ulid>;

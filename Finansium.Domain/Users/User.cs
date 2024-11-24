@@ -1,14 +1,12 @@
 ﻿using Finansium.Domain.Accounts;
 using Finansium.Domain.Counties;
 using Finansium.Domain.SavingsGoals;
-using Finansium.Domain.Subscriptions;
 
 namespace Finansium.Domain.Users;
 
 public sealed class User : Entity
 {
     private readonly List<Role> _roles = [];
-    private readonly List<Subscription> _subscription = [];
     private readonly List<Notification> _notifications = [];
     private readonly List<Account> _accounts = [];
     private readonly List<SavingsGoal> _savingGoals = [];
@@ -29,9 +27,9 @@ public sealed class User : Entity
 
     public string PasswordHash { get; private set; }
 
-    public IReadOnlyCollection<Role> Roles => _roles;
+    public DateTimeOffset CreatedeAt { get; private set; }
 
-    public IReadOnlyCollection<Subscription> Subscriptions => _subscription;
+    public IReadOnlyCollection<Role> Roles => _roles;
 
     public IReadOnlyCollection<Notification> Notifications => _notifications;
 
@@ -58,9 +56,10 @@ public sealed class User : Entity
             Username = username,
             Email = email,
             PasswordHash = passwordHash,
+            CreatedeAt = createdAt
         };
 
-        user.AddDefaultSubscription(createdAt);
+        user._roles.Add(Role.User);
 
         return user;
     }
@@ -75,8 +74,13 @@ public sealed class User : Entity
         _notifications.AddRange(notifications);
     }
 
-    private void AddDefaultSubscription(DateTimeOffset startDate)
+    public void Update(
+        string name,
+        string surname,
+        string patronymic)
     {
-        _subscription.Add(Subscription.Create(Id, SubscriptionType.FromName("Free"), startDate));
+        Name = name;
+        Surname = surname;
+        Patronymic = patronymic;
     }
 }

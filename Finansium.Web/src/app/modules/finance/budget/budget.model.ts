@@ -1,11 +1,12 @@
 export enum BudgetType{
-  Weekly = 'Weekly',
-  Monthly = 'Monthly',
-  Annual = 'Annual'
+  Weekly = 'Еженедельно',
+  Monthly = 'Ежемесячно',
+  Annual = 'Ежегодно'
 }
 
 export interface CategoryBudget{
-  id: string,
+  id: string;
+  categoryId: string,
   name: string,
   type: BudgetType,
   limitAmount: number;

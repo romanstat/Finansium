@@ -13,14 +13,13 @@ import { SavingsGoalComponent } from './modules/finance/savings-goal/savings-goa
 import { CategoryComponent } from './modules/finance/category/category.component';
 import { BudgetComponent } from './modules/finance/budget/budget.component';
 import { RecurringTransactionComponent } from './modules/finance/recurring-transaction/recurring-transaction.component';
+import { IncomeExpenseComponent } from './modules/finance/income-expense/income-expense.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
     children: [
-      { path: '', redirectTo: 'profile', pathMatch: 'full' },
-
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
 
@@ -30,6 +29,7 @@ export const routes: Routes = [
       { path: 'country', component: CountryComponent },
 
       { path: 'account', component: AccountComponent },
+      { path: 'income-expense', component: IncomeExpenseComponent },
       { path: 'savings-goal', component: SavingsGoalComponent },
       { path: 'category', component: CategoryComponent },
       { path: 'budget', component: BudgetComponent },

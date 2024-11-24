@@ -1,4 +1,4 @@
-﻿namespace Finansium.Application.Users.Queries.GetNotifications;
+﻿namespace Finansium.Application.Notifications.Queries.GetToday;
 
 public sealed record NotififcationResponse(
     Ulid Id,

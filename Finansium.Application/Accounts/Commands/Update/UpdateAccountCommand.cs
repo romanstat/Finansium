@@ -2,5 +2,4 @@
 
 public sealed record UpdateAccountCommand(
     Ulid Id,
-    string Name,
-    string Status) : ICommand;
+    string Name) : ICommand;
