@@ -11,7 +11,7 @@
         <div class="d-flex justify-content-between w-100">
           <b>{{ newsItem.title }}</b>
           <span style="padding-right: 10px">
-            {{ newsItem.createdAt | date: 'yyyy-MM-dd' }}
+            {{ newsItem.createdAt | date: 'dd-MM-yyyy' }}
           </span>
         </div>
       </button>
@@ -56,7 +56,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-          <button type="submit" class="btn-create" (click)="onSubmit()">{{isEditing ? 'Сохранить' : 'Создать'}}</button>
+          <button type="submit" class="btn-create" data-bs-dismiss="modal" (click)="onSubmit()">{{isEditing ?
+            'Сохранить' : 'Создать'}}</button>
         </div>
       </form>
     </div>

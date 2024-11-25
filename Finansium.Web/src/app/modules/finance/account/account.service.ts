@@ -13,8 +13,16 @@ export class AccountService {
     return this.httpClient.get<Account[]>(`${Constants.ApiUrl}/accounts/list`);
   }
 
+  create(account: Account) {
+    return this.httpClient.post(`${Constants.ApiUrl}/accounts`, account);
+  }
+
   update(account: Account) {
     return this.httpClient.put(`${Constants.ApiUrl}/accounts`, account);
+  }
+
+  transfer(transferAccount: any) {
+    return this.httpClient.post(`${Constants.ApiUrl}/accounts/transfer`, transferAccount);
   }
 
   delete(id: string) {

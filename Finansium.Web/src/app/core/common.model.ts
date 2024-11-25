@@ -20,6 +20,12 @@ export enum TransactionType {
   Expense = 'Expense',
 }
 
+export interface Currency{
+  abbreviation: string;
+  name: string;
+  sign: string;
+}
+
 export interface Country {
   id: string;
   shortName: string;

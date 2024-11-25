@@ -2,7 +2,7 @@
   <aside id="sidebar" [class.expand]="isSidebarExpanded">
     <div class="d-flex">
       <button class="toggle-btn" type="button" (click)="toggleSidebar()">
-        <i class="bi bi-layout-sidebar"></i>
+        <i class="bi-layout-sidebar"></i>
       </button>
       <div class="sidebar-logo">
         <a href="#">Finansium</a>
@@ -13,19 +13,19 @@
         <li class="sidebar-item">
           <a class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#auth"
             aria-expanded="false" aria-controls="auth">
-            <i class="bi bi-shield-check"></i>
+            <i class="bi-shield-check"></i>
             <span>Авторизация</span>
           </a>
           <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
             <li class="sidebar-item">
               <a class="sidebar-link" routerLink="login">
-                <i class="bi bi-box-arrow-in-right"></i>
+                <i class="bi-box-arrow-in-right"></i>
                 Вход
               </a>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" routerLink="register">
-                <i class="bi bi-box-arrow-in-down"></i>
+                <i class="bi-box-arrow-in-down"></i>
                 Регистрация
               </a>
             </li>
@@ -36,29 +36,29 @@
       <ng-container *ngIf="isLoggedIn">
         <li class="sidebar-item">
           <a class="sidebar-link" routerLink="profile">
-            <i class="bi bi-person"></i>
+            <i class="bi-person"></i>
             <span>Профиль</span>
           </a>
         </li>
       </ng-container>
 
-      <ng-container *ngIf="isLoggedIn">
+      <ng-container *ngIf="isLoggedIn && isAdmin()">
         <li class="sidebar-item">
           <a class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#admin"
             aria-expanded="false" aria-controls="admin">
-            <i class="bi bi-person-gear"></i>
+            <i class="bi-person-gear"></i>
             <span>Администратор</span>
           </a>
           <ul id="admin" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
             <li class="sidebar-item">
               <a class="sidebar-link" routerLink="users">
-                <i class="bi bi-people-fill"></i>
+                <i class="bi-people-fill"></i>
                 Пользователи
               </a>
             </li>
             <li class="sidebar-item">
               <a class="sidebar-link" routerLink="country">
-                <i class="bi bi-houses"></i>
+                <i class="bi-houses"></i>
                 Страны
               </a>
             </li>
@@ -70,46 +70,63 @@
         <li class="sidebar-item">
           <a class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#fin"
             aria-expanded="false" aria-controls="fin">
-            <i class="bi bi-cash-stack"></i>
+            <i class="bi-cash-stack"></i>
             <span>Финансы</span>
           </a>
           <ul id="fin" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
             <li class="sidebar-item" routerLink="account">
-              <a class="sidebar-link">Cчета</a>
+              <a class="sidebar-link">
+                <i class="bi-wallet2"></i>
+                Счета
+              </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" routerLink="income-expense">Доходы и расходы</a>
+              <a class="sidebar-link" routerLink="income-expense">
+                <i class="bi-bank"></i>
+                Доходы и расходы</a>
             </li>
             <li class="sidebar-item" routerLink="savings-goal">
-              <a class="sidebar-link">Цели</a>
+              <a class="sidebar-link">
+                <i class="bi-flag"></i>
+                Цели
+              </a>
             </li>
             <li class="sidebar-item" routerLink="category">
-              <a class="sidebar-link">Категории</a>
+              <a class="sidebar-link">
+                <i class="bi-tags"></i>
+                Категории
+              </a>
             </li>
             <li class="sidebar-item" routerLink="budget">
-              <a class="sidebar-link">Бюджет</a>
+              <a class="sidebar-link">
+                <i class="bi-piggy-bank"></i>
+                Бюджет
+              </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link" routerLink="recurring-transaction">Повторяющиеся платежи</a>
+              <a class="sidebar-link" routerLink="recurring-transaction">
+                <i class="bi-arrow-repeat"></i>
+                Повторяющиеся платежи
+              </a>
             </li>
           </ul>
         </li>
         <li class="sidebar-item">
           <a class="sidebar-link" routerLink="analytics">
-            <i class="bi bi-pie-chart"></i>
+            <i class="bi-pie-chart"></i>
             <span>Аналитика</span>
           </a>
         </li>
         <li class="sidebar-item">
           <a class="sidebar-link" routerLink="notification">
-            <i class="bi bi-bell"></i>
+            <i class="bi-bell"></i>
             <span class="me-1">Уведомления</span>
             <span *ngIf="unreadCount !== 0" class="badge text-bg-secondary">{{unreadCount}}</span>
           </a>
         </li>
         <li class="sidebar-item">
           <a class="sidebar-link" routerLink="news">
-            <i class="bi bi-newspaper"></i>
+            <i class="bi-newspaper"></i>
             <span>Новости</span>
           </a>
         </li>
@@ -119,7 +136,7 @@
     <ng-container *ngIf="isLoggedIn">
       <div class="sidebar-footer">
         <a class="sidebar-link" (click)="logout()">
-          <i class="bi bi-box-arrow-in-left"></i>
+          <i class="bi-box-arrow-in-left"></i>
           <span>Выход</span>
         </a>
       </div>

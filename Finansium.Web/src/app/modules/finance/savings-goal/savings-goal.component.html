@@ -1,82 +1,109 @@
 <div class="container my-5">
-    <h1 class="mb-4">Цели</h1>
-  
-    <!-- Кнопка для добавления новой цели -->
-    <div class="d-flex justify-content-end mb-4">
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGoalModal">
-        <i class="bi bi-plus-circle"></i> Добавить новую цель
-      </button>
-    </div>
-  
-    <!-- Карточки целей -->
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col" *ngFor="let goal of goals">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{ goal.name }}</h5>
-            <p class="card-text"><strong>Целевая сумма:</strong> {{ goal.targetAmount }} {{ goal.currency }}</p>
-            <p class="card-text"><strong>Собрано:</strong> {{ goal.collectedAmount }} {{ goal.currency }}</p>
-            <p class="card-text"><strong>Статус:</strong> {{ goal.isCompleted ? 'Завершена' : 'В процессе' }}</p>
-            <p class="card-text"><small class="text-muted">Дата начала: {{ goal.startDate }}</small></p>
-            <p class="card-text"><small class="text-muted">Дата окончания: {{ goal.endDate }}</small></p>
+  <h1 class="mb-4">Цели</h1>
+
+  <div class="d-flex justify-content mb-4">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGoalModal">
+      <i class="bi bi-plus-circle"></i> Добавить новую цель
+    </button>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col" *ngFor="let savingsGoal of savingsGoals">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div *ngIf="!isEditing(savingsGoal)">
+              <h5 class="card-title">{{ savingsGoal.name }}</h5>
+              <p class="card-text"><strong>Цель:</strong> {{ savingsGoal.targetAmount }} {{ savingsGoal.currency }}</p>
+            </div>
+            <div *ngIf="isEditing(savingsGoal)">
+              <input type="text" [(ngModel)]="savingsGoal.name" class="form-control form-control-sm mb-2" />
+              <input type="number" [(ngModel)]="savingsGoal.targetAmount" class="form-control form-control-sm" />
+              <button type="button" class="btn btn-link p-0 text-success" (click)="save(savingsGoal)">
+                <i class="bi bi-check"></i>
+              </button>
+              <button type="button" class="btn btn-link p-0 text-danger" (click)="cancelEditing()">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
           </div>
-          <div class="card-footer text-end">
-            <!-- <button class="btn btn-link p-0 text-danger" (click)="deleteGoal(goal.id)"> -->
-              <i class="bi bi-trash"></i> Удалить
-            <!-- </button> -->
-          </div>
+          <p class="card-text"><strong>Собрано:</strong> {{ savingsGoal.currentAmount }} {{ savingsGoal.currency }}</p>
+          <p class="card-text"><strong>Статус:</strong> {{ savingsGoal.isCompleted ? 'Завершена' : 'В процессе' }}</p>
+          <p class="card-text"><small class="text-muted">Дата начала: {{ savingsGoal.startDate | date: 'dd.MM.yyyy'
+              }}</small></p>
+          <p class="card-text"><small class="text-muted">Дата окончания: {{ savingsGoal.endDate | date: 'dd.MM.yyyy'
+              }}</small></p>
         </div>
-      </div>
-    </div>
-  
-    <!-- Модальное окно: Создание новой цели -->
-    <div class="modal fade" id="createGoalModal" tabindex="-1" role="dialog" aria-labelledby="createGoalModalTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="createGoalModalTitle">Создать новую цель</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-          </div>
-          <form [formGroup]="createForm">
-            <div class="modal-body">
-              <div class="form-group mb-3">
-                <label for="goalName" class="form-label">Название цели</label>
-                <input type="text" class="form-control" id="goalName" formControlName="name" placeholder="Введите название цели" />
-                <div *ngIf="createForm.get('name')?.invalid && createForm.get('name')?.touched" class="text-danger">
-                  Название цели обязательно
-                </div>
-              </div>
-              <div class="form-group mb-3">
-                <label for="targetAmount" class="form-label">Целевая сумма</label>
-                <input type="number" class="form-control" id="targetAmount" formControlName="targetAmount" placeholder="Введите целевую сумму" />
-                <div *ngIf="createForm.get('targetAmount')?.invalid && createForm.get('targetAmount')?.touched" class="text-danger">
-                  Целевая сумма должна быть больше 0
-                </div>
-              </div>
-              <div class="form-group mb-3">
-                <label for="currency" class="form-label">Валюта</label>
-                <select id="currency" class="form-select" formControlName="currency">
-                  <option value="USD">USD</option>
-                  <option value="EUR">EUR</option>
-                  <option value="RUB">RUB</option>
-                </select>
-              </div>
-              <div class="form-group mb-3">
-                <label for="startDate" class="form-label">Дата начала</label>
-                <input type="date" class="form-control" id="startDate" formControlName="startDate" />
-              </div>
-              <div class="form-group mb-3">
-                <label for="endDate" class="form-label">Дата окончания</label>
-                <input type="date" class="form-control" id="endDate" formControlName="endDate" />
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-              <button type="submit" class="btn btn-primary" (click)="onCreateGoalSubmit()" [disabled]="createForm.invalid">Создать</button>
-            </div>
-          </form>
+        <div class="card-footer text-end">
+          <button class="btn btn-link p-0" (click)="edit(savingsGoal)">
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="btn btn-link p-0 text-danger" (click)="delete(savingsGoal.id)">
+            <i class="bi bi-trash"></i>
+          </button>
         </div>
       </div>
     </div>
   </div>
-  
+
+
+  <div class="modal fade" id="createGoalModal" tabindex="-1" role="dialog" aria-labelledby="createGoalModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createGoalModalTitle">Создать новую цель</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <form [formGroup]="createForm">
+          <div class="modal-body">
+            <div class="form-group mb-3">
+              <label for="accountId" class="form-label">Откуда</label>
+              <select id="accountId" class="form-select" formControlName="accountId" (change)="onAccountChange($event)">
+                <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="name" class="form-label">Название цели</label>
+              <input type="text" class="form-control" id="name" formControlName="name"
+                placeholder="Введите название цели" />
+              <div *ngIf="createForm.get('name')?.invalid && createForm.get('name')?.touched" class="text-danger">
+                Название цели обязательно
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="targetAmount" class="form-label">Цель</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="targetAmount" formControlName="targetAmount"
+                  placeholder="Введите целевую сумму">
+                <span *ngIf="accountCurrency != null" class="input-group-text">{{ accountCurrency }}</span>
+              </div>
+              <div *ngIf="createForm.get('targetAmount')?.invalid && createForm.get('targetAmount')?.touched"
+                class="text-danger">
+                Цель должна быть больше 0
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="note" class="form-label">Заметка</label>
+              <textarea type="text" class="form-control" id="note" formControlName="note"
+                placeholder="Введите заметку"></textarea>
+            </div>
+            <div class="form-group mb-3">
+              <label for="startDate" class="form-label">Дата начала</label>
+              <input type="date" class="form-control" id="startDate" formControlName="startDate" />
+            </div>
+            <div class="form-group mb-3">
+              <label for="endDate" class="form-label">Дата окончания</label>
+              <input type="date" class="form-control" id="endDate" formControlName="endDate" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="create()"
+              [disabled]="createForm.invalid">Создать</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,6 +10,6 @@ export class AccountTransferService {
   constructor(private readonly httpClient: HttpClient) {}
 
   getAll() {
-    return this.httpClient.get<AccountTransfer[]>(`${Constants.ApiUrl}/account-tansfers/list`);
+    return this.httpClient.get<AccountTransfer[]>(`${Constants.ApiUrl}/account-transfers/list`);
   }
 }

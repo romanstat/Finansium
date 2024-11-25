@@ -4,6 +4,7 @@ import { RouterModule, RouterLink, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { User } from '../core/common.model';
 import { NotificationService } from '../modules/notification/notification.service';
+import { RoleService } from '../auth/role.service';
 
 @Component({
   selector: 'app-layout',
@@ -16,6 +17,7 @@ export class LayoutComponent implements OnInit {
   router = inject(Router);
   authService = inject(AuthService);
   notificationService = inject(NotificationService);
+  roleService = inject(RoleService);
 
   isLoggedIn = false;
   isSidebarExpanded = false;
@@ -37,6 +39,10 @@ export class LayoutComponent implements OnInit {
     }, 5000);
   }
 
+  isAdmin(): boolean {
+    return this.roleService.hasRole('Admin');
+  }
+
   ngOnInit(): void {
     this.notificationService.unreadCount$.subscribe({
       next: (unreadCount) => {
@@ -44,14 +50,13 @@ export class LayoutComponent implements OnInit {
       },
     });
 
-    this.startPollingUnreadCount();
-
     this.authService.isLoggedIn$.subscribe({
       next: (loggedIn) => {
         this.isLoggedIn = loggedIn;
         if (!this.isLoggedIn) {
           this.router.navigate(['login']);
         } else {
+          this.startPollingUnreadCount();
           this.router.navigate(['profile']);
         }
       },

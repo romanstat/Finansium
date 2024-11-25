@@ -29,14 +29,14 @@
                         </div>
                     </div>
                     <p class="card-text">
-                        <strong>Баланс:</strong> {{ account.balance }}
+                        <strong>Баланс:</strong> {{ account.balance | number:'1.0-0' }}
                         {{ account.currency }}
                     </p>
                     <p class="card-text">
-                        <small class="text-muted">Дата создания: {{ account.createdAt | date: 'yyyy:MM:dd'}}</small>
+                        <small class="text-muted">Дата создания: {{ account.createdAt | date: 'dd-MM-yyyy'}}</small>
                     </p>
                     <p class="card-text">
-                        <small class="text-muted">Дата изменения: {{ account.modifiedAt | date: 'yyyy:MM:dd' }}</small>
+                        <small class="text-muted">Дата изменения: {{ account.modifiedAt | date: 'dd-MM-yyyy' }}</small>
                     </p>
                 </div>
                 <div class="card-footer text-end">
@@ -51,14 +51,13 @@
         </div>
     </div>
 
-    <h2 class="mt-5">Переводы между счетами</h2>
+    <h1 class="mt-5">Переводы между счетами</h1>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Источник</th>
-                    <th>Целевой счет</th>
+                    <th>Счет (Откуда)</th>
+                    <th>Счет (Куда)</th>
                     <th>Сумма</th>
                     <th>Валюта</th>
                     <th>Курс валюты</th>
@@ -67,16 +66,15 @@
             </thead>
             <tbody>
                 <tr *ngFor="let accountTransfer of accountTransfers">
-                    <td>{{ accountTransfer.id }}</td>
                     <td>{{ accountTransfer.sourceAccount }}</td>
                     <td>{{ accountTransfer.targetAccount }}</td>
-                    <td>{{ accountTransfer.amount }}</td>
+                    <td>{{ accountTransfer.amount }} {{ accountTransfer.sourceCurrency}}</td>
                     <td>
                         {{ accountTransfer.sourceCurrency }} ->
                         {{ accountTransfer.targetCurrency }}
                     </td>
                     <td>{{ accountTransfer.currencyRate }}</td>
-                    <td>{{ accountTransfer.date }}</td>
+                    <td>{{ accountTransfer.date | date: 'dd.MM.yyyy HH:MM' }}</td>
                 </tr>
             </tbody>
         </table>
@@ -97,32 +95,23 @@
                         <label for="name" class="form-label">Название счета</label>
                         <input type="text" class="form-control" id="name" formControlName="name"
                             placeholder="Введите название счета" />
-                        <div *ngIf="createForm.get('name')?.invalid && createForm.get('name')?.touched"
-                            class="text-danger">
-                            Название счета обязательно (макс. 50 символов)
-                        </div>
                     </div>
                     <div class="form-group mb-3">
                         <label for="currency" class="form-label">Валюта</label>
                         <select class="form-select" id="currency" formControlName="currency">
-                            <option value="USD">USD</option>
-                            <option value="EUR">EUR</option>
-                            <option value="RUB">RUB</option>
+                            <option *ngFor="let currency of currencies" [value]="currency.abbreviation"
+                                data-toggle="tooltip" [title]="currency.abbreviation">{{currency.name}}</option>
                         </select>
                     </div>
                     <div class="form-group mb-3">
                         <label for="balance" class="form-label">Начальный баланс</label>
                         <input type="number" class="form-control" id="balance" formControlName="balance"
                             placeholder="Введите начальный баланс" />
-                        <div *ngIf="createForm.get('balance')?.invalid && createForm.get('balance')?.touched"
-                            class="text-danger">
-                            Баланс должен быть не меньше 0
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-primary" (click)="add()"
+                    <button type="submit" class="btn btn-primary" (click)="add()" data-bs-dismiss="modal"
                         [disabled]="createForm.invalid">Создать</button>
                 </div>
             </form>
@@ -130,7 +119,6 @@
     </div>
 </div>
 
-<!-- Модальное окно: Перевод между счетами -->
 <div class="modal fade" id="transferModal" tabindex="-1" role="dialog" aria-labelledby="transferModalTitle"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -142,24 +130,16 @@
             <form [formGroup]="transferForm">
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label for="sourceAccount" class="form-label">Источник</label>
-                        <select id="sourceAccount" class="form-select" formControlName="sourceAccount">
+                        <label for="sourceAccount" class="form-label">Откуда</label>
+                        <select id="sourceAccount" class="form-select" formControlName="sourceAccountId">
                             <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
                         </select>
-                        <div *ngIf="transferForm.get('sourceAccount')?.invalid && transferForm.get('sourceAccount')?.touched"
-                            class="text-danger">
-                            Выберите источник счета
-                        </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="targetAccount" class="form-label">Целевой счет</label>
-                        <select id="targetAccount" class="form-select" formControlName="targetAccount">
+                        <label for="targetAccount" class="form-label">Куда</label>
+                        <select id="targetAccount" class="form-select" formControlName="targetAccountId">
                             <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
                         </select>
-                        <div *ngIf="transferForm.get('targetAccount')?.invalid && transferForm.get('targetAccount')?.touched"
-                            class="text-danger">
-                            Выберите целевой счет
-                        </div>
                     </div>
                     <div class="form-group mb-3">
                         <label for="amount" class="form-label">Сумма</label>
@@ -174,15 +154,11 @@
                         <label for="currencyRate" class="form-label">Курс обмена</label>
                         <input type="number" step="0.01" class="form-control" id="currencyRate"
                             formControlName="currencyRate" placeholder="Введите курс обмена" />
-                        <div *ngIf="transferForm.get('currencyRate')?.invalid && transferForm.get('currencyRate')?.touched"
-                            class="text-danger">
-                            Курс должен быть больше 0.01
-                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="submit" class="btn btn-success" (click)="transfer()"
+                    <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="transfer()"
                         [disabled]="transferForm.invalid">Перевести</button>
                 </div>
             </form>

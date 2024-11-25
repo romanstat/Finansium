@@ -1,55 +1,119 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Currency } from '../../../core/common.model';
+import { CurrencyService } from '../../../core/services/currency.service';
+import { SavingsGoal } from './savings-goal.model';
+import { SavingsGoalService } from './savings-goal.service';
+import { Account } from '../account/account.model';
+import { AccountService } from '../account/account.service';
 
 @Component({
   selector: 'app-savings-goal',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './savings-goal.component.html',
-  styleUrl: './savings-goal.component.scss'
+  styleUrl: './savings-goal.component.scss',
 })
 export class SavingsGoalComponent implements OnInit {
-  // Список целей
-  goals = [
-    { id: 1, name: 'Новая машина', targetAmount: 10000, collectedAmount: 2000, currency: 'USD', isCompleted: false, startDate: '2024-01-01', endDate: '2024-12-31' },
-    { id: 2, name: 'Путешествие', targetAmount: 5000, collectedAmount: 5000, currency: 'USD', isCompleted: true, startDate: '2023-01-01', endDate: '2023-12-31' }
-  ];
+  currencyService = inject(CurrencyService);
+  savingsGoalService = inject(SavingsGoalService);
+  accountService = inject(AccountService);
 
-  // Форма для создания цели
+  currencies!: Currency[];
+  savingsGoals: SavingsGoal[] = [];
+  accounts: Account[] = [];
+  accountCurrency?: string;
+
+  editingSavingsGoal: SavingsGoal | null = null;
   createForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    // Инициализация формы для создания новой цели
+  constructor(private fb: FormBuilder) {
     this.createForm = this.fb.group({
-      name: ['', [Validators.required]], // Название цели
-      targetAmount: [0, [Validators.required, Validators.min(0.01)]], // Целевая сумма > 0
-      currency: ['USD', [Validators.required]], // Валюта
-      startDate: ['', Validators.required], // Дата начала
-      endDate: ['', Validators.required] // Дата окончания
+      accountId: ['', [Validators.required]],
+      name: ['', [Validators.required]],
+      targetAmount: [0, [Validators.required, Validators.min(0.01)]],
+      currency: ['USD', [Validators.required]],
+      note: ['', [Validators.required]],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
     });
   }
 
-  // Метод для создания новой цели
-  onCreateGoalSubmit(): void {
-    if (this.createForm.valid) {
-      const newGoal = {
-        ...this.createForm.value,
-        id: this.goals.length ? Math.max(...this.goals.map(goal => goal.id)) + 1 : 1,
-        collectedAmount: 0, // Новая цель всегда начинается с 0
-        isCompleted: false // Новая цель всегда в статусе "В процессе"
-      };
-      this.goals.push(newGoal);
-      this.createForm.reset({ currency: 'USD', targetAmount: 0 }); // Сброс формы
-      alert('Цель успешно добавлена!');
+  onAccountChange(event: Event) {
+    const selectedAccountId = (event.target as HTMLSelectElement).value;
+    const selectedAccount = this.accounts.find(
+      (account) => account.id === selectedAccountId
+    );
+
+    if (selectedAccount) {
+      this.accountCurrency = selectedAccount.currency;
     }
   }
 
-  // Метод для удаления цели
-  deleteGoal(goalId: number): void {
-    this.goals = this.goals.filter(goal => goal.id !== goalId);
-    alert(`Цель с ID ${goalId} удалена`);
+  ngOnInit(): void {
+    this.currencyService.search().subscribe({
+      next: (result) => {
+        this.currencies = result;
+      },
+    });
+
+    this.accountService.getAll().subscribe({
+      next: (result) => {
+        this.accounts = result;
+      },
+    });
+
+    this.loadSavingsGoals();
+  }
+
+  create(): void {
+    this.savingsGoalService.create(this.createForm.value).subscribe({
+      next: () => {
+        this.loadSavingsGoals();
+      },
+    });
+  }
+
+  delete(id: string): void {
+    this.savingsGoalService.delete(id).subscribe({
+      next: () => {
+        this.loadSavingsGoals();
+      },
+    });
+  }
+
+  loadSavingsGoals() {
+    this.savingsGoalService.getAll().subscribe({
+      next: (result) => {
+        this.savingsGoals = result;
+      },
+    });
+  }
+
+  isEditing(savingsGoal: SavingsGoal): boolean {
+    return this.editingSavingsGoal?.id == savingsGoal.id;
+  }
+
+  save(savingsGoal: SavingsGoal) {
+    this.savingsGoalService.update(savingsGoal).subscribe({
+      next: () => {
+        this.editingSavingsGoal = null;
+      },
+    });
+  }
+
+  edit(savingsGoal: SavingsGoal) {
+    this.editingSavingsGoal = savingsGoal;
+  }
+
+  cancelEditing() {
+    this.editingSavingsGoal = null;
   }
 }
