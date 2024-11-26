@@ -50,12 +50,6 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("character varying(30)")
                         .HasColumnName("name");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("character varying(8)")
-                        .HasColumnName("status");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("character varying(26)")

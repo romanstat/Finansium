@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241124200420_Initial")]
+    [Migration("20241126175631_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -52,12 +52,6 @@ namespace Finansium.Persistence.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
                         .HasColumnName("name");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("character varying(8)")
-                        .HasColumnName("status");
 
                     b.Property<string>("UserId")
                         .IsRequired()

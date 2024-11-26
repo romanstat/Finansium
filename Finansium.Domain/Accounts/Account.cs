@@ -22,8 +22,6 @@ public sealed class Account : Entity
 
     public Money Balance { get; private set; }
 
-    public AccountStatus Status { get; private set; }
-
     public DateTimeOffset CreatedAt { get; private set; }
 
     public DateTimeOffset ModifiedAt { get; private set; }
@@ -45,7 +43,6 @@ public sealed class Account : Entity
             UserId = userId,
             Name = name,
             Balance = balance,
-            Status = AccountStatus.Active,
             CreatedAt = createdAt,
             ModifiedAt = createdAt,
         };

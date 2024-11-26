@@ -18,11 +18,6 @@ internal sealed class AccountConfiguration : IEntityTypeConfiguration<Account>
                 .IsRequired();
         });
 
-        builder.Property(account => account.Status)
-            .HasMaxLength(8)
-            .HasConversion(status => status.Name, name => AccountStatus.FromName(name))
-            .IsRequired();
-
         builder.Property(account => account.CreatedAt)
             .HasDefaultValueSql(EntityConfigurations.DateDefaultSql)
             .IsRequired();

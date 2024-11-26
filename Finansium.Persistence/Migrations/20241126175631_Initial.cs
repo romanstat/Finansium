@@ -150,7 +150,6 @@ namespace Finansium.Persistence.Migrations
                     id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
                     user_id = table.Column<string>(type: "character varying(26)", nullable: false),
                     name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    status = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     modified_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
                     balance_amount = table.Column<decimal>(type: "numeric", nullable: false),
