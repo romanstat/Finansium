@@ -5,7 +5,7 @@ public sealed record SavingsGoalResponse(
     string Name,
     decimal CurrentAmount,
     decimal TargetAmount,
-    Currency Currency,
+    string Currency,
     string Note,
     DateTimeOffset StartDate,
     DateTimeOffset EndDate,

@@ -11,11 +11,11 @@ internal sealed class OutboxMessageConfiguration : IEntityTypeConfiguration<Outb
             .IsRequired();
 
         builder.Property(outboxMessage => outboxMessage.Type)
-            .HasMaxLength(500)
+            .HasMaxLength(5000)
             .IsRequired();
 
         builder.Property(outboxMessage => outboxMessage.Content)
-            .HasMaxLength(500)
+            .HasMaxLength(5000)
             .IsRequired();
 
         builder.Property(outboxMessage => outboxMessage.ProcessedAt).IsRequired(false);

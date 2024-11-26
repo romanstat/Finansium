@@ -1,41 +1,41 @@
 <div class="container my-5">
   <h1 class="mb-4">Повторяющиеся платежи</h1>
 
-  <!-- Кнопка для добавления нового повторяющегося платежа -->
   <div class="d-flex justify-content-end mb-4">
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createRecurringPaymentModal">
       <i class="bi bi-plus-circle"></i> Добавить платеж
     </button>
   </div>
 
-  <!-- Таблица повторяющихся платежей -->
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
         <tr>
           <th>#</th>
-          <th>Название</th>
+          <th>Счёт</th>
           <th>Сумма</th>
-          <th>Валюта</th>
+          <th>Тип</th>
           <th>Интервал</th>
           <th>Дата начала</th>
           <th>Дата окончания</th>
           <th>Следующий платеж</th>
+          <th>Описание</th>
           <th>Действия</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let payment of recurringPayments; let i = index">
+        <tr *ngFor="let recurringTransaction of recurringTransactions; let i = index">
           <td>{{ i + 1 }}</td>
-          <td>{{ payment.name }}</td>
-          <td>{{ payment.amount }}</td>
-          <td>{{ payment.currency }}</td>
-          <td>{{ payment.interval }}</td>
-          <td>{{ payment.startDate }}</td>
-          <td>{{ payment.endDate }}</td>
-          <td>{{ payment.nextPaymentDate }}</td>
+          <td>{{ recurringTransaction.accountName }}</td>
+          <td>{{ recurringTransaction.amount }}</td>
+          <td>{{ recurringTransaction.type }}</td>
+          <td>{{ recurringTransaction.interval }}</td>
+          <td>{{ recurringTransaction.startDate | date: 'dd.MM.yyyy' }}</td>
+          <td>{{ recurringTransaction.endDate | date: 'dd.MM.yyyy' }}</td>
+          <td>{{ recurringTransaction.nextPaymentDate | date: 'dd.MM.yyyy' }}</td>
+          <td>{{ recurringTransaction.description }}</td>
           <td>
-            <button class="btn btn-link p-0 text-danger" (click)="deleteRecurringPayment(payment.id)">
+            <button class="btn btn-link p-0 text-danger" (click)="delete(recurringTransaction.id)">
               <i class="bi bi-trash"></i> Удалить
             </button>
           </td>
@@ -44,7 +44,6 @@
     </table>
   </div>
 
-  <!-- Модальное окно: Создание нового повторяющегося платежа -->
   <div class="modal fade" id="createRecurringPaymentModal" tabindex="-1" role="dialog"
     aria-labelledby="createRecurringPaymentModalTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -53,34 +52,29 @@
           <h5 class="modal-title" id="createRecurringPaymentModalTitle">Создать новый повторяющийся платеж</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
         </div>
-        <form [formGroup]="createRecurringPaymentForm">
+        <form [formGroup]="createForm">
           <div class="modal-body">
             <div class="form-group mb-3">
-              <label for="name" class="form-label">Название</label>
-              <input type="text" class="form-control" id="name" formControlName="name"
-                placeholder="Введите название платежа" />
-              <div
-                *ngIf="createRecurringPaymentForm.get('name')?.invalid && createRecurringPaymentForm.get('name')?.touched"
-                class="text-danger">
-                Название обязательно
-              </div>
+              <label for="accountId" class="form-label">Счет</label>
+              <select id="accountId" class="form-select" formControlName="accountId">
+                <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
+              </select>
             </div>
             <div class="form-group mb-3">
               <label for="amount" class="form-label">Сумма</label>
               <input type="number" class="form-control" id="amount" formControlName="amount"
                 placeholder="Введите сумму платежа" />
               <div
-                *ngIf="createRecurringPaymentForm.get('amount')?.invalid && createRecurringPaymentForm.get('amount')?.touched"
+                *ngIf="createForm.get('amount')?.invalid && createForm.get('amount')?.touched"
                 class="text-danger">
                 Сумма должна быть больше 0
               </div>
             </div>
             <div class="form-group mb-3">
-              <label for="currency" class="form-label">Валюта</label>
-              <select id="currency" class="form-select" formControlName="currency">
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="RUB">RUB</option>
+              <label for="type" class="form-label">Тип</label>
+              <select id="type" class="form-select" formControlName="type">
+                <option value="Income">Доход</option>
+                <option value="Expense">Расход</option>
               </select>
             </div>
             <div class="form-group mb-3">
@@ -100,12 +94,17 @@
               <label for="endDate" class="form-label">Дата окончания</label>
               <input type="date" class="form-control" id="endDate" formControlName="endDate" />
             </div>
+            <div class="form-group mb-3">
+              <label for="description" class="form-label">Описание</label>
+              <textarea type="text" class="form-control" id="description" formControlName="description"
+                placeholder="Введите описание платежа"></textarea>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
             <button type="submit" class="btn btn-primary" data-bs-dismiss="modal"
-              (click)="onCreateRecurringPaymentSubmit()"
-              [disabled]="createRecurringPaymentForm.invalid">Создать</button>
+              (click)="create()"
+              [disabled]="createForm.invalid">Создать</button>
           </div>
         </form>
       </div>

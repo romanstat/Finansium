@@ -11,13 +11,11 @@ internal sealed class SearchRecurringTransactionsQueryHandler(
     {
         var recurringTransactions = await dbContext.RecurringTransactions
             .Include(recurringTransaction => recurringTransaction.Account)
-            .Where(recurringTransaction =>
-                recurringTransaction.Account!.UserId == userContext.UserId &&
-                recurringTransaction.Type == TransactionType.FromName(request.Type))
+            .Where(recurringTransaction => recurringTransaction.Account!.UserId == userContext.UserId)
             .Select(recurringTransaction => new RecurringTransactionResponse(
                 recurringTransaction.Id,
                 recurringTransaction.Account!.Name,
-                recurringTransaction.Amount,
+                recurringTransaction.Amount.Amount,
                 recurringTransaction.Type.Name,
                 recurringTransaction.Interval,
                 recurringTransaction.StartDate,

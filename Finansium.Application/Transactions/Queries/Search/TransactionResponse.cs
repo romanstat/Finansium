@@ -2,6 +2,7 @@
 
 public sealed record TransactionResponse(
     Ulid Id,
+    string Type,
     string CategoryName,
     string AccountName,
     decimal Amount,

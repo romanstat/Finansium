@@ -58,9 +58,9 @@
                 <tr>
                     <th>Счет (Откуда)</th>
                     <th>Счет (Куда)</th>
-                    <th>Сумма</th>
-                    <th>Валюта</th>
-                    <th>Курс валюты</th>
+                    <th>Сумма перевода</th>
+                    <th>Валюта перевода</th>
+                    <th>Курс перевода</th>
                     <th>Дата перевода</th>
                 </tr>
             </thead>
@@ -68,7 +68,7 @@
                 <tr *ngFor="let accountTransfer of accountTransfers">
                     <td>{{ accountTransfer.sourceAccount }}</td>
                     <td>{{ accountTransfer.targetAccount }}</td>
-                    <td>{{ accountTransfer.amount }} {{ accountTransfer.sourceCurrency}}</td>
+                    <td>{{ accountTransfer.amount }}</td>
                     <td>
                         {{ accountTransfer.sourceCurrency }} ->
                         {{ accountTransfer.targetCurrency }}

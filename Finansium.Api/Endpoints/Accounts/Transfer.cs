@@ -6,7 +6,7 @@ internal sealed class Transfer : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPut("accounts/transfer", async (TransferAccountCommand command, ISender sender) =>
+        app.MapPost("accounts/transfer", async (TransferAccountCommand command, ISender sender) =>
         {
             var result = await sender.Send(command);
 

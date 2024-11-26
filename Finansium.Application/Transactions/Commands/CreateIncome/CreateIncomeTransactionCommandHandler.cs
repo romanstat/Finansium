@@ -29,11 +29,13 @@ internal sealed class CreateIncomeTransactionCommandHandler(
         var amount = new Money(request.Amount, account.Balance.Currency);
 
         var transaction = Transaction.Create(
-            request.AccountId,
+            request.CategoryId,
             TransactionType.Income,
             amount,
             request.Date,
             request.Description);
+
+        account.Debit(transaction.Amount);
 
         account.AddTransactions(transaction);
 

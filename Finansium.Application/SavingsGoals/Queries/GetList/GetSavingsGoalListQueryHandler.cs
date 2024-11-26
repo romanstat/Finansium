@@ -16,7 +16,7 @@ internal sealed class GetSavingsGoalListQueryHandler(
                 savingsGoal.Name,
                 savingsGoal.Account!.Balance.Amount,
                 savingsGoal.TargetAmount.Amount,
-                savingsGoal.Account.Balance.Currency,
+                savingsGoal.Account.Balance.Currency.Code,
                 savingsGoal.Note,
                 savingsGoal.StartDate,
                 savingsGoal.EndDate,

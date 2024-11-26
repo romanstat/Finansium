@@ -50,6 +50,7 @@
     </div>
   </div>
 
+  <h1 class="mb-4">Все транзакции</h1>
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
@@ -66,8 +67,8 @@
         <tr *ngFor="let transaction of transactions; let i = index">
           <td>{{ i + 1 }}</td>
           <td>
-            <span [ngClass]="transaction.type === 'income' ? 'text-success' : 'text-danger'">
-              {{ transaction.type === 'income' ? 'Доход' : 'Расход' }}
+            <span [ngClass]="transaction.type === 'Income' ? 'text-success' : 'text-danger'">
+              {{ transaction.type === 'Income' ? 'Доход' : 'Расход' }}
             </span>
           </td>
           <td>{{ transaction.categoryName }}</td>

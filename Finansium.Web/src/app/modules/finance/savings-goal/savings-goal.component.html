@@ -58,7 +58,7 @@
         <form [formGroup]="createForm">
           <div class="modal-body">
             <div class="form-group mb-3">
-              <label for="accountId" class="form-label">Откуда</label>
+              <label for="accountId" class="form-label">Счёт</label>
               <select id="accountId" class="form-select" formControlName="accountId" (change)="onAccountChange($event)">
                 <option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</option>
               </select>

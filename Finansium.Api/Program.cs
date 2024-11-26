@@ -32,6 +32,8 @@ builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 app.UseCors(config => config
     .WithOrigins("http://localhost:4200")
     .AllowAnyHeader()

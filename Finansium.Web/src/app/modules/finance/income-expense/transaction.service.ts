@@ -11,8 +11,7 @@ export class TransactionService {
 
   search() {
     return this.httpClient.post<Transaction[]>(
-      `${Constants.ApiUrl}/transactions/search`,
-      []
+      `${Constants.ApiUrl}/transactions/search`, {}
     );
   }
 

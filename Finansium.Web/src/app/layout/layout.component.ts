@@ -22,10 +22,13 @@ export class LayoutComponent implements OnInit {
   isLoggedIn = false;
   isSidebarExpanded = false;
   unreadCount = 0;
+  private pollingIntervalId: any = null;
 
   logout() {
     this.isLoggedIn = false;
     this.authService.logout();
+    clearInterval(this.pollingIntervalId);
+    this.pollingIntervalId = null;
     this.router.navigate(['login']);
   }
 
@@ -34,9 +37,12 @@ export class LayoutComponent implements OnInit {
   }
 
   private startPollingUnreadCount(): void {
-    setInterval(() => {
-      this.notificationService.updateUnreadCount();
-    }, 5000);
+    console.log(this.pollingIntervalId);
+    if (this.pollingIntervalId == null) {
+      this.pollingIntervalId = setInterval(() => {
+        this.notificationService.updateUnreadCount();
+      }, 5000);
+    }
   }
 
   isAdmin(): boolean {

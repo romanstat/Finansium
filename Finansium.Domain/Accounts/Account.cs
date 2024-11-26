@@ -114,4 +114,34 @@ public sealed class Account : Entity
     {
         _recurringTransactions.AddRange(recurringTransactions);
     }
+
+    public void Credit(Money amount)
+    {
+
+        ArgumentNullException.ThrowIfNull(amount);
+
+        if (amount.IsZero())
+        {
+            throw new ArgumentException("Amount must be greater than zero to debit.", nameof(amount));
+        }
+
+        if (Balance < amount)
+        {
+            throw new InvalidOperationException("Insufficient funds to perform this operation.");
+        }
+
+        Balance -= amount;
+    }
+
+    public void Debit(Money amount)
+    {
+        ArgumentNullException.ThrowIfNull(amount);
+
+        if (amount.IsZero())
+        {
+            throw new ArgumentException("Amount must be greater than zero to credit.", nameof(amount));
+        }
+
+        Balance += amount;
+    }
 }

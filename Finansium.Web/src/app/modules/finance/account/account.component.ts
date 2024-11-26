@@ -118,11 +118,14 @@ export class AccountComponent {
   }
 
   loadAccountTransfers() {
+    setTimeout(() => {
+      
     this.accountTransfer.getAll().subscribe({
       next: (result) => {
         this.accountTransfers = result;
       },
     });
+    }, 2000);
   }
 
   ngOnInit(): void {

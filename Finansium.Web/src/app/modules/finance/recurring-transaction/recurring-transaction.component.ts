@@ -1,93 +1,101 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Account } from '../account/account.model';
+import { AccountService } from '../account/account.service';
+import { RecurringTransactionService } from './recurring-transaction.service';
+import { RecurringTransaction } from './recurring-transaction.model';
 
 @Component({
   selector: 'app-recurring-transaction',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './recurring-transaction.component.html',
-  styleUrl: './recurring-transaction.component.scss'
+  styleUrl: './recurring-transaction.component.scss',
 })
 export class RecurringTransactionComponent implements OnInit {
-  // Список повторяющихся платежей
-  recurringPayments = [
-    {
-      id: 1,
-      name: 'Аренда квартиры',
-      amount: 500,
-      currency: 'USD',
-      interval: 'Monthly',
-      startDate: '2024-01-01',
-      endDate: '2024-12-31',
-      nextPaymentDate: '2024-01-15'
-    },
-    {
-      id: 2,
-      name: 'Абонемент в спортзал',
-      amount: 50,
-      currency: 'USD',
-      interval: 'Monthly',
-      startDate: '2024-02-01',
-      endDate: '2024-12-31',
-      nextPaymentDate: '2024-02-15'
-    }
-  ];
+  accountService = inject(AccountService);
+  recurringTransactionService = inject(RecurringTransactionService);
 
-  // Форма для создания повторяющегося платежа
-  createRecurringPaymentForm!: FormGroup;
+  accounts: Account[] = [];
+  recurringTransactions: RecurringTransaction[] = [];
 
-  constructor(private fb: FormBuilder) {}
+  createForm!: FormGroup;
 
-  ngOnInit(): void {
-    // Инициализация формы для создания нового повторяющегося платежа
-    this.createRecurringPaymentForm = this.fb.group({
-      name: ['', [Validators.required]], // Название платежа
-      amount: [0, [Validators.required, Validators.min(0.01)]], // Сумма > 0
-      currency: ['USD', [Validators.required]], // Валюта
-      interval: ['Monthly', [Validators.required]], // Интервал
-      startDate: ['', [Validators.required]], // Дата начала
-      endDate: ['', [Validators.required]] // Дата окончания
+  constructor(private fb: FormBuilder) {
+    this.createForm = this.fb.group({
+      accountId: ['', [Validators.required]],
+      amount: [0, [Validators.required, Validators.min(0.01)]],
+      type: ['', [Validators.required]],
+      startDate: ['', [Validators.required]],
+      endDate: ['', [Validators.required]],
+      description: [''],
+
+      interval: ['Monthly', [Validators.required]],
     });
   }
 
-  // Метод для создания нового повторяющегося платежа
-  onCreateRecurringPaymentSubmit(): void {
-    if (this.createRecurringPaymentForm.valid) {
-      const newPayment = {
-        ...this.createRecurringPaymentForm.value,
-        id: this.recurringPayments.length ? Math.max(...this.recurringPayments.map(payment => payment.id)) + 1 : 1,
-        nextPaymentDate: this.calculateNextPaymentDate(this.createRecurringPaymentForm.value.startDate, this.createRecurringPaymentForm.value.interval)
-      };
-      this.recurringPayments.push(newPayment);
-      this.createRecurringPaymentForm.reset({ currency: 'USD', interval: 'Monthly', amount: 0 }); // Сброс формы
-      alert('Повторяющийся платеж успешно добавлен!');
-    }
+  create(): void {
+    const formValue = this.createForm.value;
+
+    const timeSpanInterval = this.mapIntervalToTimeSpan(formValue.interval);
+
+    const payload = {
+      ...formValue,
+      interval: timeSpanInterval,
+    };
+    console.log(payload);
+    this.recurringTransactionService.create(payload).subscribe({
+      next: () => {
+        this.loadRecurringTransaction();
+      },
+    });
   }
 
-  // Удаление повторяющегося платежа
-  deleteRecurringPayment(paymentId: number): void {
-    this.recurringPayments = this.recurringPayments.filter(payment => payment.id !== paymentId);
-    alert(`Повторяющийся платеж с ID ${paymentId} удален`);
+  delete(id: string): void {
+    this.recurringTransactionService.delete(id).subscribe({
+      next: () => {
+        this.loadRecurringTransaction();
+      },
+    });
   }
 
-  // Расчет следующей даты платежа
-  calculateNextPaymentDate(startDate: string, interval: string): string {
-    const date = new Date(startDate);
+  ngOnInit(): void {
+    this.accountService.getAll().subscribe({
+      next: (result) => {
+        this.accounts = result;
+      },
+    });
+
+    this.loadRecurringTransaction();
+  }
+
+  loadRecurringTransaction() {
+    this.recurringTransactionService.search().subscribe({
+      next: (result) => {
+        this.recurringTransactions = result;
+      },
+    });
+  }
+
+  mapIntervalToTimeSpan(interval: string): string {
     switch (interval) {
       case 'Daily':
-        date.setDate(date.getDate() + 1);
-        break;
+        return '1.00:00:00';
       case 'Weekly':
-        date.setDate(date.getDate() + 7);
-        break;
+        return '7.00:00:00';
       case 'Monthly':
-        date.setMonth(date.getMonth() + 1);
-        break;
+        return '30.00:00:00';
       case 'Yearly':
-        date.setFullYear(date.getFullYear() + 1);
-        break;
+        return '365.00:00:00';
+      default:
+        throw new Error('Invalid interval');
     }
-    return date.toISOString().split('T')[0]; // Форматируем дату в ISO
   }
 }

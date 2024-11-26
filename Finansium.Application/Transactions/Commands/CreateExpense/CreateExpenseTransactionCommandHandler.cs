@@ -35,6 +35,8 @@ internal sealed class CreateExpenseTransactionCommandHandler(
             request.Date,
             request.Description);
 
+        account.Credit(transaction.Amount);
+
         account.AddTransactions(transaction);
 
         return transaction.Id;
