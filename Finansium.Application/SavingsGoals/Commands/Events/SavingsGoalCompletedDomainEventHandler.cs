@@ -33,7 +33,7 @@ internal sealed class SavingsGoalCompletedDomainEventHandler(
 
         var userNotification = Notification.Create(
             "Цель достигнута",
-            $"Поздравляем! {savingsGoal.Name} цель завершилась",
+            $"Поздравляем! Цель '{savingsGoal.Name}' завершилась",
             timeProvider.GetUtcNow());
 
         user.AddNotifications(userNotification);

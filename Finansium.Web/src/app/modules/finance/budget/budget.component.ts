@@ -31,8 +31,8 @@ export class BudgetComponent implements OnInit {
     });
   }
 
-  save(budget: CategoryBudget) {
-    this.budgetService.save(budget).subscribe({
+  bulkUpdate() {
+    this.budgetService.bulkUpdate(this.budgets).subscribe({
       next: () => {
       },
     });

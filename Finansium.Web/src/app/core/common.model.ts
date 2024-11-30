@@ -1,6 +1,7 @@
 export interface User {
   id: string;
   country: string;
+  currency: Currency;
   name: string;
   surname: string;
   patronymic?: string;
@@ -21,7 +22,7 @@ export enum TransactionType {
 }
 
 export interface Currency{
-  abbreviation: string;
+  code: string;
   name: string;
   sign: string;
 }

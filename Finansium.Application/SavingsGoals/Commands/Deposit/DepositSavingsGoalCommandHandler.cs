@@ -32,7 +32,7 @@ internal sealed class DepositSavingsGoalCommandHandler(
             request.CurrencyRate, 
             timeProvider.GetUtcNow());
 
-        savingsGoal.UpdateStatus(savingsGoal.Account!.Balance);
+        savingsGoal.UpdateStatus(savingsGoal.Account!.Balance, timeProvider.GetUtcNow());
 
         return Result.Success();
     }

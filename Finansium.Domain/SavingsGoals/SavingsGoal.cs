@@ -42,17 +42,29 @@ public sealed class SavingsGoal : Entity
             Note = note,
             StartDate = startDate,
             EndDate = endDate,
+            CompletedDate = null,
             IsCompleted = false
         };
 
         return savingsGoal;
     }
 
-    public void UpdateStatus(Money currentAmount)
+    public void Update(string name, Money targetAmount)
     {
+        Name = name;
+        TargetAmount = targetAmount;
+    }
+
+    public void UpdateStatus(Money currentAmount, DateTimeOffset currentDate)
+    {
+        CompletedDate = null;
+        IsCompleted = false;
+
         if (currentAmount >= TargetAmount)
         {
             IsCompleted = true;
+
+            CompletedDate = currentDate;
 
             RaiseDomainEvent(new SavingsGoalCompletedDomainEvent(Id));
         }

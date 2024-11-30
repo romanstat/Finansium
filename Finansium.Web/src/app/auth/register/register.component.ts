@@ -9,9 +9,10 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router, RouterOutlet } from '@angular/router';
-import { Country } from '../../core/common.model';
+import { Country, Currency } from '../../core/common.model';
 import { CommonModule } from '@angular/common';
 import { CountryService } from '../../modules/admin/country/country.service';
+import { CurrencyService } from '../../core/services/currency.service';
 
 @Component({
   selector: 'app-register',
@@ -25,12 +26,15 @@ export class RegisterComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
   countryService = inject(CountryService);
+  currencyService = inject(CurrencyService);
 
   countries: Country[] = [];
+  currencies: Currency[] = [];
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
       countryId: new FormControl('', [Validators.required]),
+      currency: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
       patronymic: new FormControl(''),
@@ -57,6 +61,12 @@ export class RegisterComponent implements OnInit {
     this.countryService.getAll().subscribe({
       next: (countries) => {
         this.countries = countries;
+      },
+    });
+
+    this.currencyService.search().subscribe({
+      next: (result) => {
+        this.currencies = result;
       },
     });
   }

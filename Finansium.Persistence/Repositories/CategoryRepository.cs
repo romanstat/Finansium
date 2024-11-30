@@ -10,9 +10,14 @@ internal sealed class CategoryRepository(FinansiumDbContext dbContext)
             .Include(category => category.Budgets)
             .SingleOrDefaultAsync(category => category.Id == id, cancellationToken);
 
-    public async Task<bool> IsNameUnique(string name, TransactionType transactionType, CancellationToken cancellationToken) =>
-        !await _dbSet.AnyAsync(category => 
-            category.Name == name &&
-            category.TransactionType == transactionType, 
-            cancellationToken);
+    public async Task<bool> IsNameUnique(
+        Ulid Id,
+        string name,
+        TransactionType transactionType,
+        CancellationToken cancellationToken) =>
+            !await _dbSet.AnyAsync(category =>
+                category.Id != Id &&
+                category.Name == name &&
+                category.TransactionType == transactionType, 
+                cancellationToken);
 }

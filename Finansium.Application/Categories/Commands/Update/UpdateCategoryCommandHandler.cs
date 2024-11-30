@@ -11,6 +11,7 @@ internal sealed class UpdateCategoryCommandHandler(
         CancellationToken cancellationToken)
     {
         if (!await categoryRepository.IsNameUnique(
+            request.Id,
             request.Name,
             TransactionType.FromName(request.Type),
             cancellationToken))

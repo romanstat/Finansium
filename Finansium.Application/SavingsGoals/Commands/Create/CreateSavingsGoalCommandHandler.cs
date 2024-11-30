@@ -4,7 +4,8 @@ namespace Finansium.Application.SavingsGoals.Commands.Create;
 
 internal sealed class CreateSavingsGoalCommandHandler(
     IAccountRepository accountRepository,
-    ISavingsGoalRepository savingsGoalRepository)
+    ISavingsGoalRepository savingsGoalRepository,
+    TimeProvider timeProvider)
     : ICommandHandler<CreateSavingsGoalCommand, Ulid>
 {
     public async Task<Result<Ulid>> Handle(
@@ -40,7 +41,7 @@ internal sealed class CreateSavingsGoalCommandHandler(
 
         savingsGoalRepository.Add(savingsGoal);
 
-        savingsGoal.UpdateStatus(account.Balance);
+        savingsGoal.UpdateStatus(account.Balance, timeProvider.GetUtcNow());
 
         return savingsGoal.Id;
     }

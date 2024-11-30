@@ -35,7 +35,7 @@ export class NewsComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.saveForm = this.fb.group({
-      id: new FormControl({ value: '', readonly: true }, []),
+      id: new FormControl(''),
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
     });
@@ -84,6 +84,8 @@ export class NewsComponent implements OnInit {
         },
       });
     }
+
+    this.saveForm.reset();
   }
 
   outdate(id: string) {

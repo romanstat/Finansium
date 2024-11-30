@@ -1,64 +1,85 @@
 <div class="container my-5">
-    <h1 class="mb-4">Аналитика</h1>
-  
-    <!-- Дропдаун для выбора периода -->
-    <div class="mb-4">
-      <label for="period" class="form-label">Выберите период:</label>
-      <select id="period" class="form-select" [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
-        <option value="week">Неделя</option>
-        <option value="month">Месяц</option>
-        <option value="quarter">Квартал</option>
-        <option value="year">Год</option>
-        <option value="all">Всё время</option>
-      </select>
+  <h1 class="mb-4">Аналитика</h1>
+
+  <div class="card text-white bg-info mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Общая сумма на всех счетах</h5>
+      <p class="card-text fs-4">{{ analytic.totalBalance }} {{ analytic.currency.sign }}</p>
     </div>
-  
-    <!-- Метрики -->
-    <div class="row g-3 mb-4">
-      <div class="col-md-4">
-        <div class="card text-white bg-primary">
-          <div class="card-body">
-            <h5 class="card-title">Доходы</h5>
-            <p class="card-text fs-4">{{ metrics.totalIncome }} {{ currency }}</p>
-          </div>
-        </div>
+  </div>
+
+  <div class="mb-4">
+    <label for="dateRange" class="form-label">Выберите диапазон:</label>
+    <div class="row g-2 align-items-center">
+      <div class="col-auto">
+        <span>с</span>
       </div>
-      <div class="col-md-4">
-        <div class="card text-white bg-danger">
-          <div class="card-body">
-            <h5 class="card-title">Расходы</h5>
-            <p class="card-text fs-4">{{ metrics.totalExpenses }} {{ currency }}</p>
-          </div>
-        </div>
+      <div class="col-md-5">
+        <input 
+          type="date" 
+          class="form-control" 
+          [(ngModel)]="startDate" 
+          (change)="onDateRangeChange()" 
+          placeholder="Выберите начальную дату" />
       </div>
-      <div class="col-md-4">
-        <div class="card text-white bg-success">
-          <div class="card-body">
-            <h5 class="card-title">Количество операций</h5>
-            <p class="card-text fs-4">{{ metrics.totalTransactions }}</p>
-          </div>
-        </div>
+      <div class="col-auto">
+        <span>по</span>
       </div>
-    </div>
-  
-    <!-- Топ-5 категорий расходов -->
-    <div class="mb-4">
-      <h5>Топ 5 категорий расходов</h5>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let category of metrics.topExpenseCategories">
-          {{ category.name }} — {{ category.amount }} {{ currency }} ({{ category.count }} операций)
-        </li>
-      </ul>
-    </div>
-  
-    <!-- Топ-5 категорий доходов -->
-    <div>
-      <h5>Топ 5 категорий доходов</h5>
-      <ul class="list-group">
-        <li class="list-group-item" *ngFor="let category of metrics.topIncomeCategories">
-          {{ category.name }} — {{ category.amount }} {{ currency }} ({{ category.count }} операций)
-        </li>
-      </ul>
+      <div class="col-md-5">
+        <input 
+          type="date" 
+          class="form-control" 
+          [(ngModel)]="endDate" 
+          (change)="onDateRangeChange()" 
+          placeholder="Выберите конечную дату" />
+      </div>
     </div>
   </div>
   
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card text-white bg-primary">
+        <div class="card-body">
+          <h5 class="card-title">Доходы</h5>
+          <p class="card-text fs-4">{{ analytic.totalIncome }} {{ analytic.currency.sign }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+          <h5 class="card-title">Расходы</h5>
+          <p class="card-text fs-4">{{ analytic.totalExpense }} {{ analytic.currency.sign }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-success">
+        <div class="card-body">
+          <h5 class="card-title">Количество операций</h5>
+          <p class="card-text fs-4">{{ analytic.totalOperations }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Топ-5 категорий расходов -->
+  <div class="mb-4">
+    <h5>Топ 5 категорий расходов</h5>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let category of analytic.expenseCategoryAnalytics">
+        {{ category.name }} — {{ category.amount }} {{ analytic.currency.sign }} ({{ category.totalOperations }} операций)
+      </li>
+    </ul>
+  </div>
+
+  <!-- Топ-5 категорий доходов -->
+  <div>
+    <h5>Топ 5 категорий доходов</h5>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let category of analytic.incomeCategoryAnalytics">
+        {{ category.name }} — {{ category.amount }} {{ analytic.currency.sign }} ({{ category.totalOperations }} операций)
+      </li>
+    </ul>
+  </div>
+</div>

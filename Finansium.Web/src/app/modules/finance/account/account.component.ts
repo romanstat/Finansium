@@ -32,7 +32,7 @@ export class AccountComponent {
 
   createForm: FormGroup;
   transferForm: FormGroup;
-  currencies!: Currency[];
+  currencies: Currency[] = [];
 
   constructor(private fb: FormBuilder) {
     this.currencyService.search().subscribe({
@@ -58,8 +58,8 @@ export class AccountComponent {
     });
   }
 
-  getCurrency(name: string) : Currency{
-    return this.currencies.find(c => c.name == name)!;
+  getCurrency(name: string): Currency {
+    return this.currencies.find((c) => c.name == name)!;
   }
 
   searchAccounts() {
@@ -70,6 +70,7 @@ export class AccountComponent {
     this.accountService.create(this.createForm.value).subscribe({
       next: () => {
         this.loadAccounts();
+        this.createForm.reset();
       },
     });
   }
@@ -118,14 +119,11 @@ export class AccountComponent {
   }
 
   loadAccountTransfers() {
-    setTimeout(() => {
-      
     this.accountTransfer.getAll().subscribe({
       next: (result) => {
         this.accountTransfers = result;
       },
     });
-    }, 2000);
   }
 
   ngOnInit(): void {

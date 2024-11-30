@@ -13,6 +13,6 @@ internal sealed class GetCurrencyRateQueryHandler
         Console.WriteLine(fromCurrency);
         Console.WriteLine(toCurrency);
 
-        return await Task.FromResult(3.3M);
+        return await Task.FromResult(1M);
     }
 }

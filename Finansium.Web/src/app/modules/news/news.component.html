@@ -1,41 +1,78 @@
 <div class="accordion container" id="news">
-  <h1 class="text-center">
-    Новости
-  </h1>
-  <button *ngIf="isAdmin()" type="button" class="btn-create mb-2" (click)="openCreateModal()" data-bs-toggle="modal"
-    data-bs-target="#exampleModalLong">Добавить</button>
+  <h1 class="text-center">Новости</h1>
+  <button
+    *ngIf="isAdmin()"
+    type="button"
+    class="btn btn-primary  mb-2"
+    (click)="openCreateModal()"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModalLong"
+  >
+    Добавить
+  </button>
   <div class="accordion-item" *ngFor="let newsItem of news; let i = index">
     <h2 class="accordion-header">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i"
-        aria-expanded="true">
+      <button
+        class="accordion-button"
+        type="button"
+        data-bs-toggle="collapse"
+        [attr.data-bs-target]="'#collapse' + i"
+        aria-expanded="true"
+      >
         <div class="d-flex justify-content-between w-100">
           <b>{{ newsItem.title }}</b>
           <span style="padding-right: 10px">
-            {{ newsItem.createdAt | date: 'dd-MM-yyyy' }}
+            {{ newsItem.createdAt | date : "dd-MM-yyyy" }}
           </span>
         </div>
       </button>
     </h2>
-    <div [id]="'collapse' + i" class="accordion-collapse collapse" data-bs-parent="#news">
+    <div
+      [id]="'collapse' + i"
+      class="accordion-collapse collapse"
+      data-bs-parent="#news"
+    >
       <div class="accordion-body">
         {{ newsItem.description }}
         <div *ngIf="isAdmin()" class="d-flex justify-content-end mt-3">
-          <button class="btn btn-warning btn-sm mx-2" (click)="openEditModal(newsItem)" data-bs-toggle="modal"
-            data-bs-target="#exampleModalLong">Редактировать</button>
-          <button class="btn btn-secondary btn-sm" (click)="outdate(newsItem.id)">Архивировать</button>
+          <button
+            class="btn btn-warning btn-sm mx-2"
+            (click)="openEditModal(newsItem)"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModalLong"
+          >
+            Редактировать
+          </button>
+          <button
+            class="btn btn-secondary btn-sm"
+            (click)="outdate(newsItem.id)"
+          >
+            Архивировать
+          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModalLong"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{{modalTitle}}</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLongTitle">{{ modalTitle }}</h5>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -43,21 +80,49 @@
         <div class="modal-body">
           <div *ngIf="isEditing" class="form-group mb-3">
             <label for="id" class="form-label">Идентификатор</label>
-            <input type="text" class="form-control" id="id" formControlName="id">
+            <input
+              type="text"
+              class="form-control"
+              id="id"
+              formControlName="id"
+              readonly
+            />
           </div>
           <div class="form-group mb-3">
             <label for="title" class="form-label">Заголовок</label>
-            <input type="text" class="form-control" id="title" formControlName="title">
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              formControlName="title"
+            />
           </div>
           <div class="form-group mb-3">
             <label for="description" class="form-label">Описание</label>
-            <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+            <textarea
+              class="form-control"
+              id="description"
+              formControlName="description"
+              rows="3"
+            ></textarea>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-          <button type="submit" class="btn-create" data-bs-dismiss="modal" (click)="onSubmit()">{{isEditing ?
-            'Сохранить' : 'Создать'}}</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Закрыть
+          </button>
+          <button
+            type="submit"
+            class="btn btn-success"
+            data-bs-dismiss="modal"
+            (click)="onSubmit()"
+          >
+            {{ isEditing ? "Сохранить" : "Создать" }}
+          </button>
         </div>
       </form>
     </div>

@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Finansium.Persistence.Migrations
 {
     [DbContext(typeof(FinansiumDbContext))]
-    [Migration("20241126175631_Initial")]
+    [Migration("20241130115155_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -303,8 +303,8 @@ namespace Finansium.Persistence.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)")
                         .HasColumnName("content");
 
                     b.Property<string>("Error")
@@ -324,8 +324,8 @@ namespace Finansium.Persistence.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)")
                         .HasColumnName("type");
 
                     b.HasKey("Id")
@@ -697,6 +697,12 @@ namespace Finansium.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("createde_at")
                         .HasDefaultValueSql("NOW()");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)")
+                        .HasColumnName("currency");
 
                     b.Property<string>("Email")
                         .IsRequired()

@@ -12,6 +12,7 @@ internal sealed class CreateIncomeCategoryCommandHandler(
         CancellationToken cancellationToken)
     {
         if (!await categoryRepository.IsNameUnique(
+            Ulid.Empty,
             request.Name,
             TransactionType.Income,
             cancellationToken))

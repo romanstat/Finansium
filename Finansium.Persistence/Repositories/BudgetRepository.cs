@@ -2,7 +2,7 @@
 
 namespace Finansium.Persistence.Repositories;
 
-internal sealed class BudgetRepository(FinansiumDbContext dbContext) 
+internal sealed class BudgetRepository(FinansiumDbContext dbContext)
     : Repository<Budget>(dbContext), IBudgetRepository
 {
 }

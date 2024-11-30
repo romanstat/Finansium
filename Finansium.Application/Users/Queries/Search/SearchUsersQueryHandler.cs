@@ -19,6 +19,7 @@ internal sealed class SearchUsersQueryHandler(
             .Select(user => new UserResponse(
                 user.Id,
                 user.Country!.ShortName,
+                user.Currency,
                 user.Username,
                 user.Email.Value,
                 user.Name,

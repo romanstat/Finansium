@@ -15,7 +15,7 @@ internal sealed class GetAccountListQueryHandler(
                 account.Id,
                 account.Name,
                 account.Balance.Amount,
-                account.Balance.Currency.Code,
+                account.Balance.Currency,
                 account.CreatedAt,
                 account.ModifiedAt))
             .ToListAsync(cancellationToken);

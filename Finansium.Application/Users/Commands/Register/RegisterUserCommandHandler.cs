@@ -38,8 +38,11 @@ internal sealed class RegisterUserCommandHandler(
             return Result.Failure(CountryErrors.NotFound(request.CountryId));
         }
 
+        var currency = Currency.FromCode(request.Currency);
+
         var user = User.Create(
             request.CountryId,
+            currency,
             request.Name,
             request.Surname,
             request.Patronymic,

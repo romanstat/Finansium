@@ -29,7 +29,7 @@ export class SavingsGoalComponent implements OnInit {
   currencies!: Currency[];
   savingsGoals: SavingsGoal[] = [];
   accounts: Account[] = [];
-  accountCurrency?: string;
+  accountCurrency?: Currency;
 
   editingSavingsGoal: SavingsGoal | null = null;
   createForm!: FormGroup;
@@ -40,7 +40,7 @@ export class SavingsGoalComponent implements OnInit {
       name: ['', [Validators.required]],
       targetAmount: [0, [Validators.required, Validators.min(0.01)]],
       currency: ['USD', [Validators.required]],
-      note: ['', [Validators.required]],
+      note: [''],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
     });
@@ -105,6 +105,7 @@ export class SavingsGoalComponent implements OnInit {
     this.savingsGoalService.update(savingsGoal).subscribe({
       next: () => {
         this.editingSavingsGoal = null;
+        this.loadSavingsGoals();
       },
     });
   }

@@ -1,8 +1,6 @@
-<div class="container mt-5">
-  <h1 class="text-center">
-    Информация о профиле пользователя
-  </h1>
-  <hr class="mb-5">
+<div class="container mt-5 ms-5">
+  <h1 class="text-center">Информация о профиле</h1>
+  <hr class="mb-5" />
   <div>
     <p class="user-col">Имя</p>
     <p>{{ user.name }}</p>
@@ -20,6 +18,10 @@
     <p>{{ user.country }}</p>
   </div>
   <div>
+    <p class="user-col">Основная валюта</p>
+    <p>{{ user.currency.name }} ({{ user.currency.code }})</p>
+  </div>
+  <div>
     <p class="user-col">Почта</p>
     <p>{{ user.email }}</p>
   </div>
@@ -29,10 +31,10 @@
   </div>
   <div>
     <p class="user-col">Дата создания аккаунта</p>
-    <p>{{ user.createdAt | date: 'dd-MM-yyyy HH:MM'}}</p>
+    <p>{{ user.createdAt | date : "dd-MM-yyyy HH:mm" }}</p>
   </div>
   <div>
-    <p class="user-col">Роли пользователя</p>
+    <p class="user-col">Роли</p>
     <p>{{ userRoles }}</p>
   </div>
 </div>

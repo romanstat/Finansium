@@ -5,7 +5,7 @@ public sealed record AccountTransferResponse(
     string SourceAccount,
     string TargetAccount,
     decimal Amount,
-    string SourceCurrency,
-    string TargetCurrency,
+    Currency SourceCurrency,
+    Currency TargetCurrency,
     decimal CurrencyRate,
     DateTimeOffset Date);

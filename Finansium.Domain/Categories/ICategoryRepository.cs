@@ -7,5 +7,5 @@ public interface ICategoryRepository
     Task<Category?> GetByIdWithBudgetsAsync(Ulid id, CancellationToken cancellationToken);
     void Add(Category category);
     Task DeleteAsync(Ulid id, CancellationToken cancellationToken);
-    Task<bool> IsNameUnique(string name, TransactionType transactionType, CancellationToken cancellationToken);
+    Task<bool> IsNameUnique(Ulid Id, string name, TransactionType transactionType, CancellationToken cancellationToken);
 }

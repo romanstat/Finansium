@@ -1,16 +1,16 @@
-﻿using Finansium.Application.SavingsGoals.Commands.Create;
+﻿using Finansium.Application.SavingsGoals.Commands.Update;
 
 namespace Finansium.Api.Endpoints.SavingsGoals;
 
-internal sealed class Create : IEndpoint
+internal sealed class Update : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("savings-goals", async (CreateSavingsGoalCommand command, ISender sender) =>
+        app.MapPut("savings-goals", async (UpdateSavingsGoalCommand command, ISender sender) =>
         {
             var result = await sender.Send(command);
 
-            return result.Match(Results.Ok, ApiResults.Problem);
+            return result.Match(Results.NoContent, ApiResults.Problem);
         })
             .RequireAuthorization()
             .WithTags(Tags.SavingsGoals);

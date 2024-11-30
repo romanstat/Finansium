@@ -37,7 +37,7 @@
         <td>{{ user.country }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.username }}</td>
-        <td>{{ user.createdAt | date : "yyyy-MM-dd HH:MM" }}</td>
+        <td>{{ user.createdAt | date: 'dd-MM-yyyy HH:mm' }}</td>
         <td>
           <div class="d-flex">
             <button *ngIf="!isEditing(user)" type="button" class="me-2">

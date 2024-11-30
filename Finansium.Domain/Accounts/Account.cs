@@ -100,9 +100,10 @@ public sealed class Account : Entity
         return Result.Success();
     }
 
-    public void Update(string name)
+    public void Update(string name, DateTimeOffset modifiedAt)
     {
         Name = name;
+        ModifiedAt = modifiedAt;
     }
 
     public void AddTransactions(params Transaction[] transactions)

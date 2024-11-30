@@ -12,6 +12,7 @@ internal sealed class CreateExpenseCategoryCommandHandler(
         CancellationToken cancellationToken)
     {
         if (!await categoryRepository.IsNameUnique(
+            Ulid.Empty,
             request.Name,
             TransactionType.Expense,
             cancellationToken))

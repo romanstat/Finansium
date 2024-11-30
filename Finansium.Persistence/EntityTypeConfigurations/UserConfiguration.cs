@@ -9,6 +9,11 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasIndex(user => user.Username).IsUnique();
         builder.HasIndex(user => user.Email).IsUnique();
 
+        builder.Property(user => user.Currency)
+            .HasMaxLength(EntityConfigurations.CurrencyMaxLength)
+            .HasConversion(currency => currency.Code, code => Currency.FromCode(code))
+            .IsRequired();
+
         builder.Property(user => user.Name)
             .HasMaxLength(30)
             .IsRequired();

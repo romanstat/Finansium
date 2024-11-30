@@ -3,6 +3,7 @@
 public record UserResponse(
     Ulid Id,
     string Country,
+    Currency Currency,
     string Username,
     string Email,
     string Name,

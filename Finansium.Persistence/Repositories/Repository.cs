@@ -13,6 +13,9 @@ internal abstract class Repository<TEntity>
         _dbSet = _dbContext.Set<TEntity>();
     }
 
+    public async Task<List<TEntity>> GetByIdsAsync(IEnumerable<Ulid> ids, CancellationToken cancellationToken) =>
+        await _dbSet.Where(entity => ids.Contains(entity.Id)).ToListAsync(cancellationToken);
+
     public virtual async Task<TEntity?> GetByIdAsync(Ulid id, CancellationToken cancellationToken) =>
         await _dbSet.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 

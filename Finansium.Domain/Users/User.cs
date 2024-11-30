@@ -15,6 +15,8 @@ public sealed class User : Entity
 
     public Country? Country { get; private set; }
 
+    public Currency Currency { get; private set; }
+
     public string Name { get; private set; }
 
     public string Surname { get; private set; }
@@ -39,6 +41,7 @@ public sealed class User : Entity
 
     public static User Create(
         Ulid countryId,
+        Currency currency,
         string name,
         string surname,
         string patronymic,
@@ -50,6 +53,7 @@ public sealed class User : Entity
         var user = new User
         {
             CountryId = countryId,
+            Currency = currency,
             Name = name,
             Surname = surname,
             Patronymic = patronymic,

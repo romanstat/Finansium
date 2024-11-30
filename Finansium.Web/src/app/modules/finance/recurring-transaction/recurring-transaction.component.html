@@ -35,8 +35,8 @@
           <td>{{ recurringTransaction.nextPaymentDate | date: 'dd.MM.yyyy' }}</td>
           <td>{{ recurringTransaction.description }}</td>
           <td>
-            <button class="btn btn-link p-0 text-danger" (click)="delete(recurringTransaction.id)">
-              <i class="bi bi-trash"></i> Удалить
+            <button class="me-2" (click)="delete(recurringTransaction.id)">
+              <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>

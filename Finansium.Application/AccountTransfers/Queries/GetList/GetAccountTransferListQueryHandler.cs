@@ -16,8 +16,8 @@ internal sealed class GetAccountTransferListQueryHandler(
                 accountTransfer.SourceAccount!.Name,
                 accountTransfer.TargetAccount!.Name,
                 accountTransfer.Amount.Amount,
-                accountTransfer.SourceAccount.Balance.Currency.Name,
-                accountTransfer.TargetAccount.Balance.Currency.Name,
+                accountTransfer.SourceAccount.Balance.Currency,
+                accountTransfer.TargetAccount.Balance.Currency,
                 accountTransfer.CurrencyRate,
                 accountTransfer.Date))
             .ToListAsync(cancellationToken);

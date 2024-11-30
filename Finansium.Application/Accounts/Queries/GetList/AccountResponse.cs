@@ -4,6 +4,6 @@ public sealed record AccountResponse(
     Ulid Id,
     string Name,
     decimal Balance,
-    string Currency,
+    Currency Currency,
     DateTimeOffset CreatedAt,
     DateTimeOffset ModifiedAt);

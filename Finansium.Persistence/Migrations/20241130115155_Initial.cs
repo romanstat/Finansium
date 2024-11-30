@@ -55,8 +55,8 @@ namespace Finansium.Persistence.Migrations
                 {
                     id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
                     occurred_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false, defaultValueSql: "NOW()"),
-                    type = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    content = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    type = table.Column<string>(type: "character varying(5000)", maxLength: 5000, nullable: false),
+                    content = table.Column<string>(type: "character varying(5000)", maxLength: 5000, nullable: false),
                     processed_at = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     error = table.Column<string>(type: "character varying(5000)", maxLength: 5000, nullable: true)
                 },
@@ -101,6 +101,7 @@ namespace Finansium.Persistence.Migrations
                 {
                     id = table.Column<string>(type: "character varying(26)", maxLength: 26, nullable: false),
                     country_id = table.Column<string>(type: "character varying(26)", nullable: false),
+                    currency = table.Column<string>(type: "character varying(3)", maxLength: 3, nullable: false),
                     name = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     surname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     patronymic = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),

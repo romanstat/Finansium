@@ -16,10 +16,10 @@ export class BudgetService {
     );
   }
 
-  save(budget: CategoryBudget) {
+  bulkUpdate(budgets: CategoryBudget[]) {
     return this.httpClient.put(
       `${Constants.ApiUrl}/categories/expense/budgets`,
-      budget
+      { budgets: budgets }
     );
   }
 }

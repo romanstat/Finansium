@@ -1,6 +1,7 @@
 ﻿namespace Finansium.Application.Accounts.Commands.Update;
 
 internal sealed class UpdateAccountCommandHandler(
+    TimeProvider timeProvider,
     IAccountRepository accountRepository) : ICommandHandler<UpdateAccountCommand>
 {
     public async Task<Result> Handle(
@@ -14,7 +15,7 @@ internal sealed class UpdateAccountCommandHandler(
             return Result.Failure(AccountErrors.NotFound(request.Id));
         }
 
-        account.Update(request.Name);
+        account.Update(request.Name, timeProvider.GetUtcNow());
 
         return Result.Success();
     }
