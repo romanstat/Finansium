@@ -15,23 +15,25 @@
         <span>с</span>
       </div>
       <div class="col-md-5">
-        <input 
-          type="date" 
-          class="form-control" 
-          [(ngModel)]="startDate" 
-          (change)="onDateRangeChange()" 
-          placeholder="Выберите начальную дату" />
+        <input
+          type="date"
+          class="form-control"
+          [value]="startDate"
+          (input)="updateStartDate($event)"
+          placeholder="Выберите начальную дату"
+        />
       </div>
       <div class="col-auto">
         <span>по</span>
       </div>
       <div class="col-md-5">
-        <input 
-          type="date" 
-          class="form-control" 
-          [(ngModel)]="endDate" 
-          (change)="onDateRangeChange()" 
-          placeholder="Выберите конечную дату" />
+        <input
+          type="date"
+          class="form-control"
+          [value]="endDate"
+          (input)="updateEndDate($event)"
+          placeholder="Выберите конечную дату"
+        />
       </div>
     </div>
   </div>
@@ -63,7 +65,6 @@
     </div>
   </div>
 
-  <!-- Топ-5 категорий расходов -->
   <div class="mb-4">
     <h5>Топ 5 категорий расходов</h5>
     <ul class="list-group">
@@ -73,7 +74,6 @@
     </ul>
   </div>
 
-  <!-- Топ-5 категорий доходов -->
   <div>
     <h5>Топ 5 категорий доходов</h5>
     <ul class="list-group">

@@ -18,7 +18,15 @@ export class AnalyticsComponent implements OnInit {
   endDate: string = new Date().toISOString().split('T')[0];
   analytic!: Analytic;
 
-  onDateRangeChange() {
+  updateStartDate(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.startDate = input.value;
+    this.loadAnalytics();
+  }
+
+  updateEndDate(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.endDate = input.value;
     this.loadAnalytics();
   }
 

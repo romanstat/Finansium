@@ -13,7 +13,8 @@ internal sealed class GetAnalysticsQueryHandler(
     {
         { (Currency.Byn, Currency.Byn), 1M },
         { (Currency.Byn, Currency.Usd), 3.6M },
-        { (Currency.Byn, Currency.Eur), 3.8M }
+        { (Currency.Byn, Currency.Eur), 3.8M },
+        { (Currency.Usd, Currency.Byn), 0.3M },
     };
 
     public async Task<Result<AnalyticResponse>> Handle(
@@ -33,6 +34,7 @@ internal sealed class GetAnalysticsQueryHandler(
             account.Balance.Amount * CurrencyRates[(user.Currency, account.Balance.Currency)]);
 
         var totalTransactionSum = (await dbContext.Transactions
+            .Where(transaction => transaction.Account!.UserId == userContext.UserId)
             .Where(transaction =>
                 transaction.Date >= request.StartDate && transaction.Date <= request.EndDate)
             .GroupBy(transaction => transaction.Type)
@@ -48,6 +50,7 @@ internal sealed class GetAnalysticsQueryHandler(
                 value => value.TotalAmount);
 
         var totalTransactions = await dbContext.Transactions.CountAsync(transaction =>
+            transaction.Account!.UserId == userContext.UserId &&
             transaction.Date >= request.StartDate && transaction.Date <= request.EndDate,
             cancellationToken);
 

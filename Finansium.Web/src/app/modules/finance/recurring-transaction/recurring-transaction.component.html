@@ -28,7 +28,7 @@
           <td>{{ i + 1 }}</td>
           <td>{{ recurringTransaction.accountName }}</td>
           <td>{{ recurringTransaction.amount }}</td>
-          <td>{{ recurringTransaction.type }}</td>
+          <td>{{ recurringTransaction.type === "Income" ? "Доход" : "Расход"}}</td>
           <td>{{ recurringTransaction.interval }}</td>
           <td>{{ recurringTransaction.startDate | date: 'dd.MM.yyyy' }}</td>
           <td>{{ recurringTransaction.endDate | date: 'dd.MM.yyyy' }}</td>
